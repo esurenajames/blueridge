@@ -3,8 +3,8 @@
     <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/heroicons@1.0.1/build/css/heroicons.min.css" rel="stylesheet">
-
-        @vite('resources/css/app.css')
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        @vite('resources/css/app.css', 'resources/js/app.css')
     </head>
     <body class="bg-gray-200 rounded-lg py-5">
  
@@ -31,6 +31,9 @@
                 <label class="text-xs text-center text-gray-500 uppercase">login</label>
                 <span class="border-b w-1/5 lg:w-1/3"></span>
             </div>
+
+            <!-- Start of Forms -->
+
             <div class="mt-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
                 <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="username" />
@@ -43,8 +46,14 @@
                 <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
             </div>
             <div class="mt-8">
-                <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Login</button>
+                <button @click="showError = true" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Login</button>
             </div>
+            <div x-show="showError" class="mt-4 text-center">
+                <p class="text-red-500 text-sm font-bold">Incorrect username or password. Please try again.</p>
+            </div>
+
+            <!-- End of Forms -->
+
             <div class="mt-4 flex flex-col items-center">
               <div class="flex items-center justify-between w-full">
                   <span class="border-b w-1/5 md:w-1/4"></span>
