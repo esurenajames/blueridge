@@ -29,7 +29,7 @@
 
       <!-- Content -->
        
-         <div class="py-6">
+         <div class="py-6 ml-4">
             <ol class="flex items-center w-full">
                <li class="flex w-full items-center text-blue-600 dark:text-blue-500 after:content-[''] after:w-full after:h-1 after:border-b after:border-blue-100 after:border-4 after:inline-block dark:after:border-blue-800">
                   <span class="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full lg:h-12 lg:w-12 dark:bg-blue-800 shrink-0">
@@ -59,119 +59,118 @@
       <!-- End Content -->
     </main>
 
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://unpkg.com/@popperjs/core@2"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script>
+         
+   // start: Sidebar
+   const sidebarToggle = document.querySelector('.sidebar-toggle')
+   const sidebarOverlay = document.querySelector('.sidebar-overlay')
+   const sidebarMenu = document.querySelector('.sidebar-menu')
+   const main = document.querySelector('.main')
+   sidebarToggle.addEventListener('click', function (e) {
+      e.preventDefault()
+      main.classList.toggle('active')
+      sidebarOverlay.classList.toggle('hidden')
+      sidebarMenu.classList.toggle('-translate-x-full')
+   })
+   sidebarOverlay.addEventListener('click', function (e) {
+      e.preventDefault()
+      main.classList.add('active')
+      sidebarOverlay.classList.add('hidden')
+      sidebarMenu.classList.add('-translate-x-full')
+   })
+   document.querySelectorAll('.sidebar-dropdown-toggle').forEach(function (item) {
+      item.addEventListener('click', function (e) {
+         e.preventDefault()
+         const parent = item.closest('.group')
+         if (parent.classList.contains('selected')) {
+               parent.classList.remove('selected')
+         } else {
+               document.querySelectorAll('.sidebar-dropdown-toggle').forEach(function (i) {
+                  i.closest('.group').classList.remove('selected')
+               })
+               parent.classList.add('selected')
+         }
+      })
+   })
+   // end: Sidebar
 
-    <script>
-        // start: Sidebar
-        const sidebarToggle = document.querySelector('.sidebar-toggle')
-        const sidebarOverlay = document.querySelector('.sidebar-overlay')
-        const sidebarMenu = document.querySelector('.sidebar-menu')
-        const main = document.querySelector('.main')
-        sidebarToggle.addEventListener('click', function (e) {
-            e.preventDefault()
-            main.classList.toggle('active')
-            sidebarOverlay.classList.toggle('hidden')
-            sidebarMenu.classList.toggle('-translate-x-full')
-        })
-        sidebarOverlay.addEventListener('click', function (e) {
-            e.preventDefault()
-            main.classList.add('active')
-            sidebarOverlay.classList.add('hidden')
-            sidebarMenu.classList.add('-translate-x-full')
-        })
-        document.querySelectorAll('.sidebar-dropdown-toggle').forEach(function (item) {
-            item.addEventListener('click', function (e) {
-                e.preventDefault()
-                const parent = item.closest('.group')
-                if (parent.classList.contains('selected')) {
-                    parent.classList.remove('selected')
-                } else {
-                    document.querySelectorAll('.sidebar-dropdown-toggle').forEach(function (i) {
-                        i.closest('.group').classList.remove('selected')
-                    })
-                    parent.classList.add('selected')
-                }
-            })
-        })
-        // end: Sidebar
+   // start: Popper
+   const popperInstance = {}
+   document.querySelectorAll('.dropdown').forEach(function (item, index) {
+      const popperId = 'popper-' + index
+      const toggle = item.querySelector('.dropdown-toggle')
+      const menu = item.querySelector('.dropdown-menu')
+      menu.dataset.popperId = popperId
+      popperInstance[popperId] = Popper.createPopper(toggle, menu, {
+         modifiers: [
+               {
+                  name: 'offset',
+                  options: {
+                     offset: [0, 8],
+                  },
+               },
+               {
+                  name: 'preventOverflow',
+                  options: {
+                     padding: 24,
+                  },
+               },
+         ],
+         placement: 'bottom-end'
+      });
+   })
+   document.addEventListener('click', function (e) {
+      const toggle = e.target.closest('.dropdown-toggle')
+      const menu = e.target.closest('.dropdown-menu')
+      if (toggle) {
+         const menuEl = toggle.closest('.dropdown').querySelector('.dropdown-menu')
+         const popperId = menuEl.dataset.popperId
+         if (menuEl.classList.contains('hidden')) {
+               hideDropdown()
+               menuEl.classList.remove('hidden')
+               showPopper(popperId)
+         } else {
+               menuEl.classList.add('hidden')
+               hidePopper(popperId)
+         }
+      } else if (!menu) {
+         hideDropdown()
+      }
+   })
 
+   function hideDropdown() {
+      document.querySelectorAll('.dropdown-menu').forEach(function (item) {
+         item.classList.add('hidden')
+      })
+   }
+   function showPopper(popperId) {
+      popperInstance[popperId].setOptions(function (options) {
+         return {
+               ...options,
+               modifiers: [
+                  ...options.modifiers,
+                  { name: 'eventListeners', enabled: true },
+               ],
+         }
+      });
+      popperInstance[popperId].update();
+   }
+   function hidePopper(popperId) {
+      popperInstance[popperId].setOptions(function (options) {
+         return {
+               ...options,
+               modifiers: [
+                  ...options.modifiers,
+                  { name: 'eventListeners', enabled: false },
+               ],
+         }
+      });
+   }
 
+   </script>
 
-        // start: Popper
-        const popperInstance = {}
-        document.querySelectorAll('.dropdown').forEach(function (item, index) {
-            const popperId = 'popper-' + index
-            const toggle = item.querySelector('.dropdown-toggle')
-            const menu = item.querySelector('.dropdown-menu')
-            menu.dataset.popperId = popperId
-            popperInstance[popperId] = Popper.createPopper(toggle, menu, {
-                modifiers: [
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [0, 8],
-                        },
-                    },
-                    {
-                        name: 'preventOverflow',
-                        options: {
-                            padding: 24,
-                        },
-                    },
-                ],
-                placement: 'bottom-end'
-            });
-        })
-        document.addEventListener('click', function (e) {
-            const toggle = e.target.closest('.dropdown-toggle')
-            const menu = e.target.closest('.dropdown-menu')
-            if (toggle) {
-                const menuEl = toggle.closest('.dropdown').querySelector('.dropdown-menu')
-                const popperId = menuEl.dataset.popperId
-                if (menuEl.classList.contains('hidden')) {
-                    hideDropdown()
-                    menuEl.classList.remove('hidden')
-                    showPopper(popperId)
-                } else {
-                    menuEl.classList.add('hidden')
-                    hidePopper(popperId)
-                }
-            } else if (!menu) {
-                hideDropdown()
-            }
-        })
-
-        function hideDropdown() {
-            document.querySelectorAll('.dropdown-menu').forEach(function (item) {
-                item.classList.add('hidden')
-            })
-        }
-        function showPopper(popperId) {
-            popperInstance[popperId].setOptions(function (options) {
-                return {
-                    ...options,
-                    modifiers: [
-                        ...options.modifiers,
-                        { name: 'eventListeners', enabled: true },
-                    ],
-                }
-            });
-            popperInstance[popperId].update();
-        }
-        function hidePopper(popperId) {
-            popperInstance[popperId].setOptions(function (options) {
-                return {
-                    ...options,
-                    modifiers: [
-                        ...options.modifiers,
-                        { name: 'eventListeners', enabled: false },
-                    ],
-                }
-            });
-        }
-        // end: Popper
-    </script>
 
 </body>
 </html>
