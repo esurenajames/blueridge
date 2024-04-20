@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/heroicons@1.0.1/build/css/heroicons.min.css" rel="stylesheet">
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        @vite('resources/css/app.css', 'resources/js/app.css')
+        @vite('resources/css/app.css', 'resources/js/app.js')
     </head>
     <body class="bg-gray-200 rounded-lg py-5">
  
