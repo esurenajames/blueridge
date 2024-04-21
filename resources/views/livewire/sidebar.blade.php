@@ -17,39 +17,26 @@
             </a>
             <ul class="pl-7 mt-2 hidden group-[.selected]:block">
                 <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Request Forms</a>
-                </li> 
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">View All</a>
+                </li>
                 <li class="mb-4">
                     <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">History</a>
-                </li> 
+                </li>
+                <li class="mb-4">
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Status</a>
+                </li>
+                <li class="mb-4">
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Purchase Request</a>
+                </li>
+                <li class="mb-4">
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Purchase Order</a>
+                </li>  
             </ul>
         </li>
         <li class="mb-1 group">
             <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class='bx bx-list-ul mr-3 text-lg'></i>                
-                <span class="text-sm">Activities</span>
-            </a>
-        </li>
-        <span class="text-gray-400 font-bold">BLOG</span>
-        <li class="mb-1 group">
-            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
-                <i class='bx bxl-blogger mr-3 text-lg' ></i>                 
-                <span class="text-sm">Post</span>
-                <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
-            </a>
-            <ul class="pl-7 mt-2 hidden group-[.selected]:block">
-                <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">All</a>
-                </li> 
-                <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Categories</a>
-                </li> 
-            </ul>
-        </li>
-        <li class="mb-1 group">
-            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                <i class='bx bx-archive mr-3 text-lg'></i>                
-                <span class="text-sm">Archive</span>
+                <span class="text-sm">Request Forms</span>
             </a>
         </li>
         <span class="text-gray-400 font-bold">PERSONAL</span>
@@ -67,5 +54,18 @@
                 <span class=" md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-600 bg-green-200 rounded-full">2 New</span>
             </a>
         </li>
+        <li class="mb-1 group">
+            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                <i class='bx bx-cog mr-3 text-lg'></i>                
+                <span class="text-sm">Settings</span>
+            </a>
+        </li>
+        <li class="mb-1 group">
+            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                <i class='bx bx-log-out-circle mr-3 text-lg'></i>                
+                <span class="text-sm">Logout</span>
+            </a>
+        </li>
     </ul>
 </div>
+

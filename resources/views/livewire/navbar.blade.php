@@ -32,8 +32,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                    <div class="text-[11px] text-gray-400">from a user</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Request</div>
+                                    <div class="text-[11px] text-gray-400">Your form request has been submitted</div>
                                 </div>
                             </a>
                         </li>
@@ -41,8 +41,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                    <div class="text-[11px] text-gray-400">from a user</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Approved</div>
+                                    <div class="text-[11px] text-gray-400">Your form request has been approved</div>
                                 </div>
                             </a>
                         </li>
@@ -50,8 +50,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                    <div class="text-[11px] text-gray-400">from a user</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Approved</div>
+                                    <div class="text-[11px] text-gray-400">Your form request has been approved</div>
                                 </div>
                             </a>
                         </li>
@@ -59,8 +59,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                    <div class="text-[11px] text-gray-400">from a user</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Declined</div>
+                                    <div class="text-[11px] text-gray-400">Your form request has been declined</div>
                                 </div>
                             </a>
                         </li>
@@ -68,8 +68,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">New order</div>
-                                    <div class="text-[11px] text-gray-400">from a user</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Declined</div>
+                                    <div class="text-[11px] text-gray-400">Your form request has been declined</div>
                                 </div>
                             </a>
                         </li>
@@ -79,8 +79,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                    <div class="text-[11px] text-gray-400">Hello there!</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Secretary Antoinne</div>
+                                    <div class="text-[11px] text-gray-400">We need to re-evaluate the submitted form.</div>
                                 </div>
                             </a>
                         </li>
@@ -88,8 +88,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                    <div class="text-[11px] text-gray-400">Hello there!</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Kapitan Mikee</div>
+                                    <div class="text-[11px] text-gray-400">Have you seen the form status?</div>
                                 </div>
                             </a>
                         </li>
@@ -97,8 +97,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                    <div class="text-[11px] text-gray-400">Hello there!</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Art Rocha</div>
+                                    <div class="text-[11px] text-gray-400">I've submitted a new form for approval.</div>
                                 </div>
                             </a>
                         </li>
@@ -106,8 +106,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                    <div class="text-[11px] text-gray-400">Hello there!</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Louie Saguinsin</div>
+                                    <div class="text-[11px] text-gray-400">I've updated the form details. Please review.</div>
                                 </div>
                             </a>
                         </li>
@@ -115,8 +115,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">John Doe</div>
-                                    <div class="text-[11px] text-gray-400">Hello there!</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Crisha Reyes</div>
+                                    <div class="text-[11px] text-gray-400">I've updated the form details. Please review.</div>
                                 </div>
                             </a>
                         </li>
@@ -147,14 +147,14 @@
             <button type="button" class="dropdown-toggle flex items-center">
                 <div class="flex-shrink-0 w-10 h-10 relative">
                     <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
-                        <img class="w-8 h-8 rounded-full" src="https://laravelui.spruko.com/tailwind/ynex/build/assets/images/faces/9.jpg" alt=""/>
+                        <img class="w-8 h-8 rounded-full" src="https://pics.craiyon.com/2023-10-03/99c00ba98d5140abb234cbb552471b33.webp" alt=""/>
                         <div class="top-0 left-7 absolute w-3 h-3 bg-lime-400 border-2 border-white rounded-full animate-ping"></div>
                         <div class="top-0 left-7 absolute w-3 h-3 bg-lime-500 border-2 border-white rounded-full"></div>
                     </div>
                 </div>
                 <div class="p-2 md:block text-left">
-                    <h2 class="text-sm font-semibold text-gray-800">John Doe</h2>
-                    <p class="text-xs text-gray-500">Administrator</p>
+                    <h2 class="text-sm font-semibold text-gray-800">James Esurena</h2>
+                    <p class="text-xs text-gray-500">User</p>
                 </div>                
             </button>
             <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
