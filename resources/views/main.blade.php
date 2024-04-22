@@ -156,6 +156,9 @@
         <div class="flex justify-end w-full mt-4">
             <button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Request</button>
         </div>
+         <div class="flex justify-between w-full mt-6">
+            <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+         </div>
     </div>
 </div>
 
