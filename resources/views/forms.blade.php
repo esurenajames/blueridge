@@ -29,18 +29,17 @@
 
       <!-- Content -->
        
-<div class="py-2 ml-2">
-   <div class="ml-2 mr-2">
-      <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Forms</h2>
-      
-      <p class="text-gray-600 pl-6 pb-6">
+      <div class="ml-5 mr-5">
+    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Forms</h2>
+
+    <p class="text-gray-600 pl-6 pb-6">
          <a href="#" class="text-indigo-700 hover:underline">Home</a> >
          <span>Request Forms</span>
       </p>
-   </div>
+    </div>   
  
    <!-- Form Request -->
-   <div class="mx-auto max-w-xl">
+   <div class="mx-auto max-w-xl mt-7">
       <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
          <li class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
             <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
@@ -65,7 +64,7 @@
        <!-- Request Type -->
     <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4">
         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Type</h2>   
+            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Type</h2>
             
             <!-- Type of Request -->
             <div class="grid mt-8">

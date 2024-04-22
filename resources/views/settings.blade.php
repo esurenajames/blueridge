@@ -97,7 +97,7 @@
     </div>
 
     <!-- Second Flex Div -->
-    <div class="flex-1 flex-wrap pl-6 md:p-4 gap-6">
+    <div class="flex-1 flex-wrap pl-6 md:p-4 gap-6 mb-4">
         <div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3">
             <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
                 <h2 class="pt-7 text-xl font-bold sm:text-xl">Password</h2>

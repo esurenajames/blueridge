@@ -3,6 +3,11 @@
         <i class="ri-menu-line"></i>
     </button>
 
+    <p class="ml-10" x-data="{ currentDate: new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }">
+    <span x-text="currentDate"></span>
+    </p>
+
+
     <ul class="ml-auto flex items-center">
         <li class="mr-1 dropdown">
             <button type="button" class="dropdown-toggle text-gray-400 mr-4 w-8 h-8 rounded flex items-center justify-center  hover:text-gray-600">
