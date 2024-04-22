@@ -29,8 +29,8 @@
 
       <!-- Content -->
     <div class="ml-5 mr-5">
-    <h2 class="text-3xl pt-6 pl-6 font-bold mb-1">Settings Page</h2>
-    <p class="text-gray-600 pl-6 pb-6">Modify your account preferences.</p>
+    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Settings Page</h2>
+    <p class="text-gray-600 pl-6 pb-6">Update and manage your profile information and password.</p>
     <hr class="border-t border-gray-300 w-3.5/4 mx-auto">
     </div>   
 
@@ -39,7 +39,7 @@
     <div class="flex-wrap pl-6 md:p-4 gap-4">
         <div class="bg-white px-2 pb-1 mt-4 sm:max-w-xl sm:rounded-lg">
             <div class="px-6 pb-8 mt-1 sm:max-w-xl sm:rounded-lg">
-                <h2 class="pt-7 text-xl font-bold sm:text-xl">Account Information</h2>
+                <h2 class="pt-7 text-xl font-bold sm:text-xl mb-2">Account Information</h2>
                 <p class="text-gray-600">Edit your profile account</p>
                 <div class="grid mt-8">
                     <div class="flex flex-col items-center space-y-3 sm:flex-row sm:space-y-0">
