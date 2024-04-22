@@ -17,3 +17,7 @@ Route::get('/create-account', function () {
 Route::get('/main', function () {
     return view('main');
 })->name('main');
+
+Route::get('/settings', function () {
+    return view('settings');
+})->name('settings');
