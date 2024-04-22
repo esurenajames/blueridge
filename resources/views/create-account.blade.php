@@ -6,8 +6,8 @@
     </head>
     <body class="bg-gray-200 rounded-lg py-5">
  
-    <div class="py-16">
-    <div class="py-16">
+    <div class="py-8">
+    <div class="py-8">
         <div class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
             <div class="hidden lg:block lg:w-1/2 bg-cover"
                 style="background-image:url('https://st.depositphotos.com/5390090/51510/v/450/depositphotos_515102604-stock-illustration-registration-form-cute-cartoon-man.jpg')">
@@ -31,6 +31,10 @@
                 <!-- Remaining Input Fields -->
                 <div class="mt-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
+                </div>
+                <div class="mt-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
                     <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
                 </div>
                 <div class="mt-4">

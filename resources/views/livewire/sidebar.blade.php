@@ -4,7 +4,7 @@
     <ul class="mt-4">
         <span class="text-gray-400 font-bold">Home</span>
         <li class="mb-1 group">
-            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+            <a href="{{ route('main') }}" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="ri-home-2-line mr-3 text-lg"></i>
                 <span class="text-sm">Home</span>
             </a>
@@ -17,24 +17,27 @@
             </a>
             <ul class="pl-7 mt-2 hidden group-[.selected]:block">
                 <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">View All</a>
+                    <a href="{{ route('view-all') }}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">View All</a>
                 </li>
                 <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">History</a>
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">For Approval</a>
                 </li>
                 <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Status</a>
-                </li>
-                <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Purchase Request</a>
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Processing</a>
                 </li>
                 <li class="mb-4">
                     <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Purchase Order</a>
+                </li>
+                <li class="mb-4">
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Declined</a>
+                </li>  
+                <li class="mb-4">
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">History</a>
                 </li>  
             </ul>
         </li>
         <li class="mb-1 group">
-            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+            <a href="{{ route('forms') }}" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class='bx bx-list-ul mr-3 text-lg'></i>                
                 <span class="text-sm">Request Forms</span>
             </a>
@@ -55,13 +58,13 @@
             </a>
         </li>
         <li class="mb-1 group">
-            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+            <a href="{{ route('settings') }}" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class='bx bx-cog mr-3 text-lg'></i>                
                 <span class="text-sm">Settings</span>
             </a>
         </li>
         <li class="mb-1 group">
-            <a href="" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+            <a href="{{ route('login') }}" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class='bx bx-log-out-circle mr-3 text-lg'></i>                
                 <span class="text-sm">Logout</span>
             </a>

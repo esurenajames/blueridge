@@ -31,7 +31,7 @@
        
 <div class="py-2 ml-2">
    <div class="ml-2 mr-2">
-      <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Page</h2>
+      <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Forms</h2>
       
       <p class="text-gray-600 pl-6 pb-6">
          <a href="#" class="text-indigo-700 hover:underline">Home</a> >
@@ -56,16 +56,16 @@
                   Request <span class="hidden sm:inline-flex sm:ms-2">Info</span>
             </span>
          </li>
-         <li class="flex items-center">
+         <li class="flex items-center">   
             <span class="me-2">3</span>
             Confirmation
          </li>
       </ol>
 
        <!-- Request Type -->
-    <div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4">
+    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4">
         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Type</h2>
+            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Type</h2>   
             
             <!-- Type of Request -->
             <div class="grid mt-8">
@@ -88,7 +88,7 @@
     </div>
 
     <!-- Request Info -->
-    <div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
+    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 hidden">
         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
             <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
             
@@ -121,7 +121,7 @@
     </div>
 
    <!-- Confirmation -->
-<div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4">
+<div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 hidden">
     <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
         <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
         
