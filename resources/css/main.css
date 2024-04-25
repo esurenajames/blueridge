@@ -386,6 +386,9 @@ button,
 /*
 Make sure disabled buttons don't get the pointer cursor.
 */
+.tab-link.active {
+  color: blue;
+}
 
 :disabled {
   cursor: default;

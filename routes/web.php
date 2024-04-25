@@ -26,6 +26,10 @@ Route::get('/forms', function () {
     return view('forms');
 })->name('forms');
 
+Route::get('/quotation', function () {
+    return view('quotation');
+})->name('quotation');
+
 Route::get('/view-all', function () {
     return view('view-all');
 })->name('view-all');
@@ -45,3 +49,4 @@ Route::get('/reset', function () {
 Route::get('/notifications', function () {
     return view('notifications');
 })->name('notifications');
+

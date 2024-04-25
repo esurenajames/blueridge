@@ -1,22 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    @vite('resources/css/main.css', 'resources/js/app.js')
-    
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+@vite('resources/css/main.css', 'resources/js/app.js')
+<title>Admin Panel</title>
 
-    <title>Admin Panel</title>
-
-
-</head>
 <body>
     <!--sidenav -->
       @livewire('sidebar')
@@ -425,26 +414,32 @@
    })
    // end: Tab
    document.addEventListener("DOMContentLoaded", function () {
-        const tabLinks = document.querySelectorAll('.tab-link');
-        const tabContents = document.querySelectorAll('.tab-content');
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-        tabLinks.forEach(tabLink => {
-            tabLink.addEventListener('click', function (event) {
-                event.preventDefault();
+    tabLinks.forEach(tabLink => {
+        tabLink.addEventListener('click', function (event) {
+            event.preventDefault();
 
-                // Hide all tab contents
-                tabContents.forEach(content => {
-                    content.style.display = 'none';
-                });
-
-                // Show the selected tab content
-                const target = this.getAttribute('data-tab');
-                document.getElementById(target + '-content').style.display = 'block';
+            // Remove active class from all tab links
+            tabLinks.forEach(link => {
+                link.classList.remove('active');
             });
+
+            // Add active class to the clicked tab link
+            this.classList.add('active');
+
+            // Hide all tab contents
+            tabContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Show the selected tab content
+            const target = this.getAttribute('data-tab');
+            document.getElementById(target + '-content').style.display = 'block';
         });
     });
+});
+
    </script>
-
-
 </body>
-</html>

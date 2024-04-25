@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    @vite('resources/css/main.css', 'resources/js/app.js')
-    
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <title>Admin Panel</title>
+@vite('resources/css/main.css', 'resources/js/app.js')
+<title>Admin Panel</title>
 
-
-</head>
-<body>
+<body class="bg-gray-200">
     <!--sidenav -->
       @livewire('sidebar')
       <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
@@ -62,7 +52,7 @@
       </ol>
 
        <!-- Request Type -->
-    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4">
+    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
             <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Type</h2>
             
@@ -87,7 +77,7 @@
     </div>
 
     <!-- Request Info -->
-    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 hidden">
+    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
             <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
             
@@ -105,10 +95,22 @@
                 </div>
                 
                 <!-- Request File -->
+                
                 <div class="mb-2 sm:mb-6">
-                    <label for="request_file" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">File</label>
-                    <input type="file" id="request_file" name="request_file" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" required>
-                </div>
+                  <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload a File</label>
+                  <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2 border-gray-300 border-solid rounded-lg cursor-pointer bg-white hover:bg-gray-100 ">
+                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                           <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                           </svg>
+                           <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                           <p class="text-xs text-gray-500 dark:text-gray-400">PDF, WORD, PNG, or JPG (MAX. 800x400px)</p>
+                     </div>
+                     <input id="dropzone-file" type="file" class="hidden" />
+                  </label>
+               </div>
+
+
             </div>
             
             <!-- Next Button -->
@@ -120,7 +122,7 @@
     </div>
 
    <!-- Confirmation -->
-<div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 hidden">
+<div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
     <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
         <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
         
@@ -161,7 +163,6 @@
     </div>
 </div>
 
-</div>
 
       <!-- End Content -->
     </main>

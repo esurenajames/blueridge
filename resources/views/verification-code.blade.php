@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css">
-    @vite('resources/css/app.css')
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css">
+@vite('resources/css/app.css')
+
 <body class="bg-gray-200 rounded-lg py-5">
 
 <div class="py-16">
@@ -43,4 +40,3 @@
 </div>
 
 </body>
-</html>

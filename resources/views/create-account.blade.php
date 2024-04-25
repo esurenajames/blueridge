@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css">
-        @vite('resources/css/app.css')
-    </head>
-    <body class="bg-gray-200 rounded-lg py-5">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css">
+@vite('resources/css/app.css')
+
+<body class="bg-gray-200 rounded-lg py-5">
  
-    <div class="py-8">
+<div class="py-8">
     <div class="py-8">
         <div class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
             <div class="hidden lg:block lg:w-1/2 bg-cover"
@@ -61,7 +58,7 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
  
-    </body>
-</html>
+</body>
+
