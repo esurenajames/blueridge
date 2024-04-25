@@ -41,3 +41,7 @@ Route::get('/verification', function () {
 Route::get('/reset', function () {
     return view('reset-password');
 })->name('reset');
+
+Route::get('/notifications', function () {
+    return view('notifications');
+})->name('notifications');

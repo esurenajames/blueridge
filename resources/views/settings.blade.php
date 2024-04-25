@@ -44,7 +44,7 @@
                 <div class="grid mt-8">
                     <div class="flex flex-col items-center space-y-3 sm:flex-row sm:space-y-0">
                         <img class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
-                            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                            src="https://pics.craiyon.com/2023-10-03/99c00ba98d5140abb234cbb552471b33.webp"
                             alt="Bordered avatar">
                     </div>
 
@@ -54,14 +54,14 @@
                                 <label for="first_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">First name</label>
                                 <input type="text" id="first_name"
                                     class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 "
-                                    placeholder="Mikee" required>
+                                    placeholder="Mikee" value="James" required>
                             </div>
 
                             <div class="w-full">
                                 <label for="last_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">last name</label>
                                 <input type="text" id="last_name"
                                     class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 "
-                                    placeholder="Gonzaga" required>
+                                    placeholder="Gonzaga" value="Esurena" required>
                             </div>
                         </div>
 

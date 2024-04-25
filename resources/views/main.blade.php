@@ -27,141 +27,83 @@
         @livewire('navbar')
         <!-- end navbar -->
 
+        <div class="ml-5 mr-5">
+    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Home</h2>
+
       <!-- Content -->
-       
-<div class="py-2 ml-2">
-   <div class="ml-2 mr-2">
-      <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Page</h2>
       
-      <p class="text-gray-600 pl-6 pb-6">
-         <a href="#" class="text-indigo-700 hover:underline">Home</a> >
-         <span>Request Forms</span>
-      </p>
-   </div>
- 
-   <!-- Form Request -->
-   <div class="mx-auto max-w-xl">
-      <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-         <li class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                  <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-                  </svg>
-                  Request<span class="hidden sm:inline-flex sm:ms-2">Type</span>
-            </span>
-         </li>
-         <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                  <span class="me-2">2</span>
-                  Request <span class="hidden sm:inline-flex sm:ms-2">Info</span>
-            </span>
-         </li>
-         <li class="flex items-center">
-            <span class="me-2">3</span>
-            Confirmation
-         </li>
-      </ol>
-
-       <!-- Request Type -->
-    <div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4">
-        <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Type</h2>
-            
-            <!-- Type of Request -->
-            <div class="grid mt-8">
-                <div class="mb-2 sm:mb-6">
-                    <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
-                    <select id="request_type" name="request_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" required>
-                        <option value="" disabled selected>Select Request Type</option>
-                        <option value="type1">Type 1</option>
-                        <option value="type2">Type 2</option>
-                        <option value="type3">Type 3</option>
-                    </select>
+      <div class="flex">
+    <div class="flex-1 p-4 max-w-sm flex-shrink-0">
+        <div class="flex rounded-lg h-full dark:bg-gray-800 bg-teal-400 p-8 flex-col">
+            <div class="flex items-center mb-3">
+                <div class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full dark:bg-indigo-500 bg-indigo-500 text-white flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7l-5-5z" />
+                    </svg>
                 </div>
-                
-                <!-- Next Button -->
-                <div class="flex justify-end w-full">
-                    <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                </div>
+                <h2 class="text-white dark:text-white text-lg font-medium">My Request</h2>
+            </div>
+            <div class="flex flex-col justify-between flex-grow">
+                <p class="leading-relaxed text-base text-white dark:text-gray-300">
+                You have submitted a total of 6 ongoing requests.
+                </p>
+                <a href="{{ route('view-all') }}" class="mt-3 text-black dark:text-white hover:text-blue-600 inline-flex items-center">View Request List
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
 
-    <!-- Request Info -->
-    <div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
-        <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
-            
-            <!-- Request Name -->
-            <div class="grid mt-8">
-                <div class="mb-2 sm:mb-6">
-                    <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                    <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
+    <div class="flex-1 p-4 max-w-sm flex-shrink-0">
+        <div class="flex rounded-lg h-full dark:bg-gray-800 bg-teal-400 p-8 flex-col">
+            <div class="flex items-center mb-3">
+                <div class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full dark:bg-indigo-500 bg-indigo-500 text-white flex-shrink-0">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
                 </div>
-                
-                <!-- Request Description -->
-                <div class="mb-2 sm:mb-6">
-                    <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                    <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request description" required></textarea>
-                </div>
-                
-                <!-- Request File -->
-                <div class="mb-2 sm:mb-6">
-                    <label for="request_file" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">File</label>
-                    <input type="file" id="request_file" name="request_file" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" required>
-                </div>
+                <h2 class="text-white dark:text-white text-lg font-medium">Request Status</h2>
             </div>
-            
-            <!-- Next Button -->
-            <div class="flex justify-between w-full">
-                <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+            <div class="flex flex-col justify-between flex-grow">
+                <p class="leading-relaxed text-base text-white dark:text-gray-300">
+                Your previous form request has been successfully submitted. 
+                </p>
+                <a href="{{ route('view-all') }}" class="mt-3 text-black dark:text-white hover:text-blue-600 inline-flex items-center">View Status Request
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </a>
             </div>
         </div>
-    </div>
-
-   <!-- Confirmation -->
-<div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4">
-    <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-        <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
-        
-        <!-- Summary -->
-        <div class="grid mt-8">
-
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
-                <input type="text" id="summary_type" name="summary_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-            </div>
-
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                <input type="text" id="summary_name" name="summary_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-            </div>
-            
-            <!-- Request Description -->
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                <textarea id="summary_description" name="summary_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly></textarea>
-            </div>
-            
-            <!-- Request File -->
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_file" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">File</label>
-                <input type="text" id="summary_file" name="summary_file" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-            </div>
-            
-        </div>
-        
-        <!-- Submit Button -->
-        <div class="flex justify-end w-full mt-4">
-            <button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Request</button>
-        </div>
-         <div class="flex justify-between w-full mt-6">
-            <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-         </div>
     </div>
 </div>
 
+
+
+      <div class="fixed bottom-0 right-0 mb-4 mr-4 w-64">
+    <div class="bg-white rounded-lg shadow-lg p-4">
+        <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center">
+                <img src="https://www.svgrepo.com/show/401340/cookie.svg" alt="Cookie" class="h-6 w-6 mr-2">
+                <span class="text-gray-700 font-bold text-sm">Cookie Policy</span>
+            </div>
+            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <p class="text-gray-600 text-sm">
+            We use cookies to enhance your experience. By continuing to visit this site, you agree to our use of
+            cookies.
+        </p>
+        <button class="mt-4 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded">
+            Accept
+        </button>
+    </div>
 </div>
       <!-- End Content -->
     </main>

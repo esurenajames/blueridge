@@ -32,7 +32,7 @@
                     <button type="button" data-tab="notification" data-tab-page="messages" class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1">Messages</button>
                 </div>
                 <div class="my-2">
-                    <ul class="max-h-64 overflow-y-auto" data-tab-for="notification" data-page="notifications">
+                    <ul class="max-h-74 overflow-y-auto" data-tab-for="notification" data-page="notifications">
                         <li>
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
@@ -46,7 +46,7 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Approved</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Approved</div>
                                     <div class="text-[11px] text-gray-400">Your form request has been approved</div>
                                 </div>
                             </a>
@@ -55,7 +55,7 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Approved</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Approved</div>
                                     <div class="text-[11px] text-gray-400">Your form request has been approved</div>
                                 </div>
                             </a>
@@ -64,7 +64,7 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Declined</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Declined</div>
                                     <div class="text-[11px] text-gray-400">Your form request has been declined</div>
                                 </div>
                             </a>
@@ -73,12 +73,17 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Declined</div>
+                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Declined</div>
                                     <div class="text-[11px] text-gray-400">Your form request has been declined</div>
                                 </div>
                             </a>
                         </li>
+                        <div class="flex justify-center py-1 ">
+                            <a href="/notifications" class="text-gray-600 text-xs hover:text-black">View All</a>
+                        </div>
                     </ul>
+
+
                     <ul class="max-h-64 overflow-y-auto hidden" data-tab-for="notification" data-page="messages">
                         <li>
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
@@ -159,7 +164,7 @@
                 </div>
                 <div class="p-2 md:block text-left">
                     <h2 class="text-sm font-semibold text-gray-800">James Esurena</h2>
-                    <p class="text-xs text-gray-500">User</p>
+                    <p class="text-xs text-gray-500">Tanod</p>
                 </div>                
             </button>
             <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
