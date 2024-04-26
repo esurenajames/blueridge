@@ -50,3 +50,16 @@ Route::get('/notifications', function () {
     return view('notifications');
 })->name('notifications');
 
+Route::get('/summary', function () {
+    return view('summary');
+})->name('summary');
+
+Route::get('/request', function () {
+    return view('request');
+})->name('request');
+
+Route::get('/purchase-request', function () {
+    return view('purchase-request');
+})->name('purchase-request');
+
+
