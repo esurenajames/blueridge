@@ -18,6 +18,41 @@
   --tw-content: '';
 }
 
+.question-mark-btn {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #919191;
+  cursor: pointer;
+  position: relative;
+}
+
+.question-mark-btn i {
+  font-size: 16px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.question-mark-btn:hover::after {
+  content: 'Last Update Time 04/03/2024 15:27';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 4px 8px;
+  border: solid .5px;
+  border-color: #919191;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 /*
 1. Use a consistent sensible line-height in all browsers.
 2. Prevent adjustments of font size after orientation changes in iOS.
