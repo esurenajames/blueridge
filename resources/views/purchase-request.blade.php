@@ -144,10 +144,15 @@
 </div>
 
 <div class="mb-2">
+<div class="mx-auto max-w-5xl">
+    <div class="bg-white mt-4 sm:max-w-5xl sm:rounded-lg pl-3 pr-3 mb-4 ">
+        <div class="px-6 mt-1 sm:max-w-5xl sm:rounded-lg pb-8">
+            <h2 class="pt-7 text-xl font-bold sm:text-xl"></h2>
+
         <label for="city" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Purpose</label>
         <input type="text" id="city" name="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter Purpose" required>
     </div>
-
+    </div>
 <div class="flex justify-end w-full mt-4"><button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Request</button></div>
 
 <script>
