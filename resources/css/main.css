@@ -1316,3 +1316,33 @@ video {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+
+.summary-button {
+  padding: 8px 16px;
+  background-color: #483ccc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 8px;
+  height: 120px;
+  width: 380px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.summary-button:hover {
+  background-color: #45a049;
+}
+
+.summary-button:focus {
+  outline: none;
+}
+
+.delete{ 
+color: #d55c54;
+font-weight: 700;
+font-size:14px;
+
+}
