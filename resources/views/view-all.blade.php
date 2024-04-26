@@ -475,38 +475,37 @@
       })
    })
    // end: Tab
-   document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
         const tabLinks = document.querySelectorAll('.tab-link');
         const tabContents = document.querySelectorAll('.tab-content');
-        const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
-        // Function to handle tab link click
-        function handleTabClick(event) {
-            event.preventDefault();
+        tabLinks.forEach(tabLink => {
+            tabLink.addEventListener('click', function (event) {
+                event.preventDefault();
 
-            const target = this.getAttribute('data-tab');
+                // Remove active class from all tab links
+                tabLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
 
-            // Remove active class from all tab links
-            tabLinks.forEach(link => {
-                link.classList.remove('active');
+                // Remove active class from all tab contents
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // Add active class to the clicked tab link
+                this.classList.add('active');
+
+                // Show the selected tab content
+                const target = this.getAttribute('data-tab');
+                document.getElementById(target + '-content').style.display = 'block';
             });
-
-            // Remove active class from all tab contents
-            tabContents.forEach(content => {
-                content.style.display = 'none';
-            });
-
-            // Add active class to the clicked tab link
-            this.classList.add('active');
-
-            // Show the selected tab content
-            document.getElementById(target + '-content').style.display = 'block';
-        }
-
-        // Add click event listeners to sidebar links
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', handleTabClick);
         });
+
+        // Set the first tab as active by default on page load
+        tabLinks[0].classList.add('active');
+        tabContents[0].style.display = 'block';
     });
+
    </script>
 </body>
