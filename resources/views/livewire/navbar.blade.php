@@ -175,13 +175,19 @@
                     <a href="{{ route('settings') }}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Settings</a>
                 </li>
                 <li>
-                    <form method="POST" action="">
-                        <a role="menuitem" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50 cursor-pointer"
-                            onclick="event.preventDefault();
-                            this.closest('form').submit();">
-                            Log Out
-                        </a>
-                    </form>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a role="menuitem" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50 cursor-pointer"
+                        onclick="event.preventDefault(); 
+                        document.getElementById('logout-form').submit();">
+                        Log Out
+                    </a>
+                </form>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+
                 </li>
             </ul>
         </li>

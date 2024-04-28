@@ -30,22 +30,26 @@
 
                 <!-- Start of Forms -->
 
-                <div class="mt-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
-                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="username" />
-                </div>
-                <div class="mt-4">
-                    <div class="flex justify-between">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                        <a href="{{ route('forgot') }}" class="text-xs text-gray-500 hover:text-gray-800">Forget Password?</a>
+                <form method="POST" action="{{ route('Login') }}">
+                    @csrf
+                    <div class="mt-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                        <input name="username" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
                     </div>
-                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
-                </div>
-                <div class="mt-8">
-                <a href="{{ route('main') }}"><button @click="showError = true" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Login</button></a>
-                </div>
-                <div x-show="showError" class="mt-4 text-center">
-                    <p class="text-red-500 text-sm font-bold">Incorrect username or password. Please try again.</p>
+                    <div class="mt-4">
+                        <div class="flex justify-between">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                            <a href="{{ route('forgot') }}" class="text-xs text-gray-500 hover:text-gray-800">Forgot Password?</a>
+                        </div>
+                        <input name="password" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
+                    </div>
+                    <div class="mt-8">
+                        <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Login</button>
+                    </div>
+                </form>
+
+                <div x-show="{{ session('error') ? 'true' : 'false' }}" class="mt-4 text-center">
+                    <p class="text-red-500 text-sm font-bold">{{ session('error') }}</p>
                 </div>
 
                 <!-- End of Forms -->
@@ -64,4 +68,12 @@
         </div>
     </div>
 </div>
+
+<script>
+        // Check if the user is authenticated
+        const isAuthenticated = {{ Auth::check() ? 'true' : 'false' }};
+
+        // Log a message in the console indicating authentication status
+        console.log('Authenticated:', isAuthenticated);
+    </script>
 </body>

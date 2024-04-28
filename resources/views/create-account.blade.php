@@ -14,37 +14,38 @@
                 <p class="text-base text-gray-600 text-center mb-5">Please sign up to continue</p>
                 
                 <!-- Full Name Input Fields -->
-                <div class="flex space-x-4">
-                    <div class="w-1/2">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
-                        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
+                <form method="POST" action="{{ route('register') }}">
+                    @csrf 
+                    <div class="flex space-x-4">
+                        <div class="w-1/2">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                            <input name="fname" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+                            <input name="lname" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
+                        </div>
                     </div>
-                    <div class="w-1/2">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
-                        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
+                    <div class="mt-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                        <input name="username" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="text" />
                     </div>
-                </div>
-
-                <!-- Remaining Input Fields -->
-                <div class="mt-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
-                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
-                </div>
-                <div class="mt-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
-                </div>
-                <div class="mt-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
-                </div>
-                <div class="mt-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
-                    <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
-                </div>
-                <div class="mt-8">
-                    <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Register</button>
-                </div>
+                    <div class="mt-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        <input name="email" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" />
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                        <input name="password" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+                        <input name="password_confirmation" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="password" />
+                    </div>
+                    <div class="mt-8">
+                        <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Register</button>
+                    </div>
+                </form>
                 <div class="mt-4 flex flex-col items-center">
                     <div class="flex items-center justify-between w-full">
                         <span class="border-b w-1/5 md:w-1/4"></span>
