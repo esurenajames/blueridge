@@ -151,9 +151,11 @@
 
         <label for="city" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Purpose</label>
         <input type="text" id="city" name="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter Purpose" required>
+        <div class="flex justify-end w-full mt-4"><button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Request</button></div>
     </div>
+    
     </div>
-<div class="flex justify-end w-full mt-4"><button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Request</button></div>
+
 
 <script>
     function addRow() {

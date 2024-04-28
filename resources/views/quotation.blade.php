@@ -3,6 +3,7 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
@@ -79,7 +80,7 @@
 </div>
 
 <!-- Request Info -->
-<div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
+<div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
     <div class="px-8 mt-1 sm:rounded-lg pb-8">
         <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
         <h2 class="pt-7 text-l font-bold sm:text-l">Company 1</h2>
@@ -117,41 +118,47 @@
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="border px-4 py-2">
-                                        <input type="text" name="item[]" class="border-0 w-full p-2" placeholder="Item" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="qty[]" class="border-0 w-full p-2" placeholder="Qty" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="text" name="unit[]" class="border-0 w-full p-2" placeholder="Unit" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <textarea name="description[]" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="unit_price[]" class="border-0 w-full p-2" placeholder="Unit Price" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="amount[]" class="border-0 w-full p-2" placeholder="Amount" required>
-                                    </td>
-                                    <tfoot>
-                                        <tr id="total-row">
-                                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
-                                        </tr>
-                                    </tfoot>
-                                </tr>
+                                <template x-for="(row, index) in rows" :key="index">
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                        </td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
                     <div class="flex justify-end">
-                        <button id="add-row" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                        <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
                     </div>
+                    <tfoot>
+                        <tr id="total-row">
+                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
+                        </tr>
+                    </tfoot>
                 </div>
             </div>
                     
@@ -163,7 +170,8 @@
         </div>
 </div>
 
-<div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
+
+<div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
     <div class="px-8 mt-1 sm:rounded-lg pb-8">
         <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
         <h2 class="pt-7 text-l font-bold sm:text-l">Company 2</h2>
@@ -201,41 +209,47 @@
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="border px-4 py-2">
-                                        <input type="text" name="item[]" class="border-0 w-full p-2" placeholder="Item" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="qty[]" class="border-0 w-full p-2" placeholder="Qty" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="text" name="unit[]" class="border-0 w-full p-2" placeholder="Unit" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <textarea name="description[]" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="unit_price[]" class="border-0 w-full p-2" placeholder="Unit Price" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="amount[]" class="border-0 w-full p-2" placeholder="Amount" required>
-                                    </td>
-                                    <tfoot>
-                                        <tr id="total-row">
-                                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
-                                        </tr>
-                                    </tfoot>
-                                </tr>
+                                <template x-for="(row, index) in rows" :key="index">
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                        </td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
                     <div class="flex justify-end">
-                        <button id="add-row" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                        <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
                     </div>
+                    <tfoot>
+                        <tr id="total-row">
+                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
+                        </tr>
+                    </tfoot>
                 </div>
             </div>
                     
@@ -247,7 +261,8 @@
         </div>
 </div>
 
-<div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
+
+<div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
     <div class="px-8 mt-1 sm:rounded-lg pb-8">
         <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
         <h2 class="pt-7 text-l font-bold sm:text-l">Company 3</h2>
@@ -285,41 +300,47 @@
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
                                     <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="border px-4 py-2">
-                                        <input type="text" name="item[]" class="border-0 w-full p-2" placeholder="Item" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="qty[]" class="border-0 w-full p-2" placeholder="Qty" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="text" name="unit[]" class="border-0 w-full p-2" placeholder="Unit" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <textarea name="description[]" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="unit_price[]" class="border-0 w-full p-2" placeholder="Unit Price" required>
-                                    </td>
-                                    <td class="border px-4 py-2">
-                                        <input type="number" name="amount[]" class="border-0 w-full p-2" placeholder="Amount" required>
-                                    </td>
-                                    <tfoot>
-                                        <tr id="total-row">
-                                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
-                                        </tr>
-                                    </tfoot>
-                                </tr>
+                                <template x-for="(row, index) in rows" :key="index">
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                        </td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
                     <div class="flex justify-end">
-                        <button id="add-row" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                        <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
                     </div>
+                    <tfoot>
+                        <tr id="total-row">
+                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
+                        </tr>
+                    </tfoot>
                 </div>
             </div>
                     
@@ -330,6 +351,7 @@
             </div>
         </div>
 </div>
+
 
 <!-- Confirmation -->
 <!-- Summary Section -->

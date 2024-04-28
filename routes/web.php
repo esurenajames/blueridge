@@ -62,4 +62,7 @@ Route::get('/purchase-request', function () {
     return view('purchase-request');
 })->name('purchase-request');
 
+Route::get('/sample', function () {
+    return view('/sample');
+})->name('/sample');
 

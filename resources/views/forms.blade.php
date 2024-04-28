@@ -3,6 +3,7 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
@@ -29,8 +30,8 @@
     </div>   
  
    <!-- Form Request -->
-   <div class="mx-auto max-w-xl mt-7">
-      <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
+   <div class="mx-auto max-w-xl mt-7 ">
+   <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
          <li class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
             <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
                   <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -50,34 +51,188 @@
             Confirmation
          </li>
       </ol>
+   </div>
 
-       <!-- Request Type -->
-    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
-        <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Type</h2>
-            
-            <!-- Type of Request -->
-            <div class="grid mt-8">
-                <div class="mb-2 sm:mb-6">
-                    <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
-                    <select id="request_type" name="request_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" required>
-                        <option value="" disabled selected>Select Request Type</option>
-                        <option value="type1">Type 1</option>
-                        <option value="type2">Type 2</option>
-                        <option value="type3">Type 3</option>
-                    </select>
-                </div>
-                
-                <!-- Next Button -->
-                <div class="flex justify-end w-full">
-                    <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+<!-- Request Type -->
+<div x-data="{ step: 1, rows: [{}], requestType: '' }">
+        <!-- Step 1: Select Request -->
+        <div x-show="step === 1">
+            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
+                <div class="px-8 mt-1 sm:rounded-lg pb-8">
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Select Request</h2>
+                    <div class="grid mt-8">
+                        <div class="mb-4">
+                            <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Select Request</label>
+                            <select id="request_type" name="request_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required x-model="requestType">
+                              <option value="" selected>Select Request Transaction</option>
+                              <option value="type1">Punong Barangay's Certification Form</option>
+                              <option value="type2">Request Form</option>
+                              <option value="type3">Request Name 3</option>
+                           </select>
+                        </div>
+                        <div class="flex justify-end">
+                           <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Request Info -->
-    <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
+        <!-- Step 2: Punong Barangay -->
+        <div x-show="step === 2 && requestType === 'type1'">
+            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-lg mt-7">
+                <div class="px-8 mt-1 sm:rounded-lg pb-8">
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Punong Barangay's Certification Form</h2>
+                    <div class="grid grid-cols-2 gap-8 mt-8">
+                        <!-- To Section -->
+                        <div>
+                            <label for="request_name" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">To: <span class="text-sm font-medium text-indigo-900 dark:text-black">The Bank Manager</span></label>
+                            <div class="text-sm font-medium text-indigo-900 dark:text-black">
+                                <p>Land Bank of the Philippines</p>
+                                <p>QC Hall Extension Office</p>
+                            </div>
+                        </div>
+
+                        <!-- Date and PCB Number Section -->
+                        <div class="flex flex-col items-end">
+                            <!-- PCB Number -->
+                            <div>
+                                <label for="pcb_number" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">PCB No:</label>
+                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
+                            </div>
+                            <!-- Date -->
+                            <div>
+                                <label for="request_date" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">Date:</label>
+                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
+                            </div>
+                        </div>
+
+                        <!-- Account Information -->
+                        <div class="col-span-2">
+                            <label for="account_info" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information</label>
+                            <div class="overflow-x-auto mb-2">
+                                <table id="account-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="(row, index) in rows" :key="index">
+                                            <tr>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.account_no" class="border-0 w-full p-2" placeholder="Account No." required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.check_no" class="border-0 w-full p-2" placeholder="Check No." required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="date" x-model="row.date" class="border-0 w-full p-2" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.payee" class="border-0 w-full p-2" placeholder="Payee" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.purpose" class="border-0 w-full p-2" placeholder="Purpose" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Delete</button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="flex justify-end">
+                                <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                            </div>
+                        </div>
+
+                        <!-- Next and Previous Buttons -->
+                        <div class="col-span-2 flex justify-between mt-4">
+                           <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                           <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Summary -->
+        <div x-show="step === 3 && requestType === 'type1'">
+            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-lg mt-7 ">
+                <div class="px-8 mt-1 sm:rounded-lg pb-8">
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">PCB Form Summary</h2>
+                    <div class="grid grid-cols-2 gap-8 mt-8">
+                        <!-- To Section -->
+                        <div>
+                            <label for="request_name" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">To: <span class="text-sm font-medium text-indigo-900 dark:text-black">The Bank Manager</span></label>
+                            <div class="text-sm font-medium text-indigo-900 dark:text-black">
+                                <p>Land Bank of the Philippines</p>
+                                <p>QC Hall Extension Office</p>
+                            </div>
+                        </div>
+
+                        <!-- Date and PCB Number Section -->
+                        <div class="flex flex-col items-end">
+                            <!-- PCB Number -->
+                            <div>
+                                <label for="pcb_number" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">PCB No:</label>
+                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
+                            </div>
+                            <!-- Date -->
+                            <div>
+                                <label for="request_date" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">Date:</label>
+                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
+                            </div>
+                        </div>
+
+                        <!-- Account Information Summary -->
+                        <div class="col-span-2">
+                            <label class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information Summary</label>
+                            <div class="overflow-x-auto mb-2">
+                                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Summary rows will be dynamically added here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="flex justify-end w-full mt-4">
+                                 <button @click="showModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send PCB Request</button>
+                           </div>
+                        </div>
+                        <div class="flex justify-between w-full mt-8">
+                           <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- Request Form Info -->
+        <div x-show="step === 2 && requestType === 'type2'">
+        <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose hidden">
         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
             <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
             
@@ -120,9 +275,11 @@
             </div>
         </div>
     </div>
+    </div>
 
-   <!-- Confirmation -->
-<div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 ">
+   <!-- Step 2 Confirmation -->
+   <div x-show="step === 3 && requestType === 'type2'">
+   <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose hidden">
     <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
         <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
         
@@ -162,7 +319,13 @@
          </div>
     </div>
 </div>
+   </div>
+    </div>
 
+
+  
+
+    
 
       <!-- End Content -->
     </main>
@@ -298,7 +461,4 @@
    // end: Tab
 
    </script>
-
-
 </body>
-</html>
