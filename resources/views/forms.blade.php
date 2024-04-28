@@ -64,7 +64,7 @@
                         <div class="mb-4">
                             <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Select Request</label>
                             <select id="request_type" name="request_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required x-model="requestType">
-                              <option value="" selected>Select Request Transaction</option>
+                              <option value="" disabled>Select Request Transaction</option>
                               <option value="type1">Punong Barangay's Certification Form</option>
                               <option value="type2">Request Form</option>
                               <option value="type3">Request Name 3</option>
@@ -232,7 +232,7 @@
         
         <!-- Request Form Info -->
         <div x-show="step === 2 && requestType === 'type2'">
-        <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose hidden">
+        <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
             <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
             
@@ -270,8 +270,8 @@
             
             <!-- Next Button -->
             <div class="flex justify-between w-full">
-                <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                  <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                  <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
             </div>
         </div>
     </div>
@@ -279,7 +279,7 @@
 
    <!-- Step 2 Confirmation -->
    <div x-show="step === 3 && requestType === 'type2'">
-   <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose hidden">
+   <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose ">
     <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
         <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
         
@@ -315,7 +315,7 @@
             <button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Request</button>
         </div>
          <div class="flex justify-between w-full mt-6">
-            <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+            <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
          </div>
     </div>
 </div>
