@@ -33,7 +33,7 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect the user to the desired page after logout
-        return redirect('/');
+        return redirect('/login');
     }
 
 }

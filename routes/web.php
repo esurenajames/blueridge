@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
+
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 Route::get('/settings', function () {
@@ -81,7 +83,7 @@ Route::middleware('web')->group(function () {
         }
     })->name('create-account');
 
-    Route::get('/', function () {
+    Route::get('/login', function () {
         if (Auth::check()) {
             return redirect()->route('main');
         } else {
@@ -89,8 +91,13 @@ Route::middleware('web')->group(function () {
         }
     })->name('login');
 
+    Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('password.update');
+    Route::post('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/settings', [ProfileController::class, 'edit'])->name('settings');
     Route::post('/register', [RegistrationController::class, 'register'])->name('register');
     Route::post('/Login', [LoginController::class, 'login'])->name('Login'); // Changed to lowercase 'login'
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 }); 
+
+
 

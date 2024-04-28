@@ -37,49 +37,49 @@
                             src="https://pics.craiyon.com/2023-10-03/99c00ba98d5140abb234cbb552471b33.webp"
                             alt="Bordered avatar">
                     </div>
+                    <form action="{{ route('profile.update') }}" method="POST">
+                        @csrf
+                        <div class="items-center mt-4 sm:mt-8 text-[#202142]">
+                           <div class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
+                                 <div class="w-full">
+                                    <label for="first_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">First name</label>
+                                    <input type="text" id="fname" name="fname" value="{{ Auth::user()->fname ?? '' }}"
+                                          class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5" required>
+                                 </div>
 
-                    <div class="items-center mt-4 sm:mt-8 text-[#202142]">
-                        <div class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
-                            <div class="w-full">
-                                <label for="first_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">First name</label>
-                                <input type="text" id="first_name"
-                                    class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 "
-                                    placeholder="Mikee" value="James" required>
-                            </div>
+                                 <div class="w-full">
+                                    <label for="last_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Last name</label>
+                                    <input type="text" id="lname" name="lname" value="{{ Auth::user()->lname ?? '' }}"
+                                          class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5" required>
+                                 </div>
+                           </div>
 
-                            <div class="w-full">
-                                <label for="last_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">last name</label>
-                                <input type="text" id="last_name"
-                                    class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 "
-                                    placeholder="Gonzaga" value="Esurena" required>
-                            </div>
-                        </div>
+                           <div class="mb-2 sm:mb-6">
+                                 <label for="email" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Username</label>
+                                 <input type="text" id="username" name="username" value="{{ Auth::user()->username ?? '' }}"
+                                       class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5" required>
+                           </div>
 
-                        <div class="mb-2 sm:mb-6">
-                            <label for="email" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Username</label>
-                            <input type="email" id="email"
-                                class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 "
-                                placeholder="juan.delacruz" required>
-                        </div>
+                           <div class="mb-2 sm:mb-6">
+                                 <label for="email" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Email</label>
+                                 <input type="email" id="email" name="email" value="{{ Auth::user()->email ?? '' }}"
+                                       class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5" required>
+                           </div>
 
-                        <div class="mb-2 sm:mb-6">
-                            <label for="email" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Email</label>
-                            <input type="text" id="email"
-                                class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 "
-                                placeholder="juan.delacruz@gmail.com" required>
-                        </div>
+                           <div class="mb-2 sm:mb-6">
+                                 <label for="profession" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Profession</label>
+                                 <input type="text" id="profession" name="profession" value="{{ Auth::user()->profession ?? '' }}"
+                                       class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5"
+                                       placeholder="Barangay Official" required>
+                           </div>
 
-                        <div class="mb-2 sm:mb-6">
-                            <label for="profession" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Profession</label>
-                            <input type="text" id="profession" 
-                                class="bg-gray-50 border border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5 "
-                                placeholder="Tanod" required>
-                        </div>
+                           <div class="flex justify-end w-full">
+                                 <button type="submit"
+                                       class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Save
+                                 </button>
+                           </div>
+                     </form>
 
-                        <div class="flex justify-end w-full">
-                            <button type="submit"
-                                class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Save</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -88,30 +88,37 @@
 
     <!-- Second Flex Div -->
     <div class="flex-1 flex-wrap pl-6 md:p-4 gap-6 mb-4">
-        <div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3">
-            <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-                <h2 class="pt-7 text-xl font-bold sm:text-xl">Password</h2>
-                <div class="grid mt-8">
-                    <div class="mb-2 sm:mb-6">
+      <div class="bg-white mt-4 sm:max-w-xl sm:rounded-lg pl-3 pr-3">
+         <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
+         <h2 class="pt-7 text-xl font-bold sm:text-xl">Password</h2>
+         <div class="text-center" style="margin-bottom:-22px; margin-top:8px;">
+                  <p class="text-green-500 text-sm font-bold">{{ session('success') }}</p>
+               </div>
+               <div class="text-center" style="margin-bottom:-22px; margin-top:8px;">
+                  <p class="text-red-500 text-sm font-bold">{{ session('error') }}</p>
+               </div>
+         <form action="{{ route('password.update') }}" method="POST">
+               @csrf
+               <div class="grid mt-8">
+                  <div class="mb-2 sm:mb-6">
                         <label for="current_password" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Current Password</label>
-                        <input type="password" id="current_password" class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter current password" required>
-                    </div>
+                        <input type="password" id="current_password" name="current_password" class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter current password" required>
+                  </div>
 
-                    <div class="mb-2 sm:mb-6">
+                  <div class="mb-2 sm:mb-6">
                         <label for="new_password" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">New Password</label>
-                        <input type="password" id="new_password" class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter new password" required>
-                    </div>
+                        <input type="password" id="new_password" name="new_password" class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter new password" required>
+                  </div>
 
-                    <div class="mb-2 sm:mb-6">
+                  <div class="mb-2 sm:mb-6">
                         <label for="retype_password" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Re-type New Password</label>
-                        <input type="password" id="retype_password" class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Retype new password" required>
-                    </div>
-
-                    <div class="flex justify-end w-full ">
-                        <button type="submit" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Save</button>
-                    </div>
-                </div>
-            </div>
+                        <input type="password" id="retype_password" name="new_password_confirmation" class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Retype new password" required>
+                  </div>
+               </div>
+               <div class="flex justify-end w-full">
+                  <button type="submit" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Save</button>
+               </div>
+            </form>
         </div>
     </div>
 </div>
