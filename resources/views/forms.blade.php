@@ -29,34 +29,23 @@
       </p>
     </div>   
  
-   <!-- Form Request -->
-   <div class="mx-auto max-w-xl mt-7 ">
-   <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-         <li class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                  <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-                  </svg>
-                  Request<span class="hidden sm:inline-flex sm:ms-2">Type</span>
-            </span>
-         </li>
-         <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                  <span class="me-2">2</span>
-                  Request <span class="hidden sm:inline-flex sm:ms-2">Info</span>
-            </span>
-         </li>
-         <li class="flex items-center">   
-            <span class="me-2">3</span>
-            Confirmation
-         </li>
-      </ol>
-   </div>
-
 
 
 <!-- Request Type -->
 <div x-data="{ step: 1, rows: [{}], requestType: '', showModal: false, showConfirmationModal: false }">
+       <!-- Stepper  -->
+        <div class="mx-auto max-w-xl mt-7">
+            <div class="max-w-sm mx-auto px-4 font-[sans-serif]">
+                <h4 class="text-sm font-semibold" x-text="step + '/3 : Step ' + step">1/3 : Step 1</h4>
+                <div class="flex items-start gap-3 mt-2">
+                    <div x-ref="progress1" class="w-full h-1 rounded-xl bg-green-500"></div>
+                    <div x-ref="progress2" class="w-full h-1 rounded-xl bg-gray-300"></div>
+                    <div x-ref="progress3" class="w-full h-1 rounded-xl bg-gray-300"></div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Stepper  -->
+
         <!-- Step 1: Select Request -->
         <div x-show="step === 1">
             <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
@@ -73,7 +62,7 @@
                            </select>
                         </div>
                         <div class="flex justify-end">
-                           <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                            <button @click="step = 2; console.log(step); $refs.progress2.classList.add('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
                         </div>
                     </div>
                 </div>
@@ -161,8 +150,8 @@
 
                         <!-- Next and Previous Buttons -->
                         <div class="col-span-2 flex justify-between mt-4">
-                           <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                           <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                            <button @click="step = 1; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                            <button @click="step = 3; console.log(step); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
                         </div>
                     </div>
                 </div>
@@ -224,7 +213,7 @@
                             </div>
                         </div>
                         <div class="flex justify-between w-full mt-8">
-                           <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                            <button @click="step = 2; console.log(step); $refs.progress3.classList.remove('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
                         </div>
                     </div>
                 </div>
@@ -271,8 +260,8 @@
                     
                     <!-- Next Button -->
                     <div class="flex justify-between w-full">
-                        <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                        <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                        <button @click="step = 1; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                        <button @click="step = 3; console.log(step); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
                     </div>
                 </div>
             </div>
@@ -316,7 +305,7 @@
                         <button @click="showConfirmationModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send</button>
                     </div>
                     <div class="flex justify-between w-full mt-6">
-                        <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                        <button @click="step = 2; console.log(step); $refs.progress3.classList.remove('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
                     </div>
                 </div>
             </div>

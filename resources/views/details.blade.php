@@ -19,327 +19,119 @@
       <!-- Content -->
        
       <div class="ml-5 mr-5">
-    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">My Request</h2>
+    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Details</h2>
 
     <p class="text-gray-600 pl-6 pb-6">
-         <a href="#" class="text-indigo-700 hover:underline">Home</a> >
-         <span>My Request</span>
+         <a href="{{ route('view-all') }}" class="text-indigo-700 hover:underline">View All</a> >
+         <span>Details</span>
       </p>
 
     </div>   
  
-<!-- Tab View -->
-<div class="space-y-5 bg-white p-1 mt-5 shadow-md w-3/4 mx-auto mt-7">
-    <!-- Tabs -->
-    <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
-        <li class="flex-1">
-            <a href="#" data-tab="view-all" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">View All Request
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 2 </span>
+    <div class="mt-2 w-3/4 mx-auto">
+        <div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7 ">
+            <div class="flex justify-between items-start">
+            <a href="{{ route('view-all') }}" class="flex items-center text-gray-700 hover:text-black font-medium text-md mt-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 transform rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.293 2.293a1 1 0 0 1 1.414 0l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414-1.414L13.586 11H3a1 1 0 1 1 0-2h10.586L8.293 3.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
+                </svg>
+                Back
             </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="to-approve" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">For Approval
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="processing" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Processing
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="purchase-order" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Purchase Order
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="declined" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Declined
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 2 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="history" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">History
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 3 </span>
-            </a>
-        </li>
-    </ul>
+                <div class="mt-6">                
+                    <span>
+                        <a>Request ID: #12345</a>
+                        <span class="question-mark-btn">
+                                <i class='bx bx-question-mark'></i>
+                            </span>
+                    </span> <span class="self-end ml-1 font-light">|</span>
+                    <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span>
+                </div>
+            </div>
+
+            <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+
+        <!-- Existing content -->
+        <div class="px-8 mt-1 sm:rounded-lg pb-8">
+            <!-- Start of Stepper -->            
+            <div class="flex items-start max-w-screen-lg mx-auto">
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-blue-600 p-1.5 flex items-center justify-center rounded-full">
+                            <span class="text-base text-white font-bold">1</span>
+                        </div>
+                    <div class="w-full h-1 mx-4 rounded-lg bg-blue-600"></div>
+                </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-blue-500">Request Form</h6>
+                        <p class="text-xs text-gray-400">Completed</p>
+                        <p class="text-xs text-gray-400">Date Placeholder</p>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                            <span class="text-base text-white font-bold">2</span>
+                        </div>
+                        <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
+                    </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-gray-500">Quotation Form</h6>
+                        <p class="text-xs text-gray-400">Pending</p>
+                        <p class="text-xs text-gray-400">Date Placeholder</p>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                            <span class="text-base text-white font-bold">3</span>
+                        </div>
+                    <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
+                </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-gray-500">Purchase Request</h6>
+                        <p class="text-xs text-gray-400">Pending</p>
+                        <p class="text-xs text-gray-400">Date Placeholder</p>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                            <span class="text-base text-white font-bold">4</span>
+                        </div>
+                    <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
+                    </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-gray-500">Purchase Order</h6>
+                        <p class="text-xs text-gray-400">Pending</p>
+                        <p class="text-xs text-gray-400">Date Placeholder</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+            <h2 class="text-sm font-bold text-gray-900 mt-10">Request Form Details:</h2>
+            </div>
+            <!-- Cut -->
+            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                </div>
+                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+                <!-- Description, Type, and Time -->
+                <div class="request-item">
+                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>Type of request: Purchase Request</p>
+                    <p>Time sent: 10:00 AM</p>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <a href="{{ route('quotation') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">Send Quotation</a>
+                </div>
+            </div>
+        </div>       
+            <!-- End of Stepper --> 
+    </div>
 </div>
-<div class="mt-2 w-3/4 mx-auto">
-
-        <!-- Content for View All tab -->
-        <div id="view-all-content" class="tab-content">
-            <!-- Request Name and Status -->
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-        </div>
-   
-
-        <!-- Content for approve-content tab -->
-        <div id="to-approve-content" class="tab-content" style="display: none;">
-            <!-- Request Name and Status -->
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-        </div>
-        <!-- end of approve-content tab -->
 
 
-        <!-- Content for processing tab -->
-        <div id="processing-content" class="tab-content" style="display: none;">
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-        </div>
-        <!-- end of processing tab -->
-
-        <!-- Content for approve-content tab -->
-        <div id="purchase-order-content" class="tab-content" style="display: none;">
-            <!-- Request Name and Status -->
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-        </div>
-        <!-- end of approve-content tab -->
-
-        <!-- Content for declined tab -->
-        <div id="declined-content" class="tab-content" style="display: none;">
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-        </div>
-        <!-- end of declined tab -->
-
-        <!-- Content for history tab -->
-        <div id="history-content" class="tab-content" style="display: none;">
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-green-500 self-end ml-1 font-medium">Completed</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-green-500 self-end ml-1 font-medium">Completed</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-green-500 self-end ml-1 font-medium">Completed</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-        </div>
         <!-- end of history tab -->
 
 

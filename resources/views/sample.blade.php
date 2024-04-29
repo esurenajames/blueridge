@@ -29,99 +29,63 @@
       </p>
     </div>   
  
-   <!-- Form Request -->
-   <div class="mx-auto max-w-xl mt-7 ">
-   <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-         <li class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                  <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-                  </svg>
-                  Request<span class="hidden sm:inline-flex sm:ms-2">Type</span>
-            </span>
-         </li>
-         <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-            <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-                  <span class="me-2">2</span>
-                  Request <span class="hidden sm:inline-flex sm:ms-2">Info</span>
-            </span>
-         </li>
-         <li class="flex items-center">   
-            <span class="me-2">3</span>
-            Confirmation
-         </li>
-      </ol>
-   </div>
-
 
 
 <!-- Request Type -->
 <div x-data="{ step: 1, rows: [{}], requestType: '', showModal: false, showConfirmationModal: false }">
-        <!-- Step 1: Select Request -->
-        <div x-show="step === 1">
-            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
-                <div class="px-8 mt-1 sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Select Request</h2>
-                    <div class="grid mt-8">
-                        <div class="mb-4">
-                            <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Select Request</label>
-                            <select id="request_type" name="request_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required x-model="requestType">
-                              <option value="" disabled>Select Request Transaction</option>
-                              <option value="type1">Punong Barangay's Certification Form</option>
-                              <option value="type2">Request Form</option>
-                              <option value="type3">Request Name 3</option>
-                           </select>
-                        </div>
-                        <div class="flex justify-end">
-                           <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                        </div>
-                    </div>
+       <!-- Stepper  -->
+        <div class="mx-auto max-w-xl mt-7">
+            <div class="max-w-sm mx-auto px-4 font-[sans-serif]">
+                <h4 class="text-sm font-semibold" x-text="step + '/4 : Step ' + step">1/4 : Step 1</h4>
+                <div class="flex items-start gap-3 mt-2">
+                    <div x-ref="progress1" class="w-full h-1 rounded-xl bg-green-500"></div>
+                    <div x-ref="progress2" class="w-full h-1 rounded-xl bg-gray-300"></div>
+                    <div x-ref="progress3" class="w-full h-1 rounded-xl bg-gray-300"></div>
+                    <div x-ref="progress4" class="w-full h-1 rounded-xl bg-gray-300"></div>
                 </div>
             </div>
         </div>
+        <!-- End of Stepper  -->
 
-        <!-- Step 2: Punong Barangay -->
-        <div x-show="step === 2 && requestType === 'type1'">
-            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-lg mt-7">
+        <!-- Step 1: Select Request -->
+        <div x-show="step === 1" >
+            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
                 <div class="px-8 mt-1 sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Punong Barangay's Certification Form</h2>
-                    <div class="grid grid-cols-2 gap-8 mt-8">
-                        <!-- To Section -->
-                        <div>
-                            <label for="request_name" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">To: <span class="text-sm font-medium text-indigo-900 dark:text-black">The Bank Manager</span></label>
-                            <div class="text-sm font-medium text-indigo-900 dark:text-black">
-                                <p>Land Bank of the Philippines</p>
-                                <p>QC Hall Extension Office</p>
-                            </div>
-                        </div>
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
+                    <h2 class="pt-7 text-l font-bold sm:text-l">Company 1</h2>
+                <div class="grid mt-8">
+                    
+                    <!-- Request Name -->
+                    <div class="mb-4">
+                        <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
+                        <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
+                    </div>
 
-                        <!-- Date and PCB Number Section -->
-                        <div class="flex flex-col items-end">
-                            <!-- PCB Number -->
-                            <div>
-                                <label for="pcb_number" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">PCB No:</label>
-                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
-                            </div>
-                            <!-- Date -->
-                            <div>
-                                <label for="request_date" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">Date:</label>
-                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
-                            </div>
-                        </div>
+                    <!-- Request Date -->
+                    <div class="mb-4">
+                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
+                        <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
+                    </div>
 
-                        <!-- Account Information -->
-                        <div class="col-span-2">
-                            <label for="account_info" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information</label>
+                    <!-- Request Description -->
+                    <div class="mb-4">
+                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                        <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
+                    </div>
+
+                    <!-- Quotation Items -->
+                    <div class="mb-4 flex flex-col">
+                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
                             <div class="overflow-x-auto mb-2">
-                                <table id="account-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                                <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
                                     <thead>
                                         <tr>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
                                             <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
                                             <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
                                         </tr>
                                     </thead>
@@ -129,25 +93,25 @@
                                         <template x-for="(row, index) in rows" :key="index">
                                             <tr>
                                                 <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.account_no" class="border-0 w-full p-2" placeholder="Account No." required>
+                                                    <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
                                                 </td>
                                                 <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.check_no" class="border-0 w-full p-2" placeholder="Check No." required>
+                                                    <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
                                                 </td>
                                                 <td class="border px-4 py-2">
-                                                    <input type="date" x-model="row.date" class="border-0 w-full p-2" required>
+                                                    <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
                                                 </td>
                                                 <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.payee" class="border-0 w-full p-2" placeholder="Payee" required>
+                                                    <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
                                                 </td>
                                                 <td class="border px-4 py-2">
                                                     <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
                                                 </td>
                                                 <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.purpose" class="border-0 w-full p-2" placeholder="Purpose" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Delete</button>
+                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
                                                 </td>
                                             </tr>
                                         </template>
@@ -157,172 +121,288 @@
                             <div class="flex justify-end">
                                 <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
                             </div>
+                            <tfoot>
+                                <tr id="total-row">
+                                    <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                                    <td id="total-amount" class="border px-4 py-2 text-right">0</td>
+                                </tr>
+                            </tfoot>
                         </div>
-
-                        <!-- Next and Previous Buttons -->
-                        <div class="col-span-2 flex justify-between mt-4">
-                           <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                           <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                    </div>
+                        <div class="flex justify-end">
+                            <button @click="step = 2; console.log(step); $refs.progress2.classList.add('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Step 3: Summary -->
-        <div x-show="step === 3 && requestType === 'type1'">
-            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-lg mt-7 ">
+            <div x-show="step === 2" >
+            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
                 <div class="px-8 mt-1 sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">PCB Form Summary</h2>
-                    <div class="grid grid-cols-2 gap-8 mt-8">
-                        <!-- To Section -->
-                        <div>
-                            <label for="request_name" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">To: <span class="text-sm font-medium text-indigo-900 dark:text-black">The Bank Manager</span></label>
-                            <div class="text-sm font-medium text-indigo-900 dark:text-black">
-                                <p>Land Bank of the Philippines</p>
-                                <p>QC Hall Extension Office</p>
-                            </div>
-                        </div>
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
+                    <h2 class="pt-7 text-l font-bold sm:text-l">Company 2</h2>
+                <div class="grid mt-8">
+                    
+                    <!-- Request Name -->
+                    <div class="mb-4">
+                        <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
+                        <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
+                    </div>
 
-                        <!-- Date and PCB Number Section -->
-                        <div class="flex flex-col items-end">
-                            <!-- PCB Number -->
-                            <div>
-                                <label for="pcb_number" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">PCB No:</label>
-                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
-                            </div>
-                            <!-- Date -->
-                            <div>
-                                <label for="request_date" class="block text-sm font-medium text-indigo-900 dark:text-black inline-block font-semibold">Date:</label>
-                                <span class="inline-block text-sm font-medium text-indigo-900 dark:text-black">Placeholder</span>
-                            </div>
-                        </div>
+                    <!-- Request Date -->
+                    <div class="mb-4">
+                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
+                        <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
+                    </div>
 
-                        <!-- Account Information Summary -->
-                        <div class="col-span-2">
-                            <label class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information Summary</label>
+                    <!-- Request Description -->
+                    <div class="mb-4">
+                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                        <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
+                    </div>
+
+                    <!-- Quotation Items -->
+                    <div class="mb-4 flex flex-col">
+                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
                             <div class="overflow-x-auto mb-2">
-                                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
+                                <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
                                     <thead>
                                         <tr>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
                                             <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Summary rows will be dynamically added here -->
+                                        <template x-for="(row, index) in rows" :key="index">
+                                            <tr>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                                </td>
+                                            </tr>
+                                        </template>
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- Submit Button -->
-                            <div class="flex justify-end w-full mt-4">
-                                <button @click="showConfirmationModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send</button>
+                            <div class="flex justify-end">
+                                <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
                             </div>
-                        </div>
-                        <div class="flex justify-between w-full mt-8">
-                           <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                            <tfoot>
+                                <tr id="total-row">
+                                    <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                                    <td id="total-amount" class="border px-4 py-2 text-right">0</td>
+                                </tr>
+                            </tfoot>
                         </div>
                     </div>
+                        <div class="col-span-2 flex justify-between mt-4">
+                            <button @click="step = 1; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                            <button @click="step = 3; console.log(step); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                        </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Request Form Info -->
-        <div x-show="step === 2 && requestType === 'type2'">
-            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
-                <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
+            </div>
+            <div x-show="step === 3" >
+            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
+                <div class="px-8 mt-1 sm:rounded-lg pb-8">
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
+                    <h2 class="pt-7 text-l font-bold sm:text-l">Company 3</h2>
+                <div class="grid mt-8">
                     
                     <!-- Request Name -->
-                    <div class="grid mt-8">
-                        <div class="mb-2 sm:mb-6">
-                            <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                            <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
-                        </div>
-                        
-                        <!-- Request Description -->
-                        <div class="mb-2 sm:mb-6">
-                            <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                            <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request description" required></textarea>
-                        </div>
-                        
-                        <!-- Request File -->
-                        
-                        <div class="mb-2 sm:mb-6">
-                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload a File</label>
-                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2 border-gray-300 border-solid rounded-lg cursor-pointer bg-white hover:bg-gray-100 ">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">PDF, WORD, PNG, or JPG (MAX. 800x400px)</p>
+                    <div class="mb-4">
+                        <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
+                        <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
+                    </div>
+
+                    <!-- Request Date -->
+                    <div class="mb-4">
+                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
+                        <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
+                    </div>
+
+                    <!-- Request Description -->
+                    <div class="mb-4">
+                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                        <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
+                    </div>
+
+                    <!-- Quotation Items -->
+                    <div class="mb-4 flex flex-col">
+                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
+                            <div class="overflow-x-auto mb-2">
+                                <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="(row, index) in rows" :key="index">
+                                            <tr>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                                                </td>
+                                                <td class="border px-4 py-2">
+                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
                             </div>
-                            <input id="dropzone-file" type="file" class="hidden" />
-                        </label>
+                            <div class="flex justify-end">
+                                <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                            </div>
+                            <tfoot>
+                                <tr id="total-row">
+                                    <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                                    <td id="total-amount" class="border px-4 py-2 text-right">0</td>
+                                </tr>
+                            </tfoot>
+                        </div>
                     </div>
-
-
-                    </div>
-                    
-                    <!-- Next Button -->
-                    <div class="flex justify-between w-full">
-                        <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                        <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                    </div>
+                        <div class="col-span-2 flex justify-between mt-4">
+                            <button @click="step = 2; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                            <button @click="step = 4; console.log(step); $refs.progress3.classList.remove('bg-gray-300'); $refs.progress4.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                        </div>
                 </div>
+            </div>
+            </div>
+            <div x-show="step === 4" >
+            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
+    <div class="px-8 mt-1 sm:rounded-lg pb-8">
+        <h2 class="pt-7 text-xl font-bold sm:text-xl">Summary</h2>
+        
+        <!-- Company 1 Summary -->
+        <div class="mt-6">
+            <h3 class="text-l font-bold sm:text-l">Company 1</h3>
+            <div class="overflow-x-auto mt-4">
+                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Field</th>
+                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Company 1 Details -->
+                        <tr>
+                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Company Name</td>
+                            <td class="border px-4 py-2"><span id="summary_company1_name"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Quotation</td>
+                            <td class="border px-4 py-2"><span id="summary_company1_quotation"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-   <!-- Step 2 Confirmation -->
-        <div x-show="step === 3 && requestType === 'type2'">
-            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose ">
-                <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
-                    
-                    <!-- Summary -->
-                    <div class="grid mt-8">
-
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
-                            <input type="text" id="summary_type" name="summary_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-                        </div>
-
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                            <input type="text" id="summary_name" name="summary_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-                        </div>
-                        
-                        <!-- Request Description -->
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                            <textarea id="summary_description" name="summary_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly></textarea>
-                        </div>
-                        
-                        <!-- Request File -->
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_file" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">File</label>
-                            <input type="text" id="summary_file" name="summary_file" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-                        </div>
-                        
-                    </div>
-                    
-                    <!-- Submit Button -->
-                    <div class="flex justify-end w-full mt-4">
-                        <button @click="showConfirmationModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send</button>
-                    </div>
-                    <div class="flex justify-between w-full mt-6">
-                        <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                    </div>
-                </div>
+        <!-- Company 2 Summary -->
+        <div class="mt-6">
+            <h3 class="text-l font-bold sm:text-l">Company 2</h3>
+            <div class="overflow-x-auto mt-4">
+                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Field</th>
+                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Company 2 Details -->
+                        <tr>
+                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Company Name</td>
+                            <td class="border px-4 py-2"><span id="summary_company2_name"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Quotation</td>
+                            <td class="border px-4 py-2"><span id="summary_company2_quotation"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <!-- End of Content -->
-        <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
+
+        <!-- Company 3 Summary -->
+        <div class="mt-6">
+            <h3 class="text-l font-bold sm:text-l">Company 3</h3>
+            <div class="overflow-x-auto mt-4">
+                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Field</th>
+                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Company 3 Details -->
+                        <tr>
+                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Company Name</td>
+                            <td class="border px-4 py-2"><span id="summary_company3_name"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Quotation</td>
+                            <td class="border px-4 py-2"><span id="summary_company3_quotation"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex justify-end w-full mt-4">
+            <button @click="showConfirmationModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send</button>
+        </div>
+         <div class="flex justify-between w-full mt-6">
+            <button @click="step = 3; console.log(step); $refs.progress4.classList.remove('bg-green-500'); $refs.progress3.classList.remove('bg-gray-300'); $refs.progress4.classList.add('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+         </div>
+    </div>
+</div>
+ <!-- End of Content -->
+ <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
             <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
                 <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
@@ -363,10 +443,8 @@
         </div>
 
         <!-- End of Modal -->
+
 </div>
-
-
-      <!-- End Content -->
 </main>
 
    <script src="https://unpkg.com/@popperjs/core@2"></script>
