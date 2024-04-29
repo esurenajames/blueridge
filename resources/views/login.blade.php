@@ -70,10 +70,6 @@
 </div>
 
 <script>
-        // Check if the user is authenticated
-        const isAuthenticated = {{ Auth::check() ? 'true' : 'false' }};
 
-        // Log a message in the console indicating authentication status
-        console.log('Authenticated:', isAuthenticated);
     </script>
 </body>

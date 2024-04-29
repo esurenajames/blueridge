@@ -53,8 +53,10 @@
       </ol>
    </div>
 
+
+
 <!-- Request Type -->
-<div x-data="{ step: 1, rows: [{}], requestType: '' }">
+<div x-data="{ step: 1, rows: [{}], requestType: '', showModal: false }">
         <!-- Step 1: Select Request -->
         <div x-show="step === 1">
             <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
@@ -229,106 +231,123 @@
             </div>
         </div>
 
-        
         <!-- Request Form Info -->
         <div x-show="step === 2 && requestType === 'type2'">
-        <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
-        <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-            <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
-            
-            <!-- Request Name -->
-            <div class="grid mt-8">
-                <div class="mb-2 sm:mb-6">
-                    <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                    <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
-                </div>
-                
-                <!-- Request Description -->
-                <div class="mb-2 sm:mb-6">
-                    <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                    <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request description" required></textarea>
-                </div>
-                
-                <!-- Request File -->
-                
-                <div class="mb-2 sm:mb-6">
-                  <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload a File</label>
-                  <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2 border-gray-300 border-solid rounded-lg cursor-pointer bg-white hover:bg-gray-100 ">
-                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                           <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                           </svg>
-                           <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                           <p class="text-xs text-gray-500 dark:text-gray-400">PDF, WORD, PNG, or JPG (MAX. 800x400px)</p>
-                     </div>
-                     <input id="dropzone-file" type="file" class="hidden" />
-                  </label>
-               </div>
+            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
+                <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
+                    
+                    <!-- Request Name -->
+                    <div class="grid mt-8">
+                        <div class="mb-2 sm:mb-6">
+                            <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
+                            <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
+                        </div>
+                        
+                        <!-- Request Description -->
+                        <div class="mb-2 sm:mb-6">
+                            <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                            <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request description" required></textarea>
+                        </div>
+                        
+                        <!-- Request File -->
+                        
+                        <div class="mb-2 sm:mb-6">
+                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload a File</label>
+                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2 border-gray-300 border-solid rounded-lg cursor-pointer bg-white hover:bg-gray-100 ">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                </svg>
+                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">PDF, WORD, PNG, or JPG (MAX. 800x400px)</p>
+                            </div>
+                            <input id="dropzone-file" type="file" class="hidden" />
+                        </label>
+                    </div>
 
 
-            </div>
-            
-            <!-- Next Button -->
-            <div class="flex justify-between w-full">
-                  <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                  <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                    </div>
+                    
+                    <!-- Next Button -->
+                    <div class="flex justify-between w-full">
+                        <button @click="step = 1; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                        <button @click="step = 3; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
 
    <!-- Step 2 Confirmation -->
-   <div x-show="step === 3 && requestType === 'type2'">
-   <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose ">
-    <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-        <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
-        
-        <!-- Summary -->
-        <div class="grid mt-8">
+        <div x-show="step === 3 && requestType === 'type2'">
+            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose ">
+                <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
+                    
+                    <!-- Summary -->
+                    <div class="grid mt-8">
 
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
-                <input type="text" id="summary_type" name="summary_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-            </div>
+                        <div class="mb-2 sm:mb-6">
+                            <label for="summary_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
+                            <input type="text" id="summary_type" name="summary_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
+                        </div>
 
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                <input type="text" id="summary_name" name="summary_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
+                        <div class="mb-2 sm:mb-6">
+                            <label for="summary_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
+                            <input type="text" id="summary_name" name="summary_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
+                        </div>
+                        
+                        <!-- Request Description -->
+                        <div class="mb-2 sm:mb-6">
+                            <label for="summary_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                            <textarea id="summary_description" name="summary_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly></textarea>
+                        </div>
+                        
+                        <!-- Request File -->
+                        <div class="mb-2 sm:mb-6">
+                            <label for="summary_file" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">File</label>
+                            <input type="text" id="summary_file" name="summary_file" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
+                        </div>
+                        
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="flex justify-end w-full mt-4" x-show="step === 3 && requestType === 'type1' || requestType === 'type2'">
+                        <button @click="showModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send </button>
+                    </div>
+                    <div class="flex justify-between w-full mt-6">
+                        <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                    </div>
+                </div>
             </div>
-            
-            <!-- Request Description -->
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                <textarea id="summary_description" name="summary_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly></textarea>
-            </div>
-            
-            <!-- Request File -->
-            <div class="mb-2 sm:mb-6">
-                <label for="summary_file" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">File</label>
-                <input type="text" id="summary_file" name="summary_file" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-            </div>
-            
         </div>
-        
-        <!-- Submit Button -->
-        <div class="flex justify-end w-full mt-4">
-            <button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Request</button>
+        <!-- End of Content -->
+
+        <!-- Start of Modal -->
+        <div x-show="showModal" class="fixed inset-0 overflow-y-auto z-[1000]">
+            <div class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
+                <div class="w-full max-w-md bg-white shadow-lg rounded-md px-5 py-10 relative mx-auto text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-24 h-24 fill-green-500 absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="29" data-original="#5edd60" />
+                    <path fill="#fff"
+                        d="m24.262 42.07-6.8-6.642a1.534 1.534 0 0 1 0-2.2l2.255-2.2a1.621 1.621 0 0 1 2.256 0l4.048 3.957 11.353-17.26a1.617 1.617 0 0 1 2.2-.468l2.684 1.686a1.537 1.537 0 0 1 .479 2.154L29.294 41.541a3.3 3.3 0 0 1-5.032.529z"
+                        data-original="#ffffff" />
+                    </svg>
+                    <div class="mt-8">
+                    <h3 class="text-2xl font-semibold flex-1">Awesome!</h3>
+                    <p class="text-sm text-gray-500 mt-2">Your booking has been confirmed. <br /> Check your email for details.</p>
+                    <button type="button" @click="showModal = false" class="px-6 py-2.5 mt-8 w-full rounded text-white text-sm font-semibold border-none outline-none bg-green-500 hover:bg-green-600">Got it</button>
+                    </div>
+                </div>
+            </div>
         </div>
-         <div class="flex justify-between w-full mt-6">
-            <button @click="step = 2; console.log(step)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-         </div>
-    </div>
+        <!-- End of Modal -->
 </div>
-   </div>
-    </div>
 
-
-  
-
-    
 
       <!-- End Content -->
-    </main>
+</main>
 
    <script src="https://unpkg.com/@popperjs/core@2"></script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -460,5 +479,9 @@
    })
    // end: Tab
 
+   window.addEventListener('DOMContentLoaded', function() {
+        // Simulate change event on dropdown to initialize requestType
+        document.querySelector('#request_type').dispatchEvent(new Event('change'));
+    });
    </script>
 </body>
