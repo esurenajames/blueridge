@@ -126,6 +126,10 @@
                     <a href="{{ route('quotation') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">Send Quotation</a>
                 </div>
             </div>
+            <div>
+            <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks:</h2>
+            <p class="text-sm"> Please send a quotation before july 12. Make sure the budget is around 8000 only</p>
+            </div>
         </div>       
             <!-- End of Stepper --> 
     </div>

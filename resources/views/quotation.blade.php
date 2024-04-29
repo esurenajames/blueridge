@@ -21,11 +21,11 @@
       <!-- Content -->
        
       <div class="ml-5 mr-5">
-    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Forms</h2>
+    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Quotation Form</h2>
 
     <p class="text-gray-600 pl-6 pb-6">
-         <a href="#" class="text-indigo-700 hover:underline">Home</a> >
-         <span>Request Forms</span>
+         <a href="{{ route('details') }}" class="text-indigo-700 hover:underline">Details</a> >
+         <span>Quotation Forms</span>
       </p>
     </div>   
  

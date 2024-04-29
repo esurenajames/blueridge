@@ -76,7 +76,7 @@
                             <span class="question-mark-btn mr-1">
                                 <i class='bx bx-question-mark'></i>
                             </span> <span class="self-end ml-1 font-light">|</span>
-                            <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
+                            <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
                         </div>
                     </div>
                     <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
@@ -93,32 +93,6 @@
                         <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
                     </div>
                 </div>
-
-                
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
         </div>
 
 
