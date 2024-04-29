@@ -23,6 +23,10 @@ Route::get('/view-all', function () {
     return view('view-all');
 })->name('view-all');
 
+Route::get('/details', function () {
+    return view('details');
+})->name('details');
+
 Route::get('/notifications', function () {
     return view('notifications');
 })->name('notifications');

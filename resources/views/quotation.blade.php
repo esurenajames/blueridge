@@ -353,8 +353,6 @@
 </div>
 
 
-<!-- Confirmation -->
-<!-- Summary Section -->
 <!-- Summary Section -->
 <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
     <div class="px-8 mt-1 sm:rounded-lg pb-8">
@@ -437,14 +435,38 @@
                 </table>
             </div>
         </div>
+        
+        <!-- Summary Table -->
+        <div class="overflow-x-auto mt-4">
+            <table id="summary-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamically populated with JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Send Quotation Button -->
         <div class="flex justify-end w-full mt-4">
             <button class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send Quotation</button>
         </div>
-         <div class="flex justify-between w-full mt-6">
+        
+        <!-- Previous Button -->
+        <div class="flex justify-between w-full mt-6">
             <button class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-         </div>
+        </div>
     </div>
 </div>
+
 
 
 
