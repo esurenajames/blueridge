@@ -3,12 +3,10 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
-
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
 
-<body class="bg-gray-200">
+<body class="mb-5 bg-gray-200">
     <!--sidenav -->
       @livewire('sidebar')
       <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
@@ -21,431 +19,137 @@
       <!-- Content -->
        
       <div class="ml-5 mr-5">
-    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Forms</h2>
+    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Details</h2>
 
     <p class="text-gray-600 pl-6 pb-6">
-         <a href="#" class="text-indigo-700 hover:underline">Home</a> >
-         <span>Request Forms</span>
+         <a href="{{ route('view-all') }}" class="text-indigo-700 hover:underline">View All</a> >
+         <span>Details</span>
       </p>
+
     </div>   
  
-
-
-<!-- Request Type -->
-<div x-data="{ step: 1, rows: [{}], requestType: '', showModal: false, showConfirmationModal: false }">
-       <!-- Stepper  -->
-        <div class="mx-auto max-w-xl mt-7">
-            <div class="max-w-sm mx-auto px-4 font-[sans-serif]">
-                <h4 class="text-sm font-semibold" x-text="step + '/4 : Step ' + step">1/4 : Step 1</h4>
-                <div class="flex items-start gap-3 mt-2">
-                    <div x-ref="progress1" class="w-full h-1 rounded-xl bg-green-500"></div>
-                    <div x-ref="progress2" class="w-full h-1 rounded-xl bg-gray-300"></div>
-                    <div x-ref="progress3" class="w-full h-1 rounded-xl bg-gray-300"></div>
-                    <div x-ref="progress4" class="w-full h-1 rounded-xl bg-gray-300"></div>
+    <div class="mt-2 w-/4 mx-auto">
+        <div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-xl mt-7 ">
+            <div class="flex justify-between items-start">
+            <a href="{{ route('view-all') }}" class="flex items-center text-gray-700 hover:text-black font-medium text-md mt-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 transform rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.293 2.293a1 1 0 0 1 1.414 0l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414-1.414L13.586 11H3a1 1 0 1 1 0-2h10.586L8.293 3.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
+                </svg>
+                Back
+            </a>
+                <div class="mt-6">                
+                    <span>
+                        <a>Request ID: #12345</a>
+                        <span class="question-mark-btn">
+                                <i class='bx bx-question-mark'></i>
+                            </span>
+                    </span> <span class="self-end ml-1 font-light">|</span>
+                    <span class="text-yellow-500 self-end ml-1 font-medium">Quotation send last date placeholder</span>
                 </div>
             </div>
-        </div>
-        <!-- End of Stepper  -->
 
-        <!-- Step 1: Select Request -->
-        <div x-show="step === 1" >
-            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
-                <div class="px-8 mt-1 sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
-                    <h2 class="pt-7 text-l font-bold sm:text-l">Company 1</h2>
-                <div class="grid mt-8">
-                    
-                    <!-- Request Name -->
-                    <div class="mb-4">
-                        <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
-                        <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
-                    </div>
+            <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
 
-                    <!-- Request Date -->
-                    <div class="mb-4">
-                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
-                        <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
-                    </div>
+        <!-- Existing content -->
+        <div class="px-8 mt-1 sm:rounded-lg pb-8">
+            <!-- Start of Stepper -->            
 
-                    <!-- Request Description -->
-                    <div class="mb-4">
-                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                        <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
-                    </div>
-
-                    <!-- Quotation Items -->
-                    <div class="mb-4 flex flex-col">
-                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
-                            <div class="overflow-x-auto mb-2">
-                                <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
-                                    <thead>
-                                        <tr>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="(row, index) in rows" :key="index">
-                                            <tr>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="flex justify-end">
-                                <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
-                            </div>
-                            <tfoot>
-                                <tr id="total-row">
-                                    <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                                    <td id="total-amount" class="border px-4 py-2 text-right">0</td>
-                                </tr>
-                            </tfoot>
-                        </div>
-                    </div>
-                        <div class="flex justify-end">
-                            <button @click="step = 2; console.log(step); $refs.progress2.classList.add('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                        </div>
-                    </div>
-                </div>
+            <!-- Start of Table -->    
+            <div x-data="{ selectedCell: null }">
+               <table class="selectable-table">
+                   <thead>
+                       <tr>
+                           <th>Qty</th>
+                           <th>Unit</th>
+                           <th>Item</th>
+                           <th>Asus</th>
+                           <th>Gigabyte</th>
+                           <th>MSI</th>
+                       </tr>
+                   </thead>
+                   <tbody id="selectableTableBody">
+                       <tr>
+                           <td>2</td>
+                           <td>pcs</td>
+                           <td>Laptop</td>
+                           <td x-on:click="selectedCell = 1" x-bind:class="{ 'selected': selectedCell === 1 }" class="company">
+                               Asus Laptop - Model A
+                               <span class="block text-gray-600 text-sm">$1200</span>
+                           </td>
+                           <td x-on:click="selectedCell = 2" x-bind:class="{ 'selected': selectedCell === 2 }" class="company">
+                               Gigabyte Laptop - Model B
+                               <span class="block text-gray-600 text-sm">$1100</span>
+                           </td>
+                           <td x-on:click="selectedCell = 3" x-bind:class="{ 'selected': selectedCell === 3 }" class="company">
+                               MSI Laptop - Model C
+                               <span class="block text-gray-600 text-sm">$1300</span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td>1</td>
+                           <td>pcs</td>
+                           <td>Mouse</td>
+                           <td x-on:click="selectedCell = 4" x-bind:class="{ 'selected': selectedCell === 4 }" class="company">
+                               Asus Mouse - Model X
+                               <span class="block text-gray-600 text-sm">$20</span>
+                           </td>
+                           <td x-on:click="selectedCell = 5" x-bind:class="{ 'selected': selectedCell === 5 }" class="company">
+                               Gigabyte Mouse - Model Y
+                               <span class="block text-gray-600 text-sm">$25</span>
+                           </td>
+                           <td x-on:click="selectedCell = 6" x-bind:class="{ 'selected': selectedCell === 6 }" class="company">
+                               MSI Mouse - Model Z
+                               <span class="block text-gray-600 text-sm">$30</span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td>3</td>
+                           <td>pcs</td>
+                           <td>Keyboard</td>
+                           <td x-on:click="selectedCell = 7" x-bind:class="{ 'selected': selectedCell === 7 }" class="company">
+                               Asus Keyboard - Model P
+                               <span class="block text-gray-600 text-sm">$50</span>
+                           </td>
+                           <td x-on:click="selectedCell = 8" x-bind:class="{ 'selected': selectedCell === 8 }" class="company">
+                               Gigabyte Keyboard - Model Q
+                               <span class="block text-gray-600 text-sm">$45</span>
+                           </td>
+                           <td x-on:click="selectedCell = 9" x-bind:class="{ 'selected': selectedCell === 9 }" class="company">
+                               MSI Keyboard - Model R
+                               <span class="block text-gray-600 text-sm">$55</span>
+                           </td>
+                       </tr>
+                   </tbody>
+               </table>
+           </div>
+           
+           
+       
+            
+            <!-- End of Table -->
+            <div class="mt-6">
+               <h2 class="text-lg font-bold text-gray-900">Remarks:</h2>
+               <textarea class="w-full mt-2 p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter remarks here..."></textarea>
+           </div>
+           
+           <!-- Send button -->
+           <div class="flex justify-end mt-6">
+               <button class="bg-indigo-700 hover:bg-indigo-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                   Send
+               </button>
+           </div>
             </div>
-            <div x-show="step === 2" >
-            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
-                <div class="px-8 mt-1 sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
-                    <h2 class="pt-7 text-l font-bold sm:text-l">Company 2</h2>
-                <div class="grid mt-8">
-                    
-                    <!-- Request Name -->
-                    <div class="mb-4">
-                        <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
-                        <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
-                    </div>
-
-                    <!-- Request Date -->
-                    <div class="mb-4">
-                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
-                        <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
-                    </div>
-
-                    <!-- Request Description -->
-                    <div class="mb-4">
-                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                        <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
-                    </div>
-
-                    <!-- Quotation Items -->
-                    <div class="mb-4 flex flex-col">
-                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
-                            <div class="overflow-x-auto mb-2">
-                                <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
-                                    <thead>
-                                        <tr>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="(row, index) in rows" :key="index">
-                                            <tr>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="flex justify-end">
-                                <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
-                            </div>
-                            <tfoot>
-                                <tr id="total-row">
-                                    <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                                    <td id="total-amount" class="border px-4 py-2 text-right">0</td>
-                                </tr>
-                            </tfoot>
-                        </div>
-                    </div>
-                        <div class="col-span-2 flex justify-between mt-4">
-                            <button @click="step = 1; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                            <button @click="step = 3; console.log(step); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                        </div>
-                </div>
-            </div>
-            </div>
-            <div x-show="step === 3" >
-            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
-                <div class="px-8 mt-1 sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Quotation Info</h2>
-                    <h2 class="pt-7 text-l font-bold sm:text-l">Company 3</h2>
-                <div class="grid mt-8">
-                    
-                    <!-- Request Name -->
-                    <div class="mb-4">
-                        <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
-                        <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
-                    </div>
-
-                    <!-- Request Date -->
-                    <div class="mb-4">
-                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
-                        <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
-                    </div>
-
-                    <!-- Request Description -->
-                    <div class="mb-4">
-                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                        <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
-                    </div>
-
-                    <!-- Quotation Items -->
-                    <div class="mb-4 flex flex-col">
-                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
-                            <div class="overflow-x-auto mb-2">
-                                <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
-                                    <thead>
-                                        <tr>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="(row, index) in rows" :key="index">
-                                            <tr>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="flex justify-end">
-                                <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
-                            </div>
-                            <tfoot>
-                                <tr id="total-row">
-                                    <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                                    <td id="total-amount" class="border px-4 py-2 text-right">0</td>
-                                </tr>
-                            </tfoot>
-                        </div>
-                    </div>
-                        <div class="col-span-2 flex justify-between mt-4">
-                            <button @click="step = 2; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                            <button @click="step = 4; console.log(step); $refs.progress3.classList.remove('bg-gray-300'); $refs.progress4.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                        </div>
-                </div>
-            </div>
-            </div>
-            <div x-show="step === 4" >
-            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-md mt-7">
-    <div class="px-8 mt-1 sm:rounded-lg pb-8">
-        <h2 class="pt-7 text-xl font-bold sm:text-xl">Summary</h2>
-        
-        <!-- Company 1 Summary -->
-        <div class="mt-6">
-            <h3 class="text-l font-bold sm:text-l">Company 1</h3>
-            <div class="overflow-x-auto mt-4">
-                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Field</th>
-                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Company 1 Details -->
-                        <tr>
-                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Company Name</td>
-                            <td class="border px-4 py-2"><span id="summary_company1_name"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Quotation</td>
-                            <td class="border px-4 py-2"><span id="summary_company1_quotation"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Company 2 Summary -->
-        <div class="mt-6">
-            <h3 class="text-l font-bold sm:text-l">Company 2</h3>
-            <div class="overflow-x-auto mt-4">
-                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Field</th>
-                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Company 2 Details -->
-                        <tr>
-                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Company Name</td>
-                            <td class="border px-4 py-2"><span id="summary_company2_name"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Quotation</td>
-                            <td class="border px-4 py-2"><span id="summary_company2_quotation"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Company 3 Summary -->
-        <div class="mt-6">
-            <h3 class="text-l font-bold sm:text-l">Company 3</h3>
-            <div class="overflow-x-auto mt-4">
-                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Field</th>
-                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Company 3 Details -->
-                        <tr>
-                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Company Name</td>
-                            <td class="border px-4 py-2"><span id="summary_company3_name"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="border px-4 py-2 text-sm font-medium text-gray-700">Quotation</td>
-                            <td class="border px-4 py-2"><span id="summary_company3_quotation"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="flex justify-end w-full mt-4">
-            <button @click="showConfirmationModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send</button>
-        </div>
-         <div class="flex justify-between w-full mt-6">
-            <button @click="step = 3; console.log(step); $refs.progress4.classList.remove('bg-green-500'); $refs.progress3.classList.remove('bg-gray-300'); $refs.progress4.classList.add('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-         </div>
+        </div>       
+            <!-- End of Stepper --> 
     </div>
 </div>
- <!-- End of Content -->
- <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
-            <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
-                <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
-                        <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
-                        <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
-                    </svg>
-                    <div class="my-8">
-                        <h4 class="text-lg text-[#333] font-semibold">Are you sure you want to send the form? </h4>
-                        <p class="text-sm text-gray-500 mt-4">Once submitted, the information provided will be processed accordingly. Please review the details carefully before proceeding</p>
-                    </div>
-                    <div class="flex justify-end gap-4 max-sm:flex-col">
-                        <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>
-                        <button type="button" @click="showConfirmationModal = false; showModal = true" class="px-6 py-2.5 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Yes, send</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Start of Modal -->
-        <div x-show="showModal" class="fixed inset-0 overflow-y-auto z-[1000]">
-            <div class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
-                <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
-                        <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
-                        <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
-                    </svg>
-                    <div class="my-8 text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 shrink-0 fill-[#333] inline" viewBox="0 0 512 512">
-                            <path d="M383.841 171.838c-7.881-8.31-21.02-8.676-29.343-.775L221.987 296.732l-63.204-64.893c-8.005-8.213-21.13-8.393-29.35-.387-8.213 7.998-8.386 21.137-.388 29.35l77.492 79.561a20.687 20.687 0 0 0 14.869 6.275 20.744 20.744 0 0 0 14.288-5.694l147.373-139.762c8.316-7.888 8.668-21.027.774-29.344z" data-original="#000000" />
-                            <path d="M256 0C114.84 0 0 114.84 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0zm0 470.487c-118.265 0-214.487-96.214-214.487-214.487 0-118.265 96.221-214.487 214.487-214.487 118.272 0 214.487 96.221 214.487 214.487 0 118.272-96.215 214.487-214.487 214.487z" data-original="#000000" />
-                        </svg>
-                        <h4 class="text-2xl text-[#333] font-semibold mt-6">The form has been submitted successfully!</h4>
-                        <p class="text-sm text-gray-500 mt-4">Thank you for your submission. Your request will now be processed, and you will receive further updates.</p>
-                    </div>
-                    <button type="button" @click="showModal = false" class="px-6 py-2.5 min-w-[150px] w-full rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Okay</button>
-                </div>
-            </div>
-        </div>
 
-        <!-- End of Modal -->
+        <!-- end of history tab -->
 
-</div>
-</main>
+
+      <!-- End Content -->
+    </main>
 
    <script src="https://unpkg.com/@popperjs/core@2"></script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -576,10 +280,51 @@
       })
    })
    // end: Tab
+document.addEventListener("DOMContentLoaded", function () {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-   window.addEventListener('DOMContentLoaded', function() {
-        // Simulate change event on dropdown to initialize requestType
-        document.querySelector('#request_type').dispatchEvent(new Event('change'));
+        tabLinks.forEach(tabLink => {
+            tabLink.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                // Remove active class from all tab links
+                tabLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Remove active class from all tab contents
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // Add active class to the clicked tab link
+                this.classList.add('active');
+
+                // Show the selected tab content
+                const target = this.getAttribute('data-tab');
+                document.getElementById(target + '-content').style.display = 'block';
+            });
+        });
+
+        // Set the first tab as active by default on page load
+        tabLinks[0].classList.add('active');
+        tabContents[0].style.display = 'block';
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const companyCells = document.querySelectorAll('#selectableTableBody td.company');
+        companyCells.forEach(cell => {
+            cell.addEventListener('click', function() {
+                const row = cell.parentNode;
+                const selectedCells = row.querySelectorAll('.selected');
+                selectedCells.forEach(selectedCell => {
+                    selectedCell.classList.remove('selected');
+                });
+                cell.classList.add('selected');
+            });
+        });
+    });
+
    </script>
 </body>

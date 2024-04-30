@@ -73,10 +73,11 @@
                     <div class="flex justify-between items-start mb-4">
                         <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
                         <div>                
+                            <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
                             <span class="question-mark-btn mr-1">
                                 <i class='bx bx-question-mark'></i>
                             </span> <span class="self-end ml-1 font-light">|</span>
-                            <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
+                            <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> 
                         </div>
                     </div>
                     <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">

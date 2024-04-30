@@ -53,7 +53,28 @@
   white-space: nowrap;
 }
 
-
+.selectable-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.selectable-table th, .selectable-table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: center;
+}
+.selectable-table th {
+  background-color: #f3f4f6;
+}
+.selectable-table td.company:hover,
+.selectable-table td.company.selected {
+  background-color: #edf2f7;
+}
+.selectable-table td.company.selected {
+  background-color: #d1d5db;
+}
+.selectable-table td.company {
+  cursor: pointer;
+}
 
 /*
 1. Use a consistent sensible line-height in all browsers.

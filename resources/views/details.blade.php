@@ -123,7 +123,7 @@
                     <p>Time sent: 10:00 AM</p>
                 </div>
                 <div class="flex justify-end mt-4">
-                    <a href="{{ route('quotation') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">Send Quotation</a>
+                    <a href="{{ route('quotation') }}" target="_blank" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">Send Quotation</a>
                 </div>
             </div>
             <div>

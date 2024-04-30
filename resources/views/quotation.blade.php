@@ -24,11 +24,10 @@
     <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Quotation Form</h2>
 
     <p class="text-gray-600 pl-6 pb-6">
-         <a href="{{ route('details') }}" class="text-indigo-700 hover:underline">Details</a> >
+         <a href="{{ route('forms') }}" class="text-indigo-700 hover:underline">Details</a> >
          <span>Quotation Forms</span>
       </p>
     </div>   
- 
 
 
 <!-- Request Type -->

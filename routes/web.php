@@ -4,12 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 Route::get('/settings', function () {
     return view('settings');
 })->name('settings');
+
+Route::get('/', function () {
+    return view('main');
+})->name('');
 
 Route::get('/forms', function () {
     return view('forms');
@@ -18,6 +23,10 @@ Route::get('/forms', function () {
 Route::get('/quotation', function () {
     return view('quotation');
 })->name('quotation');
+
+Route::get('/quotation-approval', function () {
+    return view('quotation-approval');
+})->name('quotation-approval');
 
 Route::get('/view-all', function () {
     return view('view-all');
