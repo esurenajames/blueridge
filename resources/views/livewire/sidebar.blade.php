@@ -20,10 +20,10 @@
                     <a href="{{ route('view-all') }}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">View All</a>
                 </li>
                 <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">For Approval</a>
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Quotation</a>
                 </li>
                 <li class="mb-4">
-                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Processing</a>
+                    <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4"> Purchase Request</a>
                 </li>
                 <li class="mb-4">
                     <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] pl-4">Purchase Order</a>

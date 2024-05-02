@@ -36,6 +36,22 @@ Route::get('/details', function () {
     return view('details');
 })->name('details');
 
+Route::get('/details-2', function () {
+    return view('details-2');
+})->name('details-2');
+
+Route::get('/details-3', function () {
+    return view('details-3');
+})->name('details-3');
+
+Route::get('/details-4', function () {
+    return view('details-4');
+})->name('details-4');
+
+Route::get('/details-5', function () {
+    return view('details-5');
+})->name('details-5');
+
 Route::get('/notifications', function () {
     return view('notifications');
 })->name('notifications');
@@ -51,6 +67,10 @@ Route::get('/request', function () {
 Route::get('/purchase-request', function () {
     return view('purchase-request');
 })->name('purchase-request');
+
+Route::get('/purchase-order', function () {
+    return view('purchase-order');
+})->name('purchase-order');
 
 Route::get('/sample', function () {
     return view('/sample');

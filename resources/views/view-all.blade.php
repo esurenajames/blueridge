@@ -34,24 +34,25 @@
     <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
         <li class="flex-1">
             <a href="#" data-tab="view-all" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">View All Request
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 2 </span>
+                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 3 </span>
             </a>
         </li>
         <li class="flex-1">
-            <a href="#" data-tab="to-approve" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">For Approval
+            <a href="#" data-tab="quotation" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700"> Quotation
                 <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
             </a>
         </li>
         <li class="flex-1">
-            <a href="#" data-tab="processing" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Processing
+            <a href="#" data-tab="purchase-request" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Purchase Request
                 <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
             </a>
         </li>
         <li class="flex-1">
-            <a href="#" data-tab="purchase-order" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Purchase Order
+            <a href="#" data-tab="purchase-order" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700"> Purchase Order
                 <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
             </a>
         </li>
+        
         <li class="flex-1">
             <a href="#" data-tab="declined" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Declined
                 <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 2 </span>
@@ -59,7 +60,7 @@
         </li>
         <li class="flex-1">
             <a href="#" data-tab="history" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">History
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 3 </span>
+                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 5 </span>
             </a>
         </li>
     </ul>
@@ -71,7 +72,31 @@
                 <!-- Request Name and Status -->
                 <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                     <div class="flex justify-between items-start mb-4">
-                        <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                        <h2 class="text-lg font-bold text-gray-900">Upgrade Barangay Office Computer Systems</h2>
+                        <div>                
+                            <span class="question-mark-btn mr-1">
+                                <i class='bx bx-question-mark'></i>
+                            </span> <span class="self-end ml-1 font-light">|</span>
+                            <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Request</span>
+                        </div>
+                    </div>
+                    <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+                    <!-- Description, Type, and Time -->
+                    <div class="request-item">
+                        <p>Description: Modernize the barangay office computer systems by upgrading hardware and software to enhance productivity and efficiency in delivering services to residents.</p>
+                        <p>Type of request: IT Upgrade</p>
+                        <p>Time sent: 11:00 AM</p>
+                    </div>
+                    
+                    <!-- View Details Button -->
+                    <div class="flex justify-end mt-4">
+                        <a href="{{ route('details-2') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
+                        <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    </div>
+                </div>
+                <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-lg font-bold text-gray-900">Community Health Awareness Seminar</h2>
                         <div>                
                             <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
                             <span class="question-mark-btn mr-1">
@@ -83,9 +108,9 @@
                     <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                     <!-- Description, Type, and Time -->
                     <div class="request-item">
-                        <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <p>Type of request: Purchase Request</p>
-                        <p>Time sent: 10:00 AM</p>
+                        <p>Description: Organize a health awareness seminar for the community focusing on preventive healthcare measures.</p>
+                        <p>Type of request: Event Planning</p>
+                        <p>Time sent: 1:45 PM</p>
                     </div>
                     
                     <!-- View Details Button -->
@@ -94,34 +119,61 @@
                         <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
                     </div>
                 </div>
+                <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-lg font-bold text-gray-900">Procurement of Office Printers and Supplies</h2>
+                        <div>                
+                            <span class="question-mark-btn mr-1">
+                                <i class='bx bx-question-mark'></i>
+                            </span> <span class="self-end ml-1 font-light">|</span>
+                            <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Order</span>
+                        </div>
+                    </div>
+                    <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+                    <!-- Description, Type, and Time -->
+                    <div class="request-item">
+                        <p>Description: Acquire new printers and necessary supplies (such as ink cartridges, paper, etc.) for the barangay office to improve efficiency in document processing and administrative tasks.</p>
+                        <p>Type of request: Procurement</p>
+                        <p>Time sent: 9:30 AM</p>
+                    </div>
+                    
+                    <!-- View Details Button -->
+                    <div class="flex justify-end mt-4">
+                        <a href="{{ route('details-4')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
+                        <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                        <a href="{{ route('purchase-order')}}" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Proof of purchase</a>
+                    </div>
+                </div>
         </div>
 
 
         <!-- Content for approve-content tab -->
-        <div id="to-approve-content" class="tab-content" style="display: none;">
+        <div id="quotation-content" class="tab-content" style="display: none;">
             <!-- Request Name and Status -->
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Community Health Awareness Seminar</h2>
                     <div>                
+                        <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
                         </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
+                        <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> 
                     </div>
                 </div>
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Organize a health awareness seminar for the community focusing on preventive healthcare measures.</p>
+                    <p>Type of request: Event Planning</p>
+                    <p>Time sent: 1:45 PM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
+                    <a href="{{ route('details') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
                     <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <a href="{{ route('quotation') }}" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Send Quotation</a>
                 </div>
             </div>
         </div>
@@ -129,28 +181,28 @@
 
 
         <!-- Content for processing tab -->
-        <div id="processing-content" class="tab-content" style="display: none;">
+        <div id="purchase-request-content" class="tab-content" style="display: none;">
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Upgrade Barangay Office Computer Systems</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
                         </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
+                        <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Request</span>
                     </div>
                 </div>
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Modernize the barangay office computer systems by upgrading hardware and software to enhance productivity and efficiency in delivering services to residents.</p>
+                    <p>Type of request: IT Upgrade</p>
+                    <p>Time sent: 11:00 AM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
+                    <a href="{{ route('details-3') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
                     <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
                 </div>
             </div>
@@ -162,26 +214,27 @@
             <!-- Request Name and Status -->
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Procurement of Office Printers and Supplies</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
                         </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">On processing</span>
+                        <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Order</span>
                     </div>
                 </div>
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Acquire new printers and necessary supplies (such as ink cartridges, paper, etc.) for the barangay office to improve efficiency in document processing and administrative tasks.</p>
+                    <p>Type of request: Procurement</p>
+                    <p>Time sent: 9:30 AM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
+                    <a href="{{ route('details-4')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
                     <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <a href="{{ route('purchase-order')}}" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Proof of purchase</a>
                 </div>
             </div>
         </div>
@@ -191,7 +244,7 @@
         <div id="declined-content" class="tab-content" style="display: none;">
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Community Garden Expansion</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
@@ -202,21 +255,21 @@
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Extend the community garden space to accommodate more residents interested in gardening and promote sustainable living.</p>
+                    <p>Type of request: Development Project</p>
+                    <p>Time sent: 3:20 PM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
                     <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
                 </div>
             </div>
 
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Barangay Health Clinic Supplies Replenishment</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
@@ -227,15 +280,15 @@
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Replenish essential medical supplies for the barangay health clinic to ensure adequate healthcare services for residents, including basic medications, bandages, and other consumables.</p>
+                    <p>Type of request: Procurement</p>
+                    <p>Time sent: 9:15 AM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
                     <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
                 </div>
             </div>
         </div>
@@ -245,7 +298,7 @@
         <div id="history-content" class="tab-content" style="display: none;">
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Barangay Street Lighting Improvement Project</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
@@ -256,20 +309,20 @@
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Implement an improvement project for barangay street lighting to enhance safety and security in the community, particularly in poorly lit areas.</p>
+                    <p>Type of request: Infrastructure Development</p>
+                    <p>Time sent: 2:30 PM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <a href="{{ route('details-5')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
                 </div>
             </div>
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Barangay Youth Development Program Funding</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
@@ -280,20 +333,20 @@
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Allocate funding for a barangay youth development program aimed at providing skills training, educational support, and recreational activities to empower and engage young residents.</p>
+                    <p>Type of request: Budget Allocation</p>
+                    <p>Time sent: 3:00 PM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <a href="{{ route('details-5')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
                 </div>
             </div>
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Volleyball Ball for Intrams</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Barangay Community Center Renovation</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
@@ -304,15 +357,64 @@
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Type of request: Purchase Request</p>
-                    <p>Time sent: 10:00 AM</p>
+                    <p>Description: Renovate the barangay community center to provide a more functional and comfortable space for various community activities, meetings, and events.</p>
+                    <p>Type of request: Infrastructure Development</p>
+                    <p>Time sent: 10:45 AM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
                     <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
+                </div>
+            </div>
+            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-bold text-gray-900">Community Garden Expansion</h2>
+                    <div>                
+                        <span class="question-mark-btn mr-1">
+                            <i class='bx bx-question-mark'></i>
+                        </span> <span class="self-end ml-1 font-light">|</span>
+                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
+                    </div>
+                </div>
+                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+                <!-- Description, Type, and Time -->
+                <div class="request-item">
+                    <p>Description: Extend the community garden space to accommodate more residents interested in gardening and promote sustainable living.</p>
+                    <p>Type of request: Development Project</p>
+                    <p>Time sent: 3:20 PM</p>
+                </div>
+                
+                <!-- View Details Button -->
+                <div class="flex justify-end mt-4">
+                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
+                </div>
+            </div>
+
+            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-bold text-gray-900">Barangay Health Clinic Supplies Replenishment</h2>
+                    <div>                
+                        <span class="question-mark-btn mr-1">
+                            <i class='bx bx-question-mark'></i>
+                        </span> <span class="self-end ml-1 font-light">|</span>
+                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
+                    </div>
+                </div>
+                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+                <!-- Description, Type, and Time -->
+                <div class="request-item">
+                    <p>Description: Replenish essential medical supplies for the barangay health clinic to ensure adequate healthcare services for residents, including basic medications, bandages, and other consumables.</p>
+                    <p>Type of request: Procurement</p>
+                    <p>Time sent: 9:15 AM</p>
+                </div>
+                
+                <!-- View Details Button -->
+                <div class="flex justify-end mt-4">
+                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
                 </div>
             </div>
         </div>

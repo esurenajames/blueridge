@@ -29,7 +29,7 @@
     </div>   
  
     <div class="mt-2 w-/4 mx-auto">
-        <div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-lg mt-7 ">
+        <div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-xl mt-7 ">
             <div class="flex justify-between items-start">
             <a href="{{ route('view-all') }}" class="flex items-center text-gray-700 hover:text-black font-medium text-md mt-6">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 transform rotate-180" viewBox="0 0 20 20" fill="currentColor">
@@ -44,115 +44,117 @@
                                 <i class='bx bx-question-mark'></i>
                             </span>
                     </span> <span class="self-end ml-1 font-light">|</span>
-                    <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span>
+                    <span class="text-yellow-500 self-end ml-1 font-medium">Quotation send last date placeholder</span>
                 </div>
             </div>
+
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
 
         <!-- Existing content -->
         <div class="px-8 mt-1 sm:rounded-lg pb-8">
             <!-- Start of Stepper -->            
-            <div class="flex items-start max-w-screen-lg mx-auto">
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-blue-600 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">1</span>
-                        </div>
-                    <div class="w-full h-1 mx-4 rounded-lg bg-blue-600"></div>
-                </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-blue-500">Request Form</h6>
-                        <p class="text-xs text-gray-400">Completed</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">2</span>
-                        </div>
-                        <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
-                    </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-gray-500">Quotation Form</h6>
-                        <p class="text-xs text-gray-400">Pending</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">3</span>
-                        </div>
-                    <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
-                </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-gray-500">Purchase Request</h6>
-                        <p class="text-xs text-gray-400">Pending</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">4</span>
-                        </div>
-                    <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
-                    </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-gray-500">Purchase Order</h6>
-                        <p class="text-xs text-gray-400">Pending</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
+
+            <!-- Start of Table -->    
+            <div x-data="{ selectedCell: null }">
+               <table class="selectable-table">
+                   <thead>
+                       <tr>
+                           <th>Qty</th>
+                           <th>Unit</th>
+                           <th>Item</th>
+                           <th>Asus</th>
+                           <th>Gigabyte</th>
+                           <th>MSI</th>
+                       </tr>
+                   </thead>
+                   <tbody id="selectableTableBody">
+                       <tr>
+                           <td>2</td>
+                           <td>pcs</td>
+                           <td>Laptop</td>
+                           <td x-on:click="selectedCell = 1" x-bind:class="{ 'selected': selectedCell === 1 }" class="company">
+                               <span class="block text-gray-600 text-base">Asus Laptop - Model A</span>
+                               <span class="block text-gray-600 text-sm">$1200</span>
+                           </td>
+                           <td x-on:click="selectedCell = 2" x-bind:class="{ 'selected': selectedCell === 2 }" class="company">
+                               <span class="block text-gray-600 text-base"> Gigabyte Laptop - Model B</span>
+                               <span class="block text-gray-600 text-sm">$1100</span>
+                           </td>
+                           <td x-on:click="selectedCell = 3" x-bind:class="{ 'selected': selectedCell === 3 }" class="company">
+                               <span class="block text-gray-600 text-base">MSI Laptop - Model C</span>
+                               <span class="block text-gray-600 text-sm">$1300</span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td>1</td>
+                           <td>pcs</td>
+                           <td>Mouse</td>
+                           <td x-on:click="selectedCell = 4" x-bind:class="{ 'selected': selectedCell === 4 }" class="company">
+                                <span class="block text-gray-600 text-base">Asus Mouse - Model X</span>
+                               <span class="block text-gray-600 text-sm">$20</span>
+                           </td>
+                           <td x-on:click="selectedCell = 5" x-bind:class="{ 'selected': selectedCell === 5 }" class="company">
+                               <span class="block text-gray-600 text-base">Gigabyte Mouse - Model Y</span>
+                               <span class="block text-gray-600 text-sm">$25</span>
+                           </td>
+                           <td x-on:click="selectedCell = 6" x-bind:class="{ 'selected': selectedCell === 6 }" class="company">
+                               <span class="block text-gray-600 text-base">MSI Mouse - Model Z</span>
+                               <span class="block text-gray-600 text-sm">$30</span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td>3</td>
+                           <td>pcs</td>
+                           <td>Keyboard</td>
+                           <td x-on:click="selectedCell = 7" x-bind:class="{ 'selected': selectedCell === 7 }" class="company">
+                               <span class="block text-gray-600 text-base">Asus Keyboard - Model P</span>
+                               <span class="block text-gray-600 text-sm">$50</span>
+                           </td>
+                           <td x-on:click="selectedCell = 8" x-bind:class="{ 'selected': selectedCell === 8 }" class="company">
+
+                               <span class="block text-gray-600 text-base">Gigabyte Keyboard - Model Q</span>
+                               <span class="block text-gray-600 text-sm">$45</span>
+                           </td>
+                           <td x-on:click="selectedCell = 9" x-bind:class="{ 'selected': selectedCell === 9 }" class="company">
+                               <span class="block text-gray-600 text-base">MSI Keyboard - Model R</span>
+                               <span class="block text-gray-600 text-sm">$55</span>
+                           </td>
+                       </tr>
+                       <tr id="totalsRow">
+                        <td></td>
+                        <td></td>
+                        <td>Total</td>
+                        <td id="asusTotal" class="text-gray-800 text-md">$1270</td>
+                        <td id="gigabyteTotal" class="text-gray-800 text-sm">$1170</td>
+                        <td id="msiTotal" class="text-gray-800 text-sm">$1385</td>
+                    </tr>
+                   </tbody>
+               </table>
+           </div>
+
+           <div class="flex justify-end mt-4">
+                <span class="text-gray-700 text-base font-semibold">Selected Total:</span>
+                <span id="selectedTotal" class="text-gray-700 text-base font-semibold ml-2">$0.00</span>
             </div>
-            <div>
-            <h2 class="text-sm font-bold text-gray-900 mt-10">Request Form Details:</h2>
-            </div>
-            <!-- Cut -->
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Community Health Awareness Seminar</h2>
-                    <div>                
-                        <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> 
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Organize a health awareness seminar for the community focusing on preventive healthcare measures.</p>
-                    <p>Type of request: Event Planning</p>
-                    <p>Time sent: 1:45 PM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href="{{ route('quotation') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">Send Quotation</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-            <div>
-                <h2 class="text-sm font-bold text-gray-900 mt-10">Quotation Remarks:</h2>
-                <p class="text-sm"> Please send a quotation before july 12. Make sure the budget is around 8000 only</p>
+        
+        
+            <!-- End of Table -->
+            <div class="mt-6">
+               <h2 class="text-lg font-bold text-gray-900">Remarks:</h2>
+               <textarea class="w-full mt-2 p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter remarks here..."></textarea>
+           </div>
+           
+           <!-- Send button -->
+           <div class="flex justify-end mt-6">
+               <button class="bg-indigo-700 hover:bg-indigo-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                   Send
+               </button>
+           </div>
             </div>
         </div>       
-
-        
             <!-- End of Stepper --> 
     </div>
 </div>
-
-
-
-    
-        <!-- End of Stepper --> 
-</div>
-</div>
-
 
 
         <!-- end of history tab -->
@@ -321,6 +323,32 @@ document.addEventListener("DOMContentLoaded", function () {
         tabLinks[0].classList.add('active');
         tabContents[0].style.display = 'block';
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const companyCells = document.querySelectorAll('#selectableTableBody td.company');
+        companyCells.forEach(cell => {
+            cell.addEventListener('click', function() {
+                const row = cell.parentNode;
+                const selectedCells = row.querySelectorAll('.selected');
+                selectedCells.forEach(selectedCell => {
+                    selectedCell.classList.remove('selected');
+                });
+                cell.classList.add('selected');
+                updateSelectedTotal();
+            });
+        });
+    });
+
+    function updateSelectedTotal() {
+        const selectedCells = document.querySelectorAll('#selectableTableBody td.selected');
+        let total = 0;
+        selectedCells.forEach(selectedCell => {
+            const priceSpan = selectedCell.querySelector('span.text-sm');
+            const price = parseFloat(priceSpan.innerText.slice(1));
+            total += price;
+        });
+        document.getElementById('selectedTotal').innerText = "$" + total.toFixed(2);
+    }
 
    </script>
 </body>
