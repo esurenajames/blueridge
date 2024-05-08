@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
+
 Route::get('/settings', function () {
     return view('settings');
 })->name('settings');
@@ -31,6 +32,10 @@ Route::get('/quotation-approval', function () {
 Route::get('/view-all', function () {
     return view('view-all');
 })->name('view-all');
+
+Route::get('/decline', function () {
+    return view('decline');
+})->name('decline');
 
 Route::get('/details', function () {
     return view('details');
@@ -63,6 +68,10 @@ Route::get('/summary', function () {
 Route::get('/request', function () {
     return view('request');
 })->name('request');
+
+Route::get('/request-table', function () {
+    return view('request-table');
+})->name('request-table');
 
 Route::get('/purchase-request', function () {
     return view('purchase-request');

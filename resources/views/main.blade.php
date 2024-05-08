@@ -31,13 +31,13 @@
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7l-5-5z" />
                     </svg>
                 </div>
-                <h2 class="text-white dark:text-white text-lg font-medium">My Request</h2>
+                <h2 class="text-white dark:text-white text-lg font-medium">Create Request</h2>
             </div>
             <div class="flex flex-col justify-between flex-grow">
                 <p class="leading-relaxed text-base text-white dark:text-gray-300">
-                You have submitted a total of 6 ongoing requests.
+                Create a request form.
                 </p>
-                <a href="{{ route('view-all') }}" class="mt-3 text-black dark:text-white hover:text-blue-600 inline-flex items-center">View Request List
+                <a href="{{ route('forms') }}" class="mt-3 text-black dark:text-white hover:text-blue-600 inline-flex items-center">Create Request
                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"></path>
                     </svg>

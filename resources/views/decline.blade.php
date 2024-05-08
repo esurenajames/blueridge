@@ -44,7 +44,7 @@
                                 <i class='bx bx-question-mark'></i>
                             </span>
                     </span> <span class="self-end ml-1 font-light">|</span>
-                    <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span>
+                    <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
                 </div>
             </div>
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
@@ -68,14 +68,14 @@
                 </div>
                 <div class="w-full">
                     <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-red-400 p-1.5 flex items-center justify-center rounded-full">
                             <span class="text-base text-white font-bold">2</span>
                         </div>
                         <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
                     </div>
                     <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-gray-500">Quotation Form</h6>
-                        <p class="text-xs text-gray-400">Pending</p>
+                        <h6 class="text-base font-bold text-red-500">Quotation Form</h6>
+                        <p class="text-xs text-red-400">Declined</p>
                         <p class="text-xs text-gray-400">Date Placeholder</p>
                     </div>
                 </div>
@@ -112,47 +112,57 @@
             <!-- Cut -->
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Community Health Awareness Seminar</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Upgrade Barangay Office Computer Systems</h2>
                     <div>                
-                        <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
                         </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> 
+                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
                     </div>
                 </div>
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Organize a health awareness seminar for the community focusing on preventive healthcare measures.</p>
-                    <p>Type of request: Event Planning</p>
-                    <p>Time sent: 1:45 PM</p>
+                    <p>Description: Modernize the barangay office computer systems by upgrading hardware and software to enhance productivity and efficiency in delivering services to residents.</p>
+                    <p>Type of request: IT Upgrade</p>
+                    <p>Time sent: 11:00 AM</p>
                 </div>
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
-                    <a href="{{ route('quotation') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">Send Quotation</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+                    <a href="{{ route('quotation') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;" hidden>Send Quotation</a>
+                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
                 </div>
             </div>
             <div>
-                <h2 class="text-sm font-bold text-gray-900 mt-10">Quotation Remarks:</h2>
+                <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks:</h2>
                 <p class="text-sm"> Please send a quotation before july 12. Make sure the budget is around 8000 only</p>
+            </div>
+            <!-- Quotation Form Details Section -->
+            <div>
+                <h2 class="text-sm font-bold text-gray-900 mt-10">Quotation Form Details:</h2>
+                <!-- List of Submitted Documents -->
                 <div class="mt-4">
-                    <h3 class="text-xs font-semibold text-gray-700">Quotation Form:</h3>
+                    <h3 class="text-xs font-semibold text-gray-700">Submitted Documents:</h3>
                     <ul class="mt-2">
                         <li>
                             <a href="#" class="flex items-center space-x-2 text-sm text-blue-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M17.707 1.293A1 1 0 0 1 19 2v16a1 1 0 0 1-1.707.707L13 14.414V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.586l4.293-4.293zM12 7a1 1 0 0 1-1-1V1.414L5.707 7H12z" clip-rule="evenodd"/>
                                 </svg>
-                                <span>Quotation Template.word</span>
+                                <span>Quotation 1.pdf</span>
                             </a>
                         </li>
                         <!-- Add more documents as needed -->
                     </ul>
                 </div>
+                <!-- List of Approved Documents -->
+                <div>
+                    <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks:</h2>
+                    <p class="text-sm"> There are no more current alloted funds for that request</p>
+                </div>
             </div>
+
         </div>       
 
         

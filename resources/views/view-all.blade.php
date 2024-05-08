@@ -29,42 +29,11 @@
     </div>   
  
 <!-- Tab View -->
-<div class="space-y-5 bg-white p-1 mt-5 shadow-md w-3/4 mx-auto mt-7">
-    <!-- Tabs -->
-    <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
-        <li class="flex-1">
-            <a href="#" data-tab="view-all" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">View All Request
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 3 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="quotation" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700"> Quotation
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="purchase-request" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Purchase Request
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="purchase-order" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700"> Purchase Order
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 1 </span>
-            </a>
-        </li>
-        
-        <li class="flex-1">
-            <a href="#" data-tab="declined" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">Declined
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 2 </span>
-            </a>
-        </li>
-        <li class="flex-1">
-            <a href="#" data-tab="history" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-700">History
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500"> 5 </span>
-            </a>
-        </li>
-    </ul>
-</div>
+
+<!-- Tabs -->
+@livewire('tabs')
+<!-- End of tabs -->
+
 <div class="mt-2 w-3/4 mx-auto">
 
         <!-- Content for View All tab -->
@@ -262,14 +231,14 @@
                 
                 <!-- View Details Button -->
                 <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
+                    <a href={{route ('decline')}} class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
                     <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
                 </div>
             </div>
 
             <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Barangay Health Clinic Supplies Replenishment</h2>
+                    <h2 class="text-lg font-bold text-gray-900">Community Garden Expansion</h2>
                     <div>                
                         <span class="question-mark-btn mr-1">
                             <i class='bx bx-question-mark'></i>
@@ -280,7 +249,7 @@
                 <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                 <!-- Description, Type, and Time -->
                 <div class="request-item">
-                    <p>Description: Replenish essential medical supplies for the barangay health clinic to ensure adequate healthcare services for residents, including basic medications, bandages, and other consumables.</p>
+                    <p>Description: Extend the community garden space to accommodate more residents interested in gardening and promote sustainable living.</p>
                     <p>Type of request: Procurement</p>
                     <p>Time sent: 9:15 AM</p>
                 </div>

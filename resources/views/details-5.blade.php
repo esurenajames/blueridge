@@ -97,7 +97,7 @@
                         <div class="w-8 h-8 shrink-0 mx-[-1px] bg-blue-600 p-1.5 flex items-center justify-center rounded-full">
                             <span class="text-base text-white font-bold">4</span>
                         </div>
-                        <div class="w-full h-1 mx-4 rounded-lg bg-blue-600"></div>
+                        <div class="w-full h-1 mx-4 rounded-lg bg-green-600"></div>
                     </div>
                     <div class="mt-2 mr-4">
                         <h6 class="text-base font-bold text-blue-500">Purchase Order</h6>
