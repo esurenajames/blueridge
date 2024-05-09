@@ -13,7 +13,7 @@
     
     <div class="flex flex-col justify-between flex-1 mt-6">
         <nav>
-            <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-200 rounded-md dark:bg-gray-700 dark:text-gray-200" href="{{ route('main') }}">
+            <a class="flex items-center px-4 py-2 {{ request()->routeIs('main') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('main') }}">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -26,7 +26,7 @@
                 <span class="mx-4 font-medium">Home</span>
             </a>
 
-            <a class="flex items-center px-4 py-2 mt-2 text-gray-600 transition-colors duration-200 transform rounded-md dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700" href="{{ route('forms') }}">
+            <a class="flex items-center px-4 py-2 mt-2 {{ request()->routeIs('forms') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('forms') }}">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#c0c0c0" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -38,7 +38,7 @@
                 <span class="mx-4 font-medium">Create Forms</span>
             </a>
 
-            <a class="flex items-center px-4 py-2 mt-2 text-gray-600 transition-colors duration-200 transform rounded-md dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700" href="{{ route('view-all') }}">
+            <a class="flex items-center px-4 py-2 mt-2 {{ request()->routeIs('view-all') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('view-all') }}">
                 <svg class="w-5 h-5" fill="#c0c0c0" height="64px" width="64px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 219.376 219.376" xml:space="preserve">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -52,8 +52,8 @@
             
 
             <hr class="my-6 border-gray-200 dark:border-gray-600" />
-
-            <a class="flex items-center px-4 py-2 mt-2 text-gray-600 transition-colors duration-200 transform rounded-md dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700" href="{{ route('settings') }}">
+            
+            <a class="flex items-center px-4 py-2 mt-2 {{ request()->routeIs('settings') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('settings') }}">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -65,24 +65,20 @@
             
                 <span class="mx-4 font-medium">Settings</span>
             </a>
+
+            <form id="logout-form" method="POST" action="{{ route('logout') }}" wire:submit.prevent="logout">
+                @csrf
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" role="menuitem" class="flex items-center px-4 py-2 mt-2 text-gray-600 transition-colors duration-200 transform rounded-md dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#c0c0c0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>< id="SVGRepo_iconCarrier"> <> <path fill="none" d="M0 0h24v24H0z"></path> <path d="M5 11h8v2H5v3l-5-4 5-4v3zm-1 7h2.708a8 8 0 1 0 0-12H4A9.985 9.985 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.985 9.985 0 0 1-8-4z"></path> </svg>
+                    </svg>
+                    <span class="mx-4 font-medium">Logout</span>
+                </a>
+            </form>
             
             
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <a role="menuitem" class="flex items-center px-4 py-2 mt-2 text-gray-600 transition-colors duration-200 transform rounded-md dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700"
-                    onclick="event.preventDefault(); 
-                    document.getElementById('logout-form').submit();">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#c0c0c0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>< id="SVGRepo_iconCarrier"> <> <path fill="none" d="M0 0h24v24H0z"></path> <path d="M5 11h8v2H5v3l-5-4 5-4v3zm-1 7h2.708a8 8 0 1 0 0-12H4A9.985 9.985 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.985 9.985 0 0 1-8-4z"></path> </svg>
-                        </svg>
-                        <span class="mx-4 font-medium">Logout</span>
-                    </a>
-                </form>
-            
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
+
                 
         </nav>
 

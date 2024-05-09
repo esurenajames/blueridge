@@ -6,7 +6,7 @@
     </button>
 
 
-    <ul class="ml-auto flex items-center">
+    <ul class="ml-auto flex items-center ">
 
         <li class="dropdown">
             <button type="button" class="dropdown-toggle text-gray-400 mr-4 w-8 h-8 rounded flex items-center justify-center  hover:text-gray-600">
@@ -14,8 +14,7 @@
             </button>
             <div class="dropdown-menu shadow-md shadow-black/5 z-30 hidden max-w-xs w-full bg-white rounded-md border border-gray-100">
                 <div class="flex items-center px-4 pt-4 border-b border-b-gray-100 notification-tab">
-                    <button type="button" data-tab="notification" data-tab-page="notifications" class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1 active">Notifications</button>
-                    <button type="button" data-tab="notification" data-tab-page="messages" class="text-gray-400 font-medium text-[13px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1">Messages</button>
+                    <button type="button" data-tab="notification" data-tab-page="notifications" class="text-gray-400 font-medium text-[14px] hover:text-gray-600 border-b-2 border-b-transparent mr-4 pb-1 active">Notifications</button>
                 </div>
                 <div class="my-2">
                     <ul class="max-h-74 overflow-y-auto" data-tab-for="notification" data-page="notifications">
@@ -23,8 +22,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Request</div>
-                                    <div class="text-[11px] text-gray-400">Your form request has been submitted</div>
+                                    <div class="text-[14px] text-gray-600 font-medium truncate group-hover:text-blue-500">Form Request</div>
+                                    <div class="text-[12px] text-gray-400">Your form request has been submitted</div>
                                 </div>
                             </a>
                         </li>
@@ -32,8 +31,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Approved</div>
-                                    <div class="text-[11px] text-gray-400">Your form request has been approved</div>
+                                    <div class="text-[14px] text-gray-600 font-medium truncate group-hover:text-black">Form Approved</div>
+                                    <div class="text-[12px] text-gray-400">Your form request has been approved</div>
                                 </div>
                             </a>
                         </li>
@@ -41,8 +40,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Approved</div>
-                                    <div class="text-[11px] text-gray-400">Your form request has been approved</div>
+                                    <div class="text-[14px] text-gray-600 font-medium truncate group-hover:text-black">Form Approved</div>
+                                    <div class="text-[12px] text-gray-400">Your form request has been approved</div>
                                 </div>
                             </a>
                         </li>
@@ -50,8 +49,8 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Declined</div>
-                                    <div class="text-[11px] text-gray-400">Your form request has been declined</div>
+                                    <div class="text-[14px] text-gray-600 font-medium truncate group-hover:text-black">Form Declined</div>
+                                    <div class="text-[12px] text-gray-400">Your form request has been declined</div>
                                 </div>
                             </a>
                         </li>
@@ -59,63 +58,14 @@
                             <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
                                 <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                                 <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-black">Form Declined</div>
-                                    <div class="text-[11px] text-gray-400">Your form request has been declined</div>
+                                    <div class="text-[14px] text-gray-600 font-medium truncate group-hover:text-black">Form Declined</div>
+                                    <div class="text-[12px] text-gray-400">Your form request has been declined</div>
                                 </div>
                             </a>
                         </li>
                         <div class="flex justify-center py-1 ">
-                            <a href="/notifications" class="text-gray-600 text-xs hover:text-black">View All</a>
+                            <a href="/notifications" class="text-gray-600 text-[14px] hover:text-black">View All</a>
                         </div>
-                    </ul>
-
-
-                    <ul class="max-h-64 overflow-y-auto hidden" data-tab-for="notification" data-page="messages">
-                        <li>
-                            <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Secretary Antoinne</div>
-                                    <div class="text-[11px] text-gray-400">We need to re-evaluate the submitted form.</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Kapitan Mikee</div>
-                                    <div class="text-[11px] text-gray-400">Have you seen the form status?</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Art Rocha</div>
-                                    <div class="text-[11px] text-gray-400">I've submitted a new form for approval.</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Louie Saguinsin</div>
-                                    <div class="text-[11px] text-gray-400">I've updated the form details. Please review.</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="py-2 px-4 flex items-center hover:bg-gray-50 group">
-                                <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
-                                <div class="ml-2">
-                                    <div class="text-[13px] text-gray-600 font-medium truncate group-hover:text-blue-500">Crisha Reyes</div>
-                                    <div class="text-[11px] text-gray-400">I've updated the form details. Please review.</div>
-                                </div>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -155,15 +105,15 @@
             </button>
             <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
                 <li>
-                    <a href="{{ route('settings') }}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Profile</a>
+                    <a href="{{ route('settings') }}" class="flex items-center text-[14px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Profile</a>
                 </li>
                 <li>
-                    <a href="{{ route('settings') }}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Settings</a>
+                    <a href="{{ route('settings') }}" class="flex items-center text-[14px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Settings</a>
                 </li>
                 <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <a role="menuitem" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50 cursor-pointer"
+                    <a role="menuitem" class="flex items-center text-[14px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50 cursor-pointer"
                         onclick="event.preventDefault(); 
                         document.getElementById('logout-form').submit();">
                         Log Out
