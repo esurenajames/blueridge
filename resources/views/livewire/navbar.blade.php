@@ -1,6 +1,6 @@
 <div>
-<div class="py-2 px-6 bg-[#f8f4f3] flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
-    
+<div class="py-2 px-6 bg-[#f8f4f3] flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">   
+
     <button type="button" class="text-lg text-gray-900 font-semibold sidebar-toggle">
         <i class="ri-menu-line"></i>
     </button>
@@ -99,8 +99,8 @@
                     </div>
                 </div>
                 <div class="p-2 md:block text-left">
-                    <h2 class="text-sm font-semibold text-gray-800">James Esurena</h2>
-                    <p class="text-xs text-gray-500">Tanod</p>
+                    <h2 class="text-[16px] font-semibold text-gray-800">James Esurena</h2>
+                    <p class="text-[14px] text-gray-500">Tanod</p>
                 </div>                
             </button>
             <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">

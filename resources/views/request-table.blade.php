@@ -22,20 +22,45 @@
        
         
       <div class="ml-5 mr-5">
-        <h2 class="text-3xl pt-6 pl-6 font-bold mb-2"> Form Request Status</h2>
-    
-        <p class="text-gray-600 pl-6 pb-6">
-             <a href="#" class="text-indigo-700 hover:underline">Home</a> >
-             <span>Form Request Status</span>
-          </p>
-    
-        </div>   
-    
-        <div class="flex flex-col md:flex-row ml-5 mr-10" x-data="{ showConfirmationModal: false, showEditDetailsModal: false, showViewDetailsModal: false }">
-            
-            <div class="overflow-x-auto mt-6 mx-auto">
-                <table class="bg-white font-[sans-serif]">
-                    <thead class="bg-gray-700 whitespace-nowrap">
+        <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Table</h2>
+        <ol class="list-none p-0 inline-flex space-x-2 ml-6 ">
+            <li class="flex items-center">
+            <svg onclick="window.location.href='/';" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" class="cursor-pointer hover:fill-blue-500 transition-colors duration-300" fill="#4b5563"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>        <span class="mx-2">/</span>
+            </li>
+            <li class="flex items-center">
+                <span class="text-gray-800">Request Forms</span>
+            </li>
+        </ol>
+    </div> 
+
+    <div class=" mb-4 mt-10" x-data="{ showConfirmationModal: false, showEditDetailsModal: false, showViewDetailsModal: false }">
+        <div class="w-9/12 mx-auto mb-2 max-w-screen-xlw">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input type="text" class="block mr-2 px-4 py-2 border rounded-md bg-white text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search">
+                    <select class="block px-4 py-2 border rounded-md bg-white text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Filters</option>
+                        <option value="requestor">Requestor</option>
+                        <option value="type">Type</option>
+                        <option value="date">Date</option>
+                        <option value="approver">Approver</option>
+                    </select>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-sm mr-2">Show entries:</span>
+                    <select class="block px-4 py-2 border rounded-md bg-white text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="w-9/12 min-w-80 mx-auto max-w-screen-xl">
+            <div class="overflow-x-auto rounded">
+                <table class="bg-white font-[sans-serif] ">
+                    <thead class="bg-gray-800 whitespace-nowrap">
                         <tr>
                             <th class="pl-6 w-8">
                                 <input id="checkbox" type="checkbox" class="hidden peer" />
@@ -82,7 +107,16 @@
                                     </svg>
                                 </label>
                             </td>
-                            <td class="px-6 py-4 text-sm">Mikee Gonzaga</td>
+                            <td class="px-6 py-4 text-sm"> 
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 w-10 h-10 relative">
+                                        <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
+                                            <img class="w-8 h-8 rounded-full" src="https://pics.craiyon.com/2023-10-03/99c00ba98d5140abb234cbb552471b33.webp" alt=""/>
+                                        </div>
+                                    </div>
+                                    <span class="ml-2">Mikee Gonzaga</span>
+                                </div>
+                            </td>                            
                             <td class="px-6 py-4 text-sm">Request Form</td>
                             <td class="px-6 py-4 text-sm">Bidet for Public CR</td>
                             <td class="px-6 py-4 text-sm">06/05/2024</td>
@@ -126,10 +160,59 @@
 
                               </td>
                         </tr>
+                        
                         <!-- Add more rows as needed -->
                     </tbody>
                 </table>
+                
             </div>
+
+
+            <div class="flex items-center justify-between">
+                <!-- Help text -->
+                <span class="text-md mb-2 mt-2 text-gray-700 dark:text-gray-400">
+                    Showing <span class="font-semibold text-gray-500">1</span> to <span class="font-semibold text-gray-500">10</span> of <span class="font-semibold text-gray-500">100</span> Entries
+                </span>
+                <!-- Buttons -->
+                <nav aria-label="Page navigation example">
+                    <ul class="flex items-center -space-x-px h-10 text-base mb-2 mt-2">
+                      <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                          <span class="sr-only">Previous</span>
+                          <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                          </svg>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                      </li>
+                      <li>
+                        <a href="#" aria-current="page" class="z-10 flex items-center justify-center px-4 h-10 border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                      </li>
+                      <li>
+                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                          <span class="sr-only">Next</span>
+                          <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                          </svg>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+              </div>
+        </div>
+
+    
             
                 <!-- Confirmation Modal -->        
                 <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
@@ -144,8 +227,8 @@
                                 <p class="text-sm text-gray-500 mt-4">Once deleted, the from request cannot be recovered. Are you sure you want to proceed?</p>
                             </div>
                             <div class="flex justify-end gap-4 max-sm:flex-col">
-                                <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>
                                 <button type="button" @click="showConfirmationModal = false; deleteItem()" class="px-6 py-2.5 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Yes, delete</button>
+                                <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>        
                             </div>
                         </div>
                     </div>
@@ -181,7 +264,7 @@
                     </div>
                 </div>
         </div>
-        
+
 
         <!-- end of history tab -->
 

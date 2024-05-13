@@ -20,14 +20,18 @@
 
       <!-- Content -->
        
-      <div class="ml-5 mr-5">
-    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Forms</h2>
-
-    <p class="text-gray-600 pl-6 pb-6">
-         <a href="#" class="text-indigo-700 hover:underline">Home</a> >
-         <span>Request Forms</span>
-      </p>
-    </div>   
+    <div class="ml-5 mr-5">
+        <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Forms</h2>
+        <ol class="list-none p-0 inline-flex space-x-2 ml-6 ">
+            <li class="flex items-center">
+            <svg onclick="window.location.href='/';" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" class="cursor-pointer hover:fill-blue-500 transition-colors duration-300" fill="#4b5563"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>        <span class="mx-2">/</span>
+            </li>
+            <li class="flex items-center">
+                <span class="text-gray-800">Request Forms</span>
+            </li>
+        </ol>
+    </div>
+ 
  
 
 
@@ -36,7 +40,7 @@
        <!-- Stepper  -->
         <div class="mx-auto max-w-xl mt-7">
             <div class="max-w-sm mx-auto px-4 font-[sans-serif]">
-                <h4 class="text-sm font-semibold" x-text="step + '/3 : Step ' + step">1/3 : Step 1</h4>
+                <h4 class="text-md font-semibold" x-text="step + '/3 : Step ' + step">1/3 : Step 1</h4>
                 <div class="flex items-start gap-3 mt-2">
                     <div x-ref="progress1" class="w-full h-1 rounded-xl bg-green-500"></div>
                     <div x-ref="progress2" class="w-full h-1 rounded-xl bg-gray-300"></div>
@@ -50,15 +54,15 @@
         <div x-show="step === 1">
             <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
                 <div class="px-8 mt-1 sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Select Request</h2>
+                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Create Request</h2>
                     <div class="grid mt-8">
                         <div class="mb-4">
-                            <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Select Request</label>
+                            <label for="request_type" class="block mb-2 text-sm text-indigo-900 dark:text-black">Select Type of Request</label>
                             <select id="request_type" name="request_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required x-model="requestType">
-                              <option value="" disabled>Select Request Transaction</option>
-                              <option value="type1">Punong Barangay's Certification Form</option>
-                              <option value="type2">Request Form</option>
-                              <option value="type3">Fetty Cash Voucher</option>
+                              <option value="" class="text-md" disabled >Select Request Transaction</option>
+                              <option value="type1" class="text-md">Punong Barangay's Certification Form</option>
+                              <option value="type2" class="text-md">Request Form</option>
+                              <option value="type3" class="text-md">Fetty Cash Voucher</option>
                            </select>
                         </div>
                         <div class="flex justify-end">
@@ -323,8 +327,8 @@
                         <p class="text-sm text-gray-500 mt-4">Once submitted, the information provided will be processed accordingly. Please review the details carefully before proceeding</p>
                     </div>
                     <div class="flex justify-end gap-4 max-sm:flex-col">
-                        <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>
                         <button type="button" @click="showConfirmationModal = false; showModal = true" class="px-6 py-2.5 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Yes, send</button>
+                        <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>
                     </div>
                 </div>
             </div>

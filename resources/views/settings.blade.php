@@ -19,7 +19,7 @@
 
       <!-- Content -->
     <div class="ml-5 mr-5">
-    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Settings Page</h2>
+    <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Settings</h2>
     <p class="text-gray-600 pl-6 pb-6">Update and manage your profile information and password.</p>
     <hr class="border-t border-gray-300 w-3.5/4 mx-auto">
     </div>   

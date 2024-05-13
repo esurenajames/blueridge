@@ -1,7 +1,12 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/heroicons@1.0.1/build/css/heroicons.min.css" rel="stylesheet">
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-@vite('resources/css/app.css', 'resources/js/app.js')
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+
+@vite(['resources/css/app.css','resources/js/app.js'])
 
 <body class="bg-gray-200 rounded-lg py-5">
 
