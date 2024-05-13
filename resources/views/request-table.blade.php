@@ -34,7 +34,7 @@
     </div> 
 
     <div class=" mb-4 mt-10" x-data="{ showConfirmationModal: false, showEditDetailsModal: false, showViewDetailsModal: false }">
-        <div class="w-9/12 mx-auto mb-2 max-w-screen-xlw">
+        <div class="w-9/12 mx-auto mb-2 max-w-screen-xl">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <input type="text" class="block mr-2 px-4 py-2 border rounded-md bg-white text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search">
