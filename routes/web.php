@@ -73,6 +73,10 @@ Route::get('/request-table', function () {
     return view('request-table');
 })->name('request-table');
 
+Route::get('/request-approval', function () {
+    return view('request-approval');
+})->name('request-approval');
+
 Route::get('/purchase-request', function () {
     return view('purchase-request');
 })->name('purchase-request');
@@ -88,6 +92,11 @@ Route::get('/sample', function () {
 Route::get('/main', function () {
     return view('main');
 })->name('main');
+
+Route::get('/main-secretary', function () {
+    return view('main-secretary');
+})->name('main-secretary');
+
 
 });
 

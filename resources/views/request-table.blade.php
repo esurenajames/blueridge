@@ -6,11 +6,11 @@
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
 @vite('resources/css/main.css', 'resources/js/app.js')
-<title>Admin Panel</title>
+<title>Form Request List</title>
 
 <body class="mb-5 bg-gray-200">
     <!--sidenav -->
-      @livewire('sidebar')
+      @livewire('sidebar-secretary')
       <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
     <!-- end sidenav -->
     <main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-200 min-h-screen transition-all main">
@@ -22,13 +22,13 @@
        
         
       <div class="ml-5 mr-5">
-        <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Table</h2>
+        <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Form Request List</h2>
         <ol class="list-none p-0 inline-flex space-x-2 ml-6 ">
             <li class="flex items-center">
             <svg onclick="window.location.href='/';" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" class="cursor-pointer hover:fill-blue-500 transition-colors duration-300" fill="#4b5563"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>        <span class="mx-2">/</span>
             </li>
             <li class="flex items-center">
-                <span class="text-gray-800">Request Forms</span>
+                <span class="text-gray-800">Form Request List</span>
             </li>
         </ol>
     </div> 
@@ -37,18 +37,18 @@
         <div class="w-9/12 mx-auto mb-2 max-w-screen-xl">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <input type="text" class="block mr-2 px-4 py-2 border rounded-md bg-white text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search">
-                    <select class="block px-4 py-2 border rounded-md bg-white text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Filters</option>
-                        <option value="requestor">Requestor</option>
-                        <option value="type">Type</option>
-                        <option value="date">Date</option>
-                        <option value="approver">Approver</option>
+                    <input type="text" class="block mr-2 px-4 py-2 rounded-md border bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search">
+                    <select class="block mr-2 px-4 py-2 border border-white rounded-md text-gray-600 bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500" >
+                        <option value="" disabled class="text-md ">Select filters</option>
+                        <option value="requestor" class="text-md ">Type of Request</option>
+                        <option value="type" class="text-md ">Punong Barangay's Certification</option>
+                        <option value="date" class="text-md ">Request Form</option>
+                        <option value="approver" class="text-md ">Petty Cash</option>
                     </select>
                 </div>
                 <div class="flex items-center">
-                    <span class="text-sm mr-2">Show entries:</span>
-                    <select class="block px-4 py-2 border rounded-md bg-white text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <span class="text-md mr-2 text-gray-600">Show entries:</span>
+                    <select class="block px-4 py-2 border rounded-md text-gray-600 bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50">50</option>
@@ -58,8 +58,8 @@
             </div>
         </div>
         <div class="w-9/12 min-w-80 mx-auto max-w-screen-xl">
-            <div class="overflow-x-auto rounded">
-                <table class="bg-white font-[sans-serif] ">
+            <div class="overflow-x-auto rounded-md">
+                <table class="bg-white font-[sans-serif] rounded-md">
                     <thead class="bg-gray-800 whitespace-nowrap">
                         <tr>
                             <th class="pl-6 w-8">
