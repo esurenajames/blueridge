@@ -243,11 +243,39 @@
                             </svg>
                             <div class="my-8">
                                 <h4 class="text-lg text-[#333] font-semibold">Edit Details</h4>
-                                <!-- Editable fields go here -->
+                                <!-- Editable fields with placeholders -->
+                                <div class="mt-4">
+                                    <label for="requestor" class="block text-sm font-medium text-gray-700">Name of Requestor</label>
+                                    <input type="text" id="requestor" placeholder="Placeholder for requestor" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+                                <div class="mt-4">
+                                    <label for="typeOfRequest" class="block text-sm font-medium text-gray-700">Type of Request</label>
+                                    <input type="text" id="typeOfRequest" placeholder="Placeholder for type of request" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+                                <div class="mt-4">
+                                    <label for="nameOfRequest" class="block text-sm font-medium text-gray-700">Name of Request</label>
+                                    <input type="text" id="nameOfRequest" placeholder="Placeholder for name of request" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+                                <div class="mt-4">
+                                    <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                                    <input type="date" id="date" placeholder="Placeholder for date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+                                <div class="mt-4">
+                                    <label for="lastApprovedBy" class="block text-sm font-medium text-gray-700">Last Approved by</label>
+                                    <input type="text" id="lastApprovedBy" placeholder="Placeholder for approver" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+                                <div class="mt-4">
+                                    <label for="completion" class="block text-sm font-medium text-gray-700">Completion</label>
+                                    <input type="text" id="completion" placeholder="Placeholder for completion" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                </div>
+                                <div class="mt-6 flex justify-end">
+                                    <button @click="showEditDetailsModal = false" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
                 <div x-show="showViewDetailsModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                     <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
                         <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
@@ -258,11 +286,39 @@
                             </svg>
                             <div class="my-8">
                                 <h4 class="text-lg text-[#333] font-semibold">View Details</h4>
-                                <!-- Editable fields go here -->
+                                <!-- Viewable fields with placeholders -->
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Name of Requestor</label>
+                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for requestor</p>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Type of Request</label>
+                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for type of request</p>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Name of Request</label>
+                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for name of request</p>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Date</label>
+                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for date</p>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Last Approved by</label>
+                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for approver</p>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Completion</label>
+                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for completion</p>
+                                </div>
+                                <div class="mt-6 flex justify-end">
+                                    <button @click="showViewDetailsModal = false" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
         </div>
 
 
