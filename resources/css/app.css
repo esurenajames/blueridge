@@ -3,3 +3,9 @@
 @tailwind utilities;
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 
+.wrap-header {
+    white-space: normal; /* Allow wrapping */
+    word-wrap: break-word; /* Ensure long words are broken to fit */
+    min-width: 100px; /* Minimum width for the header cell */
+    max-width: 100px; /* Maximum width for the header cell */
+}

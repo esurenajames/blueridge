@@ -5,13 +5,13 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
-@vite(['resources/css/app.css','resources/js/app.js'])
+@vite('resources/css/main.css', 'resources/js/app.js')
+<title>Admin Panel</title>
 
-<title>Sample</title>
+<body>
+    <!--sidenav -->
+      @livewire('sidebar-secretary')
 
-<body class="bg-gray-200 rounded-lg">
-   <!-- sidenav -->
-@livewire('sidebar-secretary')
 <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
 <!-- end sidenav -->
 
@@ -38,7 +38,7 @@
 
 
         <div class="mt-6" x-data="{ activeTab: 'Pending Request' }">
-         <div class="max-w-screen-full border-b border-gray-200 dark:border-neutral-400">
+         <div class="max-w-screen-full border-b border-gray-200 dark:border-neutral-300">
              <ul class="flex font-sans relative justify-start">
                  <li :class="activeTab === 'Pending Request' ? 'text-blue-600 font-bold border-b-2 border-blue-500' : 'text-gray-600 font-bold'" 
                      class="flex items-center min-w-36 whitespace-nowrap text-[15px] py-3 px-4 cursor-pointer transition-all relative z-10" 
@@ -67,6 +67,28 @@
            <!-- Content Div -->
             <div class="max-w-screen-max ">
             <!-- Sample Content -->
+                <div class="flex items-center justify-between mt-4">
+                    <div class="flex items-center">
+                        <input type="text" class="block mr-2 px-4 py-2 rounded-md border bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search">
+                        <select class="block mr-2 px-4 py-2 border border-white rounded-md text-gray-600 bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500" >
+                            <option value="" disabled class="text-md ">Select filters</option>
+                            <option value="requestor" class="text-md ">Type of Request</option>
+                            <option value="type" class="text-md ">Punong Barangay's Certification</option>
+                            <option value="date" class="text-md ">Request Form</option>
+                            <option value="approver" class="text-md ">Petty Cash</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-md mr-2 text-gray-600">Show entries:</span>
+                        <select class="block px-4 py-2 border rounded-md text-gray-600 bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+      
                <div x-show="activeTab === 'Pending Request'">
                   <div class="overflow-x-auto mt-4 rounded-md">
                      <table class="min-w-full divide-y divide-gray-400">
@@ -88,28 +110,11 @@
                                     <p class="text-sm font-bold text-gray-500">May 24, 2024</p>
                                  </td>
                               </tr>
-                              <tr class="bg-gray-50 hover:bg-gray-100 cursor-pointer" onclick="window.location.href = '{{ route('request-approval') }}';">
-                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center space-x-2">
-                                          <img src="https://pics.craiyon.com/2023-10-03/99c00ba98d5140abb234cbb552471b33.webp" alt="Profile Picture" class="w-8 h-8 rounded-full">
-                                          <p class="text-md font-semibold">Jane Smith</p>
-                                    </div>
-                                 </td>
-                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <p class="text-gray-600">Request 2</p>
-                                 </td>
-                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <p class="text-gray-600">Steps 2/5</p>
-                                 </td>
-                                 <td class="px-6 py-4 whitespace-nowrap text-right">
-                                    <p class="text-sm font-bold text-gray-500">May 23, 2024</p>
-                                 </td>
-                              </tr>
-                              <!-- Add more pending requests here as needed -->
                         </tbody>
                      </table>
                   </div>
             </div>
+
             <div x-show="activeTab === 'In progress'">
                <div class="overflow-x-auto mt-4 rounded-md">
                   <table class="min-w-full divide-y divide-gray-400">
@@ -122,7 +127,7 @@
                                   </div>
                               </td>
                               <td class="px-6 py-4 whitespace-nowrap text-center">
-                                  <p class="text-gray-600">Request for dungeon dumpsadas</p>
+                                  <p class="text-gray-600"><span></span> for dungeon dumpsadas</p>
                               </td>
                               <td class="px-6 py-4 whitespace-nowrap text-center">
                                   <p class="text-gray-600">Steps 2/5</p>
@@ -174,45 +179,58 @@
                                   <p class="text-sm font-bold text-gray-500">May 24, 2024</p>
                               </td>
                           </tr>
-                          <tr class="bg-gray-50 hover:bg-gray-100 cursor-pointer" onclick="window.location.href = '{{ route('request-approval') }}';">
-                              <td class="px-6 py-4 whitespace-nowrap">
-                                  <div class="flex items-center space-x-2">
-                                      <img src="https://pics.craiyon.com/2023-10-03/99c00ba98d5140abb234cbb552471b33.webp" alt="Profile Picture" class="w-8 h-8 rounded-full">
-                                      <p class="text-md font-semibold">Jane Smith</p>
-                                  </div>
-                              </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-center">
-                                  <p class="text-gray-600">Request 2</p>
-                              </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-center">
-                                  <p class="text-gray-600">Steps 2/5</p>
-                              </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-right">
-                                  <p class="text-sm font-bold text-gray-500">May 23, 2024</p>
-                              </td>
-                          </tr>
-                          <!-- Add more pending requests here as needed -->
+
                       </tbody>
                   </table>
               </div>
             </div>
          </div>
      </div>
-           
+     
+     <div class="flex items-center justify-between mt-2">
+        <!-- Help text -->
+        <span class="text-md mb-2 mt-2 text-gray-700 dark:text-gray-400">
+            Showing <span class="font-semibold text-gray-500">1</span> to <span class="font-semibold text-gray-500">10</span> of <span class="font-semibold text-gray-500">100</span> Entries
+        </span>
+        <!-- Buttons -->
+        <nav aria-label="Page navigation example">
+            <ul class="flex items-center -space-x-px h-10 text-base mb-2 mt-2">
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <span class="sr-only">Previous</span>
+                  <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+              </li>
+              <li>
+                <a href="#" aria-current="page" class="z-10 flex items-center justify-center px-4 h-10 border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <span class="sr-only">Next</span>
+                  <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </nav>
+      </div>
+</div>
    </div>
-     
-
-
-     
-
-     
-    
-     
-     
-     
-     
-     
-      
      
    </body>
       <!-- End Content -->

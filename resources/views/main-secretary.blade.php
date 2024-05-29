@@ -13,7 +13,7 @@
 
 <body class="bg-gray-200 rounded-lg">
     <!--sidenav -->
-      @livewire('sidebar')
+      @livewire('sidebar-secretary')
       <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
     <!-- end sidenav -->
     <main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-200 min-h-screen transition-all main">

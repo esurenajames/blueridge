@@ -85,9 +85,17 @@ Route::get('/purchase-order', function () {
     return view('purchase-order');
 })->name('purchase-order');
 
+Route::get('/expense-table', function () {
+    return view('/expense-table');
+})->name('/expense-table');
+
+Route::get('/approval-management', function () {
+    return view('approval-management');
+})->name('approval-management');
+
 Route::get('/sample', function () {
-    return view('/sample');
-})->name('/sample');
+    return view('sample');
+})->name('sample');
 
 Route::get('/main', function () {
     return view('main');
