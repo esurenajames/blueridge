@@ -90,8 +90,8 @@ Route::get('/expense-table', function () {
 })->name('/expense-table');
 
 Route::get('/approval-management', function () {
-    return view('approval-management');
-})->name('approval-management');
+    return view('/approval-management');
+})->name('/approval-management');
 
 Route::get('/sample', function () {
     return view('sample');
@@ -104,6 +104,10 @@ Route::get('/main', function () {
 Route::get('/main-secretary', function () {
     return view('main-secretary');
 })->name('main-secretary');
+
+Route::get('/main-kapitan', function () {
+    return view('main-kapitan');
+})->name('main-kapitan');
 
 
 });

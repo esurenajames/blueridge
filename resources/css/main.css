@@ -18,6 +18,10 @@
   --tw-content: '';
 }
 
+.editable-cell {
+  background-color: #f0f0f0; /* Light gray background */
+  border: 1px solid #ddd; /* Gray border */
+}
 
 .question-mark-btn {
   display: inline-block;
