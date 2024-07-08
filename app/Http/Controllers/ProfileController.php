@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class ProfileController extends Controller
 {
@@ -34,19 +36,38 @@ class ProfileController extends Controller
             'username' => 'required|string|max:255',
             'email' => 'required|email',
             'profession' => 'required|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:102400',
         ]);
-
+    
         // Get the authenticated user
         $user = Auth::user();
-
+    
+        // Handle the profile picture upload
+        if ($request->hasFile('profile_picture')) {
+            // Delete the old profile picture if it exists
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+    
+            // Store the new profile picture
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $validatedData['profile_picture'] = $path;
+        }
+    
         // Update the user's information
         $user->update($validatedData);
-
-        // Optionally, you can redirect the user after saving
-        return redirect()->route('settings')->with('success', 'Profile updated successfully.');
+    
+        // Redirect the user with a success message
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
-        public function updatePassword(Request $request)
+    /**
+     * Update the user's password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request)
     {
         // Validate the incoming request data
         $request->validate([
@@ -67,7 +88,8 @@ class ProfileController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
 
-        // Redirect the user with success message
+        // Redirect the user with a success message
         return redirect()->route('settings')->with('success', 'Password updated successfully.');
     }
 }
+

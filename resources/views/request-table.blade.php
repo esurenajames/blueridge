@@ -40,6 +40,7 @@
                     <input type="text" class="block mr-2 px-4 py-2 rounded-md border bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search">
                     <select class="block mr-2 px-4 py-2 border border-white rounded-md text-gray-600 bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500" >
                         <option value="" disabled class="text-md ">Select Type of Request</option>
+                        <option value="type" class="text-md ">View All</option>
                         <option value="type" class="text-md ">Punong Barangay's Certification</option>
                         <option value="date" class="text-md ">Request Form</option>
                         <option value="approver" class="text-md ">Petty Cash</option>
