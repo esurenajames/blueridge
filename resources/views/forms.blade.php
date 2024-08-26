@@ -1,9 +1,12 @@
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
@@ -37,17 +40,18 @@
 
 <!-- Request Type -->
 <div x-data="{ step: 1, rows: [{}], requestType: '', showModal: false, showConfirmationModal: false }">
-       <!-- Stepper  -->
-        <div class="mx-auto max-w-xl mt-7">
-            <div class="max-w-sm mx-auto px-4 font-[sans-serif]">
-                <h4 class="text-md font-semibold" x-text="step + '/3 : Step ' + step">1/3 : Step 1</h4>
-                <div class="flex items-start gap-3 mt-2">
-                    <div x-ref="progress1" class="w-full h-1 rounded-xl bg-green-500"></div>
-                    <div x-ref="progress2" class="w-full h-1 rounded-xl bg-gray-300"></div>
-                    <div x-ref="progress3" class="w-full h-1 rounded-xl bg-gray-300"></div>
-                </div>
+
+    <!-- Stepper -->
+    <div class="mx-auto max-w-xl mt-7">
+        <div class="max-w-sm mx-auto px-4">
+            <h4 class="text-md font-semibold" x-text="step + '/3 : Step ' + step">1/3 : Step 1</h4>
+            <div class="flex items-start gap-3 mt-2">
+                <div x-ref="progress1" class="w-full h-1 rounded-xl bg-green-500"></div>
+                <div x-ref="progress2" class="w-full h-1 rounded-xl bg-gray-300"></div>
+                <div x-ref="progress3" class="w-full h-1 rounded-xl bg-gray-300"></div>
             </div>
         </div>
+    </div>
         <!-- End of Stepper  -->
 
         <!-- Step 1: Select Request -->
@@ -104,60 +108,61 @@
 
                         <!-- Account Information -->
                         <div class="col-span-2">
-                            <label for="account_info" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information</label>
-                            <div class="overflow-x-auto mb-2">
-                                <table id="account-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
-                                    <thead>
-                                        <tr>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="(row, index) in rows" :key="index">
-                                            <tr>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.account_no" class="border-0 w-full p-2" placeholder="Account No." required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.check_no" class="border-0 w-full p-2" placeholder="Check No." required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="date" x-model="row.date" class="border-0 w-full p-2" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.payee" class="border-0 w-full p-2" placeholder="Payee" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <input type="text" x-model="row.purpose" class="border-0 w-full p-2" placeholder="Purpose" required>
-                                                </td>
-                                                <td class="border px-4 py-2">
-                                                    <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Delete</button>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="flex justify-end">
-                                <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
-                            </div>
-                        </div>
+        <label for="account_info" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information</label>
+        <div class="overflow-x-auto mb-2">
+            <table id="account-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(row, index) in rows" :key="index">
+                        <tr>
+                            <td class="border px-4 py-2">
+                                <input type="text" x-model="row.account_no" class="border-0 w-full p-2" placeholder="Account No." required>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <input type="text" x-model="row.check_no" class="border-0 w-full p-2" placeholder="Check No." required>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <input type="date" x-model="row.date" class="border-0 w-full p-2" required>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <input type="text" x-model="row.payee" class="border-0 w-full p-2" placeholder="Payee" required>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <input type="text" x-model="row.purpose" class="border-0 w-full p-2" placeholder="Purpose" required>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Delete</button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div class="flex justify-end">
+            <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+        </div>
+    </div>
 
-                        <!-- Next and Previous Buttons -->
-                        <div class="col-span-2 flex justify-between mt-4">
-                            <button @click="step = 1; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                            <button @click="step = 3; console.log(step); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                        </div>
-                    </div>
+    <!-- Next and Previous Buttons -->
+    <div class="col-span-2 flex justify-between mt-4">
+        <button @click="step = 1; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+        <button @click="step = 3; console.log(step); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+    </div>
+</div>
+
                 </div>
             </div>
         </div>
@@ -193,21 +198,42 @@
 
                         <!-- Account Information Summary -->
                         <div class="col-span-2">
-                            <label class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information Summary</label>
-                            <div class="overflow-x-auto mb-2">
-                                <table class="min-w-full bg-white border-gray-300 border rounded-lg">
-                                    <thead>
-                                        <tr>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                            <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Summary rows will be dynamically added here -->
+        <label class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Account Information Summary</label>
+        <div class="overflow-x-auto mb-2">
+            <table class="min-w-full bg-white border-gray-300 border rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Account No.</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Check No.</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Date</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Payee</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(row, index) in rows" :key="index">
+                        <tr>
+                            <td class="border px-4 py-2">
+                                <span x-text="row.account_no"></span>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <span x-text="row.check_no"></span>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <span x-text="row.date"></span>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <span x-text="row.payee"></span>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <span x-text="row.amount"></span>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <span x-text="row.purpose"></span>
+                            </td>
+                        </tr>
+                    </template>
                                     </tbody>
                                 </table>
                             </div>
@@ -223,93 +249,202 @@
                 </div>
             </div>
         </div>
-
-        <!-- Request Form Info -->
+ 
         <div x-show="step === 2 && requestType === 'type2'">
-            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
-                <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
+    <form x-data="fileUploader()" x-init="init()" @submit.prevent="submitRequest" method="POST" enctype="multipart/form-data" class="container mx-auto p-4">
+        @csrf
+        <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
+            <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
+                <h2 class="pt-7 text-xl font-bold sm:text-xl">Request Info</h2>
+                
+                <!-- Request Name -->
+                <div class="grid mt-8">
+                    <div class="mb-2 sm:mb-6">
+                        <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
+                        <input type="text" id="request_name" name="request_name" x-model="requestData.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
+                    </div>
+
+                   <!-- Type of Request -->
+                    <div class="mb-2 sm:mb-6">
+                        <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
+                        <input type="text" id="request_type" name="request_type" x-model="requestData.type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request type" required>
+                    </div>
+
+                    <!-- Request Description -->
+                    <div class="mb-2 sm:mb-6">
+                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                        <textarea id="request_description" name="request_description" x-model="requestData.description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request description" required></textarea>
+                    </div>
                     
-                    <!-- Request Name -->
-                    <div class="grid mt-8">
-                        <div class="mb-2 sm:mb-6">
-                            <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                            <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
-                        </div>
-                        
-                        <!-- Request Description -->
-                        <div class="mb-2 sm:mb-6">
-                            <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                            <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request description" required></textarea>
-                        </div>
-                        
-                        <!-- Request File -->
-                        
-                        <div class="mb-2 sm:mb-6">
-                        <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload a File</label>
-                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 g-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2 border-gray-300 border-solid rounded-lg cursor-pointer bg-white hover:bg-gray-100 ">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">PDF, WORD, PNG, or JPG (MAX. 800x400px)</p>
+                    <!-- File Upload Section -->
+                    <div class="mb-6">
+                        <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
+                        <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
+                    </div>
+                    
+                    <div x-show="hasFiles" class="mt-4">
+                        <h3 class="text-lg font-medium mb-2">Selected Files</h3>
+                        <template x-for="(file, index) in files" :key="index">
+                            <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <!-- File Preview (Clickable for Full View) -->
+                                    <a :href="file.url" target="_blank" class="w-20 h-25 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
+                                        <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-25 h-25" alt="Image preview">
+                                        <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-400 h-400"></span>
+                                    </a>
+                                    <!-- File Name and Size -->
+                                    <div class="flex flex-col">
+                                        <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline" x-text="file.name"></a>
+                                        <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
+                                    </div>
+                                </div>
+                                <!-- Remove Button -->
+                                <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
                             </div>
-                            <input id="dropzone-file" type="file" class="hidden" />
-                        </label>
-                    </div>
-
-
-                    </div>
-                    
-                    <!-- Next Button -->
-                    <div class="flex justify-between w-full">
-                        <button @click="step = 1; console.log(step); $refs.progress2.classList.remove('bg-green-500'); $refs.progress1.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-gray-300'); $refs.progress1.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                        <button @click="step = 3; console.log(step); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress3.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
-                    </div>
-                </div>
+                        </template>
+                    </div>     
+                </form>
             </div>
-        </div>
 
-   <!-- Step 2 Confirmation -->
-        <div x-show="step === 3 && requestType === 'type2'">
-            <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose ">
-                <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
-                    <h2 class="pt-7 text-xl font-bold sm:text-xl">Confirmation</h2>
-                    
-                    <!-- Summary -->
-                    <div class="grid mt-8">
+<script>
+    function fileUploader() {
+        return {
+            requestData: {
+                name: '',
+                description: ''
+            },
+            files: [],
+            hasFiles: false,
 
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
-                            <input type="text" id="summary_type" name="summary_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-                        </div>
+            init() {
+                this.hasFiles = this.files.length > 0;
+            },
 
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
-                            <input type="text" id="summary_name" name="summary_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-                        </div>
-                        
-                        <!-- Request Description -->
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                            <textarea id="summary_description" name="summary_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly></textarea>
-                        </div>
-                        
-                        <!-- Request File -->
-                        <div class="mb-2 sm:mb-6">
-                            <label for="summary_file" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">File</label>
-                            <input type="text" id="summary_file" name="summary_file" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" readonly>
-                        </div>
-                        
-                    </div>
-                    
-                    <!-- Submit Button -->
+            previewFiles(event) {
+                const files = event.target.files;
+                if (!files || files.length === 0) return;
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.files.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            url: e.target.result
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+                this.hasFiles = true;
+            },
+
+            removeFile(index) {
+                this.files.splice(index, 1);
+                if (this.files.length === 0) {
+                    this.hasFiles = false;
+                }
+            },
+
+            formatBytes(bytes, decimals = 2) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const dm = decimals < 0 ? 0 : decimals;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            },
+
+            getFileIcon(file) {
+                const fileType = file.type.split('/')[1];
+                let iconHtml = '';
+
+                switch (fileType) {
+                    case 'pdf':
+                        iconHtml = '<i class="far fa-file-pdf"></i>';
+                        break;
+                    case 'doc':
+                    case 'docx':
+                        iconHtml = '<i class="far fa-file-word"></i>';
+                        break;
+                    case 'xls':
+                    case 'xlsx':
+                        iconHtml = '<i class="far fa-file-excel"></i>';
+                        break;
+                    default:
+                        iconHtml = '<i class="far fa-file-alt"></i>';
+                        break;
+                }
+
+                return iconHtml;
+            },
+
+            submitRequest() {
+                const formData = new FormData();
+                formData.append('request_name', this.requestData.name);
+                formData.append('request_description', this.requestData.description);
+                formData.append('request_type', this.requestData.type); // Add request_type
+
+                this.files.forEach(file => {
+                    const fileData = this.dataURLtoFile(file.url, file.name);
+                    formData.append('files[]', fileData);
+                });
+
+                const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+                const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+                fetch('{{ route('request.submit') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '{{ route('main') }}'; // Redirect on success
+                    } else {
+                        console.error('Submission failed:', data.message); // Handle submission failure
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error); // Handle fetch errors
+                });
+            },
+
+
+            dataURLtoFile(dataurl, filename) {
+                const arr = dataurl.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new File([u8arr], filename, { type: mime });
+            }
+        }
+    }
+</script>
+
                     <div class="flex justify-end w-full mt-4">
                         <button @click="showConfirmationModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send</button>
                     </div>
                     <div class="flex justify-between w-full mt-6">
-                        <button @click="step = 2; console.log(step); $refs.progress3.classList.remove('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                        <button @click="step = 1; console.log(step); $refs.progress3.classList.remove('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
                     </div>
                 </div>
             </div>
@@ -355,13 +490,10 @@
             </div>
         </div>
 
-        <!-- End of Modal -->
+
 </div>
-
-
-      <!-- End Content -->
+</div>
 </main>
-
    <script src="https://unpkg.com/@popperjs/core@2"></script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    <script>

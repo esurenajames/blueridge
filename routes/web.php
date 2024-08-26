@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\ProfileSettings;
+use App\Http\Controllers\RequestController;
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 
@@ -108,6 +109,11 @@ Route::get('/main-secretary', function () {
 Route::get('/main-kapitan', function () {
     return view('main-kapitan');
 })->name('main-kapitan');
+
+Route::post('/submit-request', [RequestController::class, 'submit'])->name('request.submit');
+Route::get('/view-all', [RequestController::class, 'viewAll'])->name('view-all');
+
+
 
 });
 

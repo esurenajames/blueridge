@@ -41,116 +41,45 @@
 
 <div class="mt-2 w-3/4 mx-auto">
 
-        <!-- Content for View All tab -->
-            <div id="view-all-content" class="tab-content">
-                <!-- Request Name and Status -->
-                <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                    <div class="flex justify-between items-start mb-4">
-                        <h2 class="text-lg font-bold text-gray-900">Upgrade Barangay Office Computer Systems</h2>
-                        <div>                
-                            <span class="question-mark-btn mr-1">
-                                <i class='bx bx-question-mark'></i>
-                            </span> <span class="self-end ml-1 font-light">|</span>
-                            <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Request</span>
-                        </div>
-                    </div>
-                    <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                    <!-- Description, Type, and Time -->
-                    <div class="request-item">
-                        <p>Description: Modernize the barangay office computer systems by upgrading hardware and software to enhance productivity and efficiency in delivering services to residents.</p>
-                        <p>Type of request: IT Upgrade</p>
-                        <p>Time sent: 11:00 AM</p>
-                    </div>
-                    
-                    <!-- View Details Button -->
-                    <div class="flex justify-end mt-4">
-                        <a href="{{ route('details-2') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                        <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                    </div>
-                </div>
-                <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                    <div class="flex justify-between items-start mb-4">
-                        <h2 class="text-lg font-bold text-gray-900">Community Health Awareness Seminar</h2>
-                        <div>                
-                            <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
-                            <span class="question-mark-btn mr-1">
-                                <i class='bx bx-question-mark'></i>
-                            </span> <span class="self-end ml-1 font-light">|</span>
-                            <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> 
-                        </div>
-                    </div>
-                    <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                    <!-- Description, Type, and Time -->
-                    <div class="request-item">
-                        <p>Description: Organize a health awareness seminar for the community focusing on preventive healthcare measures.</p>
-                        <p>Type of request: Event Planning</p>
-                        <p>Time sent: 1:45 PM</p>
-                    </div>
-                    
-                    <!-- View Details Button -->
-                    <div class="flex justify-end mt-4">
-                        <a href="{{ route('details') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                        <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                    </div>
-                </div>
-                <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                    <div class="flex justify-between items-start mb-4">
-                        <h2 class="text-lg font-bold text-gray-900">Procurement of Office Printers and Supplies</h2>
-                        <div>                
-                            <span class="question-mark-btn mr-1">
-                                <i class='bx bx-question-mark'></i>
-                            </span> <span class="self-end ml-1 font-light">|</span>
-                            <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Order</span>
-                        </div>
-                    </div>
-                    <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                    <!-- Description, Type, and Time -->
-                    <div class="request-item">
-                        <p>Description: Acquire new printers and necessary supplies (such as ink cartridges, paper, etc.) for the barangay office to improve efficiency in document processing and administrative tasks.</p>
-                        <p>Type of request: Procurement</p>
-                        <p>Time sent: 9:30 AM</p>
-                    </div>
-                    
-                    <!-- View Details Button -->
-                    <div class="flex justify-end mt-4">
-                        <a href="{{ route('details-4')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                        <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                        <a href="{{ route('purchase-order')}}" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Proof of purchase</a>
-                    </div>
-                </div>
-        </div>
-
-
-        <!-- Content for approve-content tab -->
-        <div id="quotation-content" class="tab-content" style="display: none;">
+       <!-- Content for View All tab -->
+<div id="view-all-content" class="tab-content">
+    @foreach ($requests as $request)
+        <!-- Request Container -->
+        <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
             <!-- Request Name and Status -->
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Community Health Awareness Seminar</h2>
-                    <div>                
-                        <span class="text-red-500 self-end ml-1 font-medium">Date Before: Placeholder</span>
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation</span> 
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Organize a health awareness seminar for the community focusing on preventive healthcare measures.</p>
-                    <p>Type of request: Event Planning</p>
-                    <p>Time sent: 1:45 PM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href="{{ route('details') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                    <a href="{{ route('quotation') }}" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Send Quotation</a>
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-lg font-bold text-gray-900">{{ $request->request_name }}</h2>
+                <div>
+                    <span class="question-mark-btn mr-1">
+                        <i class='bx bx-question-mark'></i>
+                    </span>
+                    <span class="self-end ml-1 font-light">|</span>
+                    <span class="text-yellow-500 self-end ml-1 font-medium">
+                        @if($request->status == 1)
+                            For Approval
+                        @else
+                            {{ $request->status }}
+                        @endif
+                    </span>
                 </div>
             </div>
+            <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+            <!-- Description, Type, and Time -->
+            <div class="request-item">
+                <p>Description: {{ $request->request_description }}</p>
+                <p>Type of request: {{ $request->request_type }}</p>
+                <p>Time sent: {{ $request->created_at->format('h:i A') }}</p>
+            </div>
+            <!-- View Details and Follow Up Buttons -->
+            <div class="flex justify-end mt-4">
+                <a href="{{ route('details-2', ['id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
+                <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
+            </div>
         </div>
+    @endforeach
+</div>
+
+
         <!-- end of approve-content tab -->
 
 
