@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
 
 class ProfileController extends Controller
 {
@@ -38,27 +37,29 @@ class ProfileController extends Controller
             'profession' => 'required|string|max:255',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:102400',
         ]);
-    
+
         // Get the authenticated user
         $user = Auth::user();
-    
+
         // Handle the profile picture upload
         if ($request->hasFile('profile_picture')) {
             // Delete the old profile picture if it exists
             if ($user->profile_picture) {
                 Storage::disk('public')->delete($user->profile_picture);
             }
-    
+
             // Store the new profile picture
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
             $validatedData['profile_picture'] = $path;
         }
-    
+
         // Update the user's information
-        $user->update($validatedData);
-    
-        // Redirect the user with a success message
-        return redirect()->back()->with('success', 'Profile updated successfully!');
+        try {
+            $user->update($validatedData);
+            return redirect()->back()->with('success', 'Profile updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating the profile.');
+        }
     }
 
     /**
@@ -72,24 +73,31 @@ class ProfileController extends Controller
         // Validate the incoming request data
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
+            'new_password' => 'required|string|min:8',
+            'new_password_confirmation' => 'required|string|min:8',
         ]);
-
+    
         // Get the authenticated user
         $user = Auth::user();
-
+    
         // Check if the current password matches the one stored in the database
         if (!Hash::check($request->current_password, $user->password)) {
-            return redirect()->route('settings')->with('error', 'The current password is incorrect.');
+            return redirect()->back()->with('error', 'Failed to change password: the current password is incorrect.');
         }
-
+    
+        // Check if the new password and confirmation match
+        if ($request->new_password !== $request->new_password_confirmation) {
+            return redirect()->back()->with('error', 'Failed to change password: the new passwords do not match.');
+        }
+    
         // Update the user's password
-        $user->update([
-            'password' => Hash::make($request->new_password),
-        ]);
-
-        // Redirect the user with a success message
-        return redirect()->route('settings')->with('success', 'Password updated successfully.');
+        try {
+            $user->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+            return redirect()->back()->with('success', 'Password updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating the password.');
+        }
     }
 }
-

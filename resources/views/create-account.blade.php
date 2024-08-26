@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css">
+<script src="https://cdn.tailwindcss.com"></script>
 @vite('resources/css/app.css')
 
 <body class="bg-gray-200 rounded-lg py-5">
