@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('profile_picture')->nullable()->after('remember_token');
-            $table->string('profession')->nullable()->after('profile_picture');
         });
     }
 
@@ -24,7 +23,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('profile_picture');
-            $table->dropColumn('profession');
         });
     }
 };

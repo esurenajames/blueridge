@@ -9,23 +9,32 @@ class Expense extends Model
 {
     use HasFactory;
 
+    protected $table = 'expense_table';
+
+    // Specify the fields that can be mass-assigned
     protected $fillable = [
         'object_of_expenditure',
         'proposed_budget',
-        'first_half_jan',
-        'first_half_feb',
-        'first_half_mar',
-        'first_half_apr',
-        'first_half_may',
-        'first_half_jun',
-        'second_half_jul',
-        'second_half_aug',
-        'second_half_sep',
-        'second_half_oct',
-        'second_half_nov',
-        'second_half_dec',
         'current_expenses',
         'ytd',
         'balance',
+        'jan',
+        'feb',
+        'mar',
+        'apr',
+        'may',
+        'jun',
+        'jul',
+        'aug',
+        'sept',
+        'oct',
+        'nov',
+        'dec',
+        'section_id',  // Added section_id to the fillable array
     ];
+
+    /**
+     * Optionally, you could add validation logic here
+     * to ensure that section_id only takes the values 1, 2, or 3.
+     */
 }
