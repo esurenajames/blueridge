@@ -45,165 +45,267 @@
             </a>
                 <div class="mt-6">                
                     <span>
-                        <a>Request ID: #12345</a>
+                        <a>#{{$request->id}}</a>
                         <span class="question-mark-btn">
                                 <i class='bx bx-question-mark'></i>
                             </span>
                     </span> <span class="self-end ml-1 font-light">|</span>
-                    <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Request</span>
+                    @if($request->status + 1 == 2)
+                        <span class="text-yellow-500 self-end ml-1 font-medium">For Quotation Form</span>
+                    @elseif($request->status + 1 == 3)
+                        <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Request</span>
+                    @elseif($request->status + 1 == 4)
+                        <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Order</span>
+                    @endif
+                
+
                 </div>
             </div>
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
 
         <!-- Existing content -->
         <div class="px-8 mt-1 sm:rounded-lg pb-8">
-            <!-- Start of Stepper -->            
-            <div class="flex items-start max-w-screen-lg mx-auto">
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-blue-600 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">1</span>
-                        </div>
-                    <div class="w-full h-1 mx-4 rounded-lg bg-blue-600"></div>
+    <!-- Start of Stepper -->            
+    <div class="px-8 mt-1 sm:rounded-lg pb-8">
+    <!-- Start of Stepper -->
+    <div class="flex items-start max-w-screen-lg mx-auto">
+        <!-- Step 1 -->
+        <div class="w-full">
+            <div class="flex items-center w-full">
+                <div class="w-8 h-8 shrink-0 mx-[-1px] 
+                    @if($request->status >= 1) bg-blue-600 @else bg-gray-300 @endif
+                    p-1.5 flex items-center justify-center rounded-full">
+                    <span class="text-base text-white font-bold">1</span>
                 </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-blue-500">Request Form</h6>
-                        <p class="text-xs text-gray-400">Completed</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-blue-600 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">2</span>
-                        </div>
-                        <div class="w-full h-1 mx-4 rounded-lg bg-blue-600"></div>
-                    </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-blue-500">Quotation Form</h6>
-                        <p class="text-xs text-gray-400">Completed</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">3</span>
-                        </div>
-                    <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
-                </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-gray-500">Purchase Request</h6>
-                        <p class="text-xs text-gray-400">Pending</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
-                <div class="w-full">
-                    <div class="flex items-center w-full">
-                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
-                            <span class="text-base text-white font-bold">4</span>
-                        </div>
-                    <div class="w-full h-1 mx-4 rounded-lg bg-gray-300"></div>
-                    </div>
-                    <div class="mt-2 mr-4">
-                        <h6 class="text-base font-bold text-gray-500">Purchase Order</h6>
-                        <p class="text-xs text-gray-400">Pending</p>
-                        <p class="text-xs text-gray-400">Date Placeholder</p>
-                    </div>
-                </div>
+                <div class="w-full h-1 mx-4 rounded-lg 
+                    @if($request->status >= 1) bg-blue-600 @else bg-gray-300 @endif"></div>
             </div>
-            <div>
-            <h2 class="text-sm font-bold text-gray-900 mt-10">Request Form Details:</h2>
+            <div class="mt-2 mr-4">
+                <h6 class="text-base font-bold 
+                    @if($request->status >= 1) text-blue-500 @else text-gray-500 @endif">Request Form</h6>
+                <p class="text-xs text-gray-400">
+                    @if($request->status >= 1) Completed @else Pending @endif
+                </p>
+                <p class="text-xs text-gray-400">Date Placeholder</p>
             </div>
-            <!-- Cut -->
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Upgrade Barangay Office Computer Systems</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Request</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Modernize the barangay office computer systems by upgrading hardware and software to enhance productivity and efficiency in delivering services to residents.</p>
-                    <p>Type of request: IT Upgrade</p>
-                    <p>Time sent: 11:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href="{{ route('quotation') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;" hidden>Send Quotation</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-            <div>
-                <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks:</h2>
-                <p class="text-sm"> Please send a quotation before july 12. Make sure the budget is around 8000 only</p>
-            </div>
-            <!-- Quotation Form Details Section -->
-            <div>
-                <h2 class="text-sm font-bold text-gray-900 mt-10">Quotation Form Details:</h2>
-                <!-- List of Submitted Documents -->
-                <div class="mt-4">
-                    <h3 class="text-xs font-semibold text-gray-700">Submitted Documents:</h3>
-                    <ul class="mt-2">
-                        <li>
-                            <a href="#" class="flex items-center space-x-2 text-sm text-blue-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M17.707 1.293A1 1 0 0 1 19 2v16a1 1 0 0 1-1.707.707L13 14.414V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.586l4.293-4.293zM12 7a1 1 0 0 1-1-1V1.414L5.707 7H12z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>Quotation 1.pdf</span>
-                            </a>
-                        </li>
-                        <!-- Add more documents as needed -->
-                    </ul>
-                </div>
-                <!-- List of Approved Documents -->
-                <div class="mt-4">
-                    <h3 class="text-xs font-semibold text-gray-700">Approved Documents:</h3>
-                    <ul class="mt-2">
-                        <li>
-                            <a href="#" class="flex items-center space-x-2 text-sm text-green-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M17.707 1.293A1 1 0 0 1 19 2v16a1 1 0 0 1-1.707.707L13 14.414V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.586l4.293-4.293zM12 7a1 1 0 0 1-1-1V1.414L5.707 7H12z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>Approved Quotation</span>
-                            </a>
-                        </li>
-                        <!-- Add more documents as needed -->
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks:</h2>
-                    <p class="text-sm"> Wait for further updates.</p>
-                </div>
-            </div>
+        </div>
 
-        </div>       
+        <!-- Step 2 -->
+        <div class="w-full">
+            <div class="flex items-center w-full">
+                <div class="w-8 h-8 shrink-0 mx-[-1px] 
+                    @if($request->status >= 2) bg-blue-600 @else bg-gray-300 @endif
+                    p-1.5 flex items-center justify-center rounded-full">
+                    <span class="text-base text-white font-bold">2</span>
+                </div>
+                <div class="w-full h-1 mx-4 rounded-lg 
+                    @if($request->status >= 2) bg-blue-600 @else bg-gray-300 @endif"></div>
+            </div>
+            <div class="mt-2 mr-4">
+                <h6 class="text-base font-bold 
+                    @if($request->status >= 2) text-blue-500 @else text-gray-500 @endif">Quotation Form</h6>
+                <p class="text-xs text-gray-400">
+                    @if($request->status >= 2) Completed @else Pending @endif
+                </p>
+                <p class="text-xs text-gray-400">Date Placeholder</p>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="w-full">
+            <div class="flex items-center w-full">
+                <div class="w-8 h-8 shrink-0 mx-[-1px] 
+                    @if($request->status >= 3) bg-blue-600 @else bg-gray-300 @endif
+                    p-1.5 flex items-center justify-center rounded-full">
+                    <span class="text-base text-white font-bold">3</span>
+                </div>
+                <div class="w-full h-1 mx-4 rounded-lg 
+                    @if($request->status >= 3) bg-blue-600 @else bg-gray-300 @endif"></div>
+            </div>
+            <div class="mt-2 mr-4">
+                <h6 class="text-base font-bold 
+                    @if($request->status >= 3) text-blue-500 @else text-gray-500 @endif">Purchase Request</h6>
+                <p class="text-xs text-gray-400">
+                    @if($request->status >= 3) Completed @else Pending @endif
+                </p>
+                <p class="text-xs text-gray-400">Date Placeholder</p>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="w-full">
+            <div class="flex items-center w-full">
+                <div class="w-8 h-8 shrink-0 mx-[-1px] 
+                    @if($request->status >= 4) bg-blue-600 @else bg-gray-300 @endif
+                    p-1.5 flex items-center justify-center rounded-full">
+                    <span class="text-base text-white font-bold">4</span>
+                </div>
+                <div class="w-full h-1 mx-4 rounded-lg 
+                    @if($request->status >= 4) bg-blue-600 @else bg-gray-300 @endif"></div>
+            </div>
+            <div class="mt-2 mr-4">
+                <h6 class="text-base font-bold 
+                    @if($request->status >= 4) text-blue-500 @else text-gray-500 @endif">Purchase Order</h6>
+                <p class="text-xs text-gray-400">
+                    @if($request->status >= 4) Completed @else Pending @endif
+                </p>
+                <p class="text-xs text-gray-400">Date Placeholder</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                <h2 class="text-sm font-bold text-gray-900 mt-10">Request Form Details:</h2>
+    <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
+        <div class="flex justify-between items-start mb-4">
+            <h2 class="text-lg font-bold text-gray-900">{{ $request->request_name }}</h2>
+            <div>        
+                <span class="question-mark-btn mr-1">
+                    <i class='bx bx-question-mark'></i>
+                </span> 
+                <span class="self-end ml-1 font-light">|</span>
+                <span class="text-yellow-500 self-end ml-1 font-medium">
+                    @if($request->status + 1 == 2)
+                        For Quotation Form
+                    @elseif($request->status + 1 == 3)
+                        For Purchase Request
+                    @elseif($request->status + 1 == 4)
+                        For Purchase Order
+                    @else
+                        <!-- Optional: Display nothing or a default message -->
+                    @endif
+                </span>
+
+            </div>
+        </div>
+        <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
+        <!-- Description, Type, and Time -->
+        <div class="request-item">
+            <p>Description: {{ $request->request_description }}</p>
+            <p>Type of request: {{ $request->request_type}}</p>
+            <p>Time sent: {{ $request->created_at->format('h:i:s A') }}</p>
+
+        </div>  
+    </div>
+<div>
+    <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks: </h2>
+    <p class="text-sm">
+    {{ $request->remarks ? $request->remarks : 'No Remarks' }}
+</p>
+
+</div>
+<!-- Quotation Form Details Section -->
+<div>
+    <h2 class="text-sm font-bold text-gray-900 mt-10">Quotation Form Details:</h2>
+    <!-- List of Submitted Documents -->
+    <div class="mt-4">
+        <h3 class="text-xs font-semibold text-gray-700">Submitted Documents:</h3>
+        <ul class="mt-2">
+            <li>
+            <span id="fileLinksContainer"></span>
+
+<!-- Modal HTML -->
+<div id="fileModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+    <div class="bg-white p-4 rounded relative">
+        <span id="closeModal" class="absolute top-2 right-2 cursor-pointer text-red-500">&times;</span>
+        <div id="modalFile"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileLinksContainer = document.getElementById('fileLinksContainer');
+        const fileModal = document.getElementById('fileModal');
+        const closeModal = document.getElementById('closeModal');
+
+        // Parse the JSON-encoded files array from Laravel
+        const filesArray = @json(json_decode($request->files)); // Decode the JSON-encoded file paths
+
+        // Check if filesArray has valid content
+        if (filesArray && filesArray.length > 0) {
+            // Generate file links dynamically
+            filesArray.forEach((file) => {
+                const fileName = file.split('/').pop(); // Extract the file name from the path
+
+                // Create a link wrapper for the icon and file name
+                const linkWrapper = document.createElement('a');
+                linkWrapper.href = file; // Set the file URL directly to the href
+                linkWrapper.download = fileName; // Set the download attribute with the file name
+                linkWrapper.classList.add('flex', 'items-center', 'text-sm', 'text-blue-500', 'hover:underline'); // Styling
+                linkWrapper.setAttribute('data-file', file); // Set the data attribute with the file URL
+
+                // Create the SVG icon element
+                const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svgIcon.setAttribute('class', 'h-4 w-4');
+                svgIcon.setAttribute('viewBox', '0 0 20 20');
+                svgIcon.setAttribute('fill', 'currentColor');
+                svgIcon.innerHTML = `
+                    <path fill-rule="evenodd" d="M17.707 1.293A1 1 0 0 1 19 2v16a1 1 0 0 1-1.707.707L13 14.414V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.586l4.293-4.293zM12 7a1 1 0 0 1-1-1V1.414L5.707 7H12z" clip-rule="evenodd"/>`;
+
+                // Create the text element
+                const linkText = document.createElement('span');
+                linkText.textContent = fileName;
+
+                // Append the SVG icon and text to the link wrapper
+                linkWrapper.appendChild(svgIcon);
+                linkWrapper.appendChild(linkText);
+
+                // Append the link wrapper to the container
+                fileLinksContainer.appendChild(linkWrapper);
+            });
+        } else {
+            // If filesArray is empty or invalid, display a message
+            fileLinksContainer.textContent = "No files available.";
+        }
+
+        // Close the modal when clicking outside of the modal content
+        fileModal.addEventListener('click', function(event) {
+            if (event.target === fileModal) {
+                fileModal.classList.add('hidden');
+            }
+        });
+
+        // Close the modal button
+        closeModal.addEventListener('click', function() {
+            fileModal.classList.add('hidden');
+        });
+    });
+</script>
+
+                </a>
+            </li>
+            <!-- Add more documents as needed -->
+        </ul>
+    </div>
+    <!-- List of Approved Documents -->
+    <div class="mt-4">
+        <h3 class="text-xs font-semibold text-gray-700">Approved Documents:</h3>
+        <ul class="mt-2">
+            <li>
+                <a href="#" class="flex items-center space-x-2 text-sm text-green-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M17.707 1.293A1 1 0 0 1 19 2v16a1 1 0 0 1-1.707.707L13 14.414V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.586l4.293-4.293zM12 7a1 1 0 0 1-1-1V1.414L5.707 7H12z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Approved Quotation</span>
+                </a>
+            </li>
+            <!-- Add more documents as needed -->
+        </ul>
+    </div>
+    <div>
+        <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks:</h2>
+        <p class="text-sm">Wait for further updates.</p>
+    </div>
+</div>
 
         
             <!-- End of Stepper --> 
     </div>
 </div>
 
-
-
-    
-        <!-- End of Stepper --> 
-</div>
-</div>
-
-
-
-        <!-- end of history tab -->
-
-
-      <!-- End Content -->
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
    <script src="https://unpkg.com/@popperjs/core@2"></script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
