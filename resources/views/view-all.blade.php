@@ -42,8 +42,7 @@
 <div class="mt-2 w-3/4 mx-auto">
 
        <!-- Content for View All tab -->
-<div id="view-all-content" class="tab-content">
-    @foreach ($requests as $request)
+       @foreach ($requests as $request)
         <!-- Request Container -->
         <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
             <!-- Request Name and Status -->
@@ -72,7 +71,7 @@
             </div>
             <!-- View Details and Follow Up Buttons -->
             <div class="flex justify-end mt-4">
-                <a href="{{ route('details-2', ['id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
+            <a href="{{ route('details-2', ['id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
                 <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
             </div>
         </div>

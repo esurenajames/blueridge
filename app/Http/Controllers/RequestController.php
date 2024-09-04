@@ -67,4 +67,16 @@ class RequestController extends Controller
         // Return JSON response indicating success or failure
         return response()->json(['success' => true, 'message' => 'Request submitted successfully']);
     }
+
+        public function showDetails($id)
+    {
+        $request = RequestModel::find($id);
+
+        if (!$request) {
+            return abort(404, 'Request not found');
+        }
+
+        return view('details-2', compact('request'));
+    }
+
 }
