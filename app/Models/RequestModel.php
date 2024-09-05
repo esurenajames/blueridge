@@ -9,7 +9,7 @@ class RequestModel extends Model
     protected $table = 'requests'; // Specify the table name 'requests'
 
     protected $fillable = [
-        'request_name', 'request_description', 'files', 'status', 'updated_at',
+        'request_name', 'request_description', 'files', 'status', 'steps', 'updated_at',
     ];
 
     protected $casts = [
