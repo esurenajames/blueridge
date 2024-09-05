@@ -58,8 +58,9 @@ class RequestController extends Controller
         $newRequest->request_description = $request->request_description;
         $newRequest->request_type = $request->request_type; // Assign request_type
         $newRequest->files = json_encode($filePaths); // Store file paths as JSON string
-        $newRequest->status = '1'; // Set status to 'pending'
-        $newRequest->updated_at = now(); // Set updated_at timestamp
+        $newRequest->steps = '1'; 
+        $newRequest->status = '1'; 
+        $newRequest->updated_at = now(); 
 
         // Save the request
         $newRequest->save();
@@ -79,4 +80,24 @@ class RequestController extends Controller
         return view('details-2', compact('request'));
     }
 
+
+    // Controller method
+    public function show(Request $request)
+    {
+        $files = $request->files; // Assuming $request->files is an array of file paths
+        return view('details-2', ['files' => json_encode($files)]);
+    }
+
+    
+    public function getRequestStatus($id)
+{
+    $request = RequestModel::findOrFail($id);
+    return response()->json([
+        'status' => $request->status,
+    ]);
 }
+
+
+}
+
+

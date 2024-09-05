@@ -40,9 +40,8 @@
 <!-- End of tabs -->
 
 <div class="mt-2 w-3/4 mx-auto">
-
-       <!-- Content for View All tab -->
-       @foreach ($requests as $request)
+    <!-- Content for View All tab -->
+    @foreach ($requests as $request)
         <!-- Request Container -->
         <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
             <!-- Request Name and Status -->
@@ -53,15 +52,38 @@
                         <i class='bx bx-question-mark'></i>
                     </span>
                     <span class="self-end ml-1 font-light">|</span>
-                    <span class="text-yellow-500 self-end ml-1 font-medium">
-                        @if($request->status == 1)
-                            For Approval
-                        @else
-                            {{ $request->status }}
+                        @if($request->status == 2 && $request->steps == 5)
+                            <span class="text-green-600 self-end ml-1 font-medium">Completed</span>
+                        @elseif($request->status == 3)
+                            <span class="text-yellow-500 self-end ml-1 font-medium">
+                                @if($request->steps == 5)
+                                    Declined - Purchase Order
+                                @elseif($request->steps == 4)
+                                    Declined - Purchase Request
+                                @elseif($request->steps == 3)
+                                    Declined - Quotation Form
+                                @elseif($request->steps == 2)
+                                    Declined - Request Form
+                                @elseif($request->steps == 1)
+                                    Declined - For Approval
+                                @else
+                                    Declined
+                                @endif
+                            </span>
+                        @elseif((int)$request->steps === 1)
+                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Approval</span>
+                        @elseif((int)$request->steps === 2)
+                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Request Form Approval</span>
+                        @elseif((int)$request->steps === 3)
+                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Quotation Form Approval</span>
+                        @elseif((int)$request->steps === 4)
+                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Request Approval</span>
+                        @elseif((int)$request->steps === 5)
+                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Order Approval</span>
                         @endif
-                    </span>
-                </div>
-            </div>
+
+                        </div>
+                        </div>
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
             <!-- Description, Type, and Time -->
             <div class="request-item">
@@ -71,7 +93,7 @@
             </div>
             <!-- View Details and Follow Up Buttons -->
             <div class="flex justify-end mt-4">
-            <a href="{{ route('details-2', ['id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
+                <a href="{{ route('details-2', ['id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
                 <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
             </div>
         </div>
@@ -79,251 +101,6 @@
 </div>
 
 
-        <!-- end of approve-content tab -->
-
-
-        <!-- Content for processing tab -->
-        <div id="purchase-request-content" class="tab-content" style="display: none;">
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Upgrade Barangay Office Computer Systems</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Request</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Modernize the barangay office computer systems by upgrading hardware and software to enhance productivity and efficiency in delivering services to residents.</p>
-                    <p>Type of request: IT Upgrade</p>
-                    <p>Time sent: 11:00 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href="{{ route('details-3') }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                </div>
-            </div>
-        </div>
-        <!-- end of processing tab -->
-
-        <!-- Content for approve-content tab -->
-        <div id="purchase-order-content" class="tab-content" style="display: none;">
-            <!-- Request Name and Status -->
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Procurement of Office Printers and Supplies</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-yellow-500 self-end ml-1 font-medium">For Purchase Order</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Acquire new printers and necessary supplies (such as ink cartridges, paper, etc.) for the barangay office to improve efficiency in document processing and administrative tasks.</p>
-                    <p>Type of request: Procurement</p>
-                    <p>Time sent: 9:30 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href="{{ route('details-4')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Follow Up</button>
-                    <a href="{{ route('purchase-order')}}" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;">Proof of purchase</a>
-                </div>
-            </div>
-        </div>
-        <!-- end of approve-content tab -->
-
-        <!-- Content for declined tab -->
-        <div id="declined-content" class="tab-content" style="display: none;">
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Community Garden Expansion</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Extend the community garden space to accommodate more residents interested in gardening and promote sustainable living.</p>
-                    <p>Type of request: Development Project</p>
-                    <p>Time sent: 3:20 PM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href={{route ('decline')}} class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Community Garden Expansion</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Extend the community garden space to accommodate more residents interested in gardening and promote sustainable living.</p>
-                    <p>Type of request: Procurement</p>
-                    <p>Time sent: 9:15 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-        </div>
-        <!-- end of declined tab -->
-
-        <!-- Content for history tab -->
-        <div id="history-content" class="tab-content" style="display: none;">
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Barangay Street Lighting Improvement Project</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-green-500 self-end ml-1 font-medium">Completed</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Implement an improvement project for barangay street lighting to enhance safety and security in the community, particularly in poorly lit areas.</p>
-                    <p>Type of request: Infrastructure Development</p>
-                    <p>Time sent: 2:30 PM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href="{{ route('details-5')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Barangay Youth Development Program Funding</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-green-500 self-end ml-1 font-medium">Completed</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Allocate funding for a barangay youth development program aimed at providing skills training, educational support, and recreational activities to empower and engage young residents.</p>
-                    <p>Type of request: Budget Allocation</p>
-                    <p>Time sent: 3:00 PM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <a href="{{ route('details-5')}}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Barangay Community Center Renovation</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-green-500 self-end ml-1 font-medium">Completed</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Renovate the barangay community center to provide a more functional and comfortable space for various community activities, meetings, and events.</p>
-                    <p>Type of request: Infrastructure Development</p>
-                    <p>Time sent: 10:45 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Community Garden Expansion</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Extend the community garden space to accommodate more residents interested in gardening and promote sustainable living.</p>
-                    <p>Type of request: Development Project</p>
-                    <p>Time sent: 3:20 PM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-
-            <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">Barangay Health Clinic Supplies Replenishment</h2>
-                    <div>                
-                        <span class="question-mark-btn mr-1">
-                            <i class='bx bx-question-mark'></i>
-                        </span> <span class="self-end ml-1 font-light">|</span>
-                        <span class="text-red-500 self-end ml-1 font-medium">Declined</span>
-                    </div>
-                </div>
-                <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                <!-- Description, Type, and Time -->
-                <div class="request-item">
-                    <p>Description: Replenish essential medical supplies for the barangay health clinic to ensure adequate healthcare services for residents, including basic medications, bandages, and other consumables.</p>
-                    <p>Type of request: Procurement</p>
-                    <p>Time sent: 9:15 AM</p>
-                </div>
-                
-                <!-- View Details Button -->
-                <div class="flex justify-end mt-4">
-                    <button class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</button>
-                    <button class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg ml-2" style="border: 1px solid gray;" hidden>Follow Up</button>
-                </div>
-            </div>
-        </div>
-        <!-- end of history tab -->
-
-
-      <!-- End Content -->
     </main>
 
    <script src="https://unpkg.com/@popperjs/core@2"></script>
