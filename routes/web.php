@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\ProfileSettings;
 use App\Http\Controllers\ExpenseTableController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\RequestTableController;
 use App\Http\Controllers\RequestDetailsController;
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
@@ -75,6 +76,9 @@ Route::get('/request', function () {
 Route::get('/request-table', function () {
     return view('request-table');
 })->name('request-table');
+
+Route::get('/request-table', [RequestTableController::class, 'index'])->name('request-table');
+Route::get('/requests', [RequestTableController::class, 'index'])->name('requests.index');
 
 Route::get('/request-approval', function () {
     return view('request-approval');

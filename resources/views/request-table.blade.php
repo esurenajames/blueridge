@@ -48,12 +48,14 @@
                 </div>
                 <div class="flex items-center">
                     <span class="text-md mr-2 text-gray-600">Show entries:</span>
-                    <select class="block px-4 py-2 border rounded-md text-gray-600 bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
+                    <form action="{{ route('requests.index') }}" method="GET" class="flex items-center">
+                        <select name="per_page" onchange="this.form.submit()" class="block px-4 py-2 border rounded-md text-gray-600 bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="10" {{ request('per_page') == '10' ? 'selected' : '' }}>10</option>
+                            <option value="20" {{ request('per_page') == '20' ? 'selected' : '' }}>20</option>
+                            <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100</option>
+                        </select>
+                    </form>
                 </div>
             </div>
         </div>
@@ -96,121 +98,102 @@
                         </tr>
                     </thead>
                     <tbody class="whitespace-nowrap">
-                        <tr class="even:bg-blue-50">
-                            <td class="pl-6 w-8">
-                                <input id="checkbox1" type="checkbox" class="hidden peer" />
-                                <label for="checkbox1" class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
-                                        <path
-                                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                                            data-name="7-Check" data-original="#000000" />
-                                    </svg>
-                                </label>
-                            </td>
-                            <td class="px-6 py-4 text-sm"> 
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 w-10 h-10 relative">
-                                        <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
-                                            <img class="w-8 h-8 rounded-full" src="https://pics.craiyon.com/2023-10-03/99c00ba98d5140abb234cbb552471b33.webp" alt=""/>
+                        @foreach($requests as $request)
+                            <tr class="even:bg-blue-50">
+                                <td class="pl-6 w-8">
+                                    <input id="checkbox{{ $request->id }}" type="checkbox" class="hidden peer" />
+                                    <label for="checkbox{{ $request->id }}" class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
+                                            <path
+                                                d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
+                                                data-name="7-Check" data-original="#000000" />
+                                        </svg>
+                                    </label>
+                                </td>
+                                <td class="px-6 py-4 text-sm"> 
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 w-10 h-10 relative">
+                                            <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
+                                                <img class="w-8 h-8 rounded-full" src="{{ $request->requestor_avatar }}" alt=""/>
+                                            </div>
                                         </div>
+                                        <span class="ml-2">{{ $request->requestor_name }}</span>
                                     </div>
-                                    <span class="ml-2">Mikee Gonzaga</span>
-                                </div>
-                            </td>                            
-                            <td class="px-6 py-4 text-sm">Request Form</td>
-                            <td class="px-6 py-4 text-sm">Bidet for Public CR</td>
-                            <td class="px-6 py-4 text-sm">06/05/2024</td>
-                            <td class="px-6 py-4 text-sm">Kapitan Stone</td>
-                            <td class="px-6 py-4">
-                                <div class="w-48 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="bg-blue-600 h-3 rounded-full" style="width: 25%;"></div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <button class="mr-4" title="Edit" @click="showEditDetailsModal = true">
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
-                                    viewBox="0 0 348.882 348.882">
-                                    <path
-                                      d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
-                                      data-original="#000000" />
-                                    <path
-                                      d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
-                                      data-original="#000000" />
-                                  </svg>
-                                </button>
-                                <button class="mr-4" title="View Details"  @click="showViewDetailsModal = true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 fill-green-500 hover:fill-green-700 "
-                                        viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 7c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4m0 6c-1.1 0-2-0.9-2-2s0.9-2 2-2 2 0.9 2 2-0.9 2-2 2m0-8c7.7 0 14 6.3 14 14 0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-5.5-4.5-10-10-10s-10 4.5-10 10c0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-7.7 6.3-14 14-14m0 20c3.9 0 7-3.1 7-7s-3.1-7-7-7-7 3.1-7 7 3.1 7 7 7z"
-                                            data-original="#000000" />
-                                    </svg>
-                                </button>
-                                
-                                <button class="mr-4" title="Delete" @click="console.log(showConfirmationModal); showConfirmationModal = true;">
-
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
-                                    <path
-                                      d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                                      data-original="#000000" />
-                                    <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                                      data-original="#000000" />
-                                  </svg>
-                                </button>
-
-                              </td>
-                        </tr>
-                        
-                        <!-- Add more rows as needed -->
+                                </td>                            
+                                <td class="px-6 py-4 text-sm">{{ $request->request_type }}</td>
+                                <td class="px-6 py-4 text-sm">{{ $request->request_name }}</td>
+                                <td class="px-6 py-4 text-sm">{{ $request->created_at->format('m/d/Y') }}</td>
+                                <td class="px-6 py-4 text-sm">{{ $request->last_approved_by }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="w-48 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="bg-blue-600 h-3 rounded-full" style="width: {{ $request->completion_percentage }}%;"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button class="mr-4" title="Edit" @click="showEditDetailsModal = true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700" viewBox="0 0 348.882 348.882">
+                                            <path
+                                                d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
+                                                data-original="#000000" />
+                                            <path
+                                                d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
+                                                data-original="#000000" />
+                                        </svg>
+                                    </button>
+                                    <button class="mr-4" title="View Details" @click="showViewDetailsModal = true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 fill-green-500 hover:fill-green-700" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 7c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4m0 6c-1.1 0-2-0.9-2-2s0.9-2 2-2 2 0.9 2 2-0.9 2-2 2m0-8c7.7 0 14 6.3 14 14 0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-5.5-4.5-10-10-10s-10 4.5-10 10c0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-7.7 6.3-14 14-14m0 20c3.9 0 7-3.1 7-7s-3.1-7-7-7-7 3.1-7 7 3.1 7 7 7z"
+                                                data-original="#000000" />
+                                        </svg>
+                                    </button>
+                                    <button class="mr-4" title="Delete" @click="console.log(showConfirmationModal); showConfirmationModal = true;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
+                                            <path
+                                                d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+                                                data-original="#000000" />
+                                            <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+                                                data-original="#000000" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
-                
             </div>
 
-
+            <!-- Pagination and entries display -->
             <div class="flex items-center justify-between">
-                <!-- Help text -->
                 <span class="text-md mb-2 mt-2 text-gray-700 dark:text-gray-400">
-                    Showing <span class="font-semibold text-gray-500">1</span> to <span class="font-semibold text-gray-500">10</span> of <span class="font-semibold text-gray-500">100</span> Entries
+                    Showing <span class="font-semibold text-gray-500">{{ $requests->firstItem() }}</span> to <span class="font-semibold text-gray-500">{{ $requests->lastItem() }}</span> of <span class="font-semibold text-gray-500">{{ $requests->total() }}</span> Entries
                 </span>
-                <!-- Buttons -->
                 <nav aria-label="Page navigation example">
                     <ul class="flex items-center -space-x-px h-10 text-base mb-2 mt-2">
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                          <span class="sr-only">Previous</span>
-                          <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                          </svg>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                      </li>
-                      <li>
-                        <a href="#" aria-current="page" class="z-10 flex items-center justify-center px-4 h-10 border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                          <span class="sr-only">Next</span>
-                          <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                          </svg>
-                        </a>
-                      </li>
+                        <li>
+                            <a href="{{ $requests->previousPageUrl() }}" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" {{ !$requests->onFirstPage() ? '' : 'aria-disabled="true"' }}>
+                                <span class="sr-only">Previous</span>
+                                <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                                </svg>
+                            </a>
+                        </li>
+                        @foreach($requests->getUrlRange(1, $requests->lastPage()) as $page => $url)
+                            <li>
+                                <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {{ $requests->currentPage() == $page ? 'bg-gray-700 text-white' : '' }}" aria-current="{{ $requests->currentPage() == $page ? 'page' : '' }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
+                        <li>
+                            <a href="{{ $requests->nextPageUrl() }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" {{ !$requests->hasMorePages() ? 'aria-disabled="true"' : '' }}>
+                                <span class="sr-only">Next</span>
+                                <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                </svg>
+                            </a>
+                        </li>
                     </ul>
-                  </nav>
-              </div>
-        </div>
+                </nav>
+            </div>
 
     
             
@@ -324,7 +307,6 @@
                         </div>
                     </div>
                 </div>
-
         </div>
 
 
