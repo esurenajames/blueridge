@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\ProfileSettings;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RequestDetailsController;
+use App\Http\Livewire\TabsLivewire;
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 
@@ -114,10 +115,6 @@ Route::get('/main-kapitan', function () {
 Route::post('/submit-request', [RequestController::class, 'submit'])->name('request.submit');
 Route::get('/view-all', [RequestController::class, 'viewAll'])->name('view-all');
 Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
-Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
-
-
-
 
 });
 
