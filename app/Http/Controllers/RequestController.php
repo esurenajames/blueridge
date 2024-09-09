@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth; // Correct import
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
 
+
 class RequestController extends Controller
 {
     public function showRequest($id)
@@ -20,12 +21,26 @@ class RequestController extends Controller
     }
 
     public function viewAll()
-    {
-        // Retrieve all requests from the database
-        $requests = RequestModel::orderBy('created_at', 'desc')->get();
-        return view('view-all', ['requests' => $requests]);
-    }
+{
+    // Retrieve all requests from the database
+    $requests = RequestModel::orderBy('created_at', 'desc')->get();
     
+    // Fetch counts
+    $counts = [
+        'view_all' => $requests->whereIn('steps', [1, 2, 3, 4, 5])->count(),
+        'approval' => $requests->where('steps', 1)->where('status', 1)->count(),
+        'request_form' => $requests->where('steps', 2)->where('status', 1)->count(),
+        'quotation' => $requests->where('steps', 3)->where('status', 1)->count(),
+        'purchase_request' => $requests->where('steps', 4)->where('status', 1)->count(),
+        'purchase_order' => $requests->where('steps', 5 )->where('status', 1)->count(),
+        'declined' => $requests->where('status', 3)->count(),
+        'history' => $requests->whereIn('status', [2, 3])->count(),
+    ];
+
+    // Pass requests and counts to the view
+    return view('view-all', ['requests' => $requests, 'counts' => $counts]);
+}
+
     public function submit(Request $request)
     {
         // Validate incoming request data
@@ -96,4 +111,12 @@ class RequestController extends Controller
             'status' => $request->status,
         ]);
     }
+
+    public function filterByStep($step)
+{
+    $this->requests = RequestModel::where('steps', $step)->get();
+}
+
+
+
 }
