@@ -327,9 +327,9 @@
                                             </template>
                                         </div>
                                     </div>
-                                    <div class="mt-6 flex justify-end">
-                                        <button type="button" @click="showEditDetailsModal = false" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Close</button>
-                                        <button type="button" id="saveEditButton" class="bg-blue-500 hover:bg-blue-700 text-white ml-2 font-bold py-2 px-4 rounded">Save</button>
+                                    <div class="mt-6 flex justify-end">                           
+                                        <button type="button" id="saveEditButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+                                        <button type="button" @click="showEditDetailsModal = false" class="bg-gray-400 hover:bg-gray-500 ml-2 text-white font-bold py-2 px-4 rounded">Close</button>
                                     </div>                                    
                                 </form>
                             </div>

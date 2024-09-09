@@ -80,9 +80,6 @@ Route::get('/api/requests/{id}', [RequestTableController::class, 'getRequestDeta
 Route::post('/update-request', [RequestTableController::class, 'updateRequest']);
 Route::delete('/requests/{id}', [RequestTableController::class, 'deleteRequest'])->name('requests.delete');
 
-
-
-
 Route::get('/request-approval', function () {
     return view('request-approval');
 })->name('request-approval');

@@ -126,7 +126,7 @@
                         </div>
             
                         <!-- Form to handle submission -->
-                        <form action="{{ route('expense.store') }}" method="POST">
+                        {{-- <form action="{{ route('expense.store') }}" method="POST">
                             @csrf
                             <select x-model="type" name="type" class="w-full mb-4 px-3 py-2 border border-gray-300 rounded-md">
                                 <option value="" disabled>Select Type</option>
@@ -143,15 +143,13 @@
                                 <button type="button" @click="showRowModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Cancel</button>
                                 <button type="submit" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">Add</button>
                             </div>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
             </div>
-            </div>
-         </div>
-
-
-     </div>
+        </div>
+    </div>
+    </div>
      
    </body>
       <!-- End Content -->
