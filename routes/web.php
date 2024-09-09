@@ -45,10 +45,6 @@ Route::get('/details', function () {
     return view('details');
 })->name('details');
 
-Route::get('/details-2', function () {
-    return view('details-2');
-})->name('details-2');
-
 Route::get('/details-3', function () {
     return view('details-3');
 })->name('details-3');
@@ -79,6 +75,12 @@ Route::get('/request-table', function () {
 
 Route::get('/request-table', [RequestTableController::class, 'index'])->name('request-table');
 Route::get('/requests', [RequestTableController::class, 'index'])->name('requests.index');
+Route::get('/api/requests/{id}', [RequestTableController::class, 'getRequestDetails']);
+Route::post('/update-request', [RequestTableController::class, 'updateRequest']);
+Route::delete('/requests/{id}', [RequestTableController::class, 'deleteRequest'])->name('requests.delete');
+
+
+
 
 Route::get('/request-approval', function () {
     return view('request-approval');
@@ -98,8 +100,7 @@ Route::get('/expense-table', function () {
 
 Route::get('/expense-table', [ExpenseTableController::class, 'index'])->name('expense-table');
 Route::get('/expenses', [ExpenseTableController::class, 'index'])->name('expense.index');
-Route::post('/expenses', [ExpenseTableController::class, 'store'])->name('expense.store');
-
+Route::put('/requests/{id}', [RequestTableController::class, 'update'])->name('requests.update');
 
 Route::get('/approval-management', function () {
     return view('/approval-management');
@@ -124,8 +125,6 @@ Route::get('/main-kapitan', function () {
 Route::post('/submit-request', [RequestController::class, 'submit'])->name('request.submit');
 Route::get('/view-all', [RequestController::class, 'viewAll'])->name('view-all');
 Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
-Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
-
 
 });
 

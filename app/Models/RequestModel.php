@@ -3,9 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class RequestModel extends Model
 {
+    public function requestor()
+    {
+        return $this->belongsTo(User::class, 'requestor_id');
+    }
+    
     protected $table = 'requests'; // Specify the table name 'requests'
 
     protected $fillable = [

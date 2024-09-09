@@ -4,6 +4,7 @@
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Form Request List</title>
@@ -33,7 +34,44 @@
         </ol>
     </div> 
 
-    <div class=" mb-4 mt-10 " x-data="{ showConfirmationModal: false, showEditDetailsModal: false, showViewDetailsModal: false }">
+    <div class="mb-4 mt-10" x-data="{
+        showConfirmationModal: false,
+        showViewDetailsModal: false,
+        showEditDetailsModal: false,
+        requestDetails: {},
+        requestToDeleteId: null, // Define this here
+
+        openViewDetailsModal(requestId) {
+            // Fetch request details from the server
+            fetch(`/api/requests/${requestId}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        this.requestDetails = result.data;
+                        this.showViewDetailsModal = true;
+                    } else {
+                        alert(result.message);
+                    }
+                })
+                .catch(error => console.error('Error fetching request details:', error));
+        },
+        
+        openEditDetailsModal(requestId) {
+            // Fetch request details and show edit modal
+            fetch(`/api/requests/${requestId}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        this.requestDetails = result.data;
+                        this.showEditDetailsModal = true;
+                    } else {
+                        alert(result.message);
+                    }
+                })
+                .catch(error => console.error('Error fetching request details:', error));
+        },
+    }" x-cloak>
+    
         <div class="w-9/12 mx-auto mb-2 max-w-screen-xl">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
@@ -114,10 +152,12 @@
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 w-10 h-10 relative">
                                             <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
-                                                <img class="w-8 h-8 rounded-full" src="{{ $request->requestor_avatar }}" alt=""/>
+                                                <img class="w-8 h-8 rounded-full" 
+                                                src="{{ asset('storage/' . $request->requestor->profile_picture) }}" 
+                                                alt="{{ $request->requestor->fname }} {{ $request->requestor->lname }}"/>
                                             </div>
                                         </div>
-                                        <span class="ml-2">{{ $request->requestor_name }}</span>
+                                        <span class="ml-2">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</span>
                                     </div>
                                 </td>                            
                                 <td class="px-6 py-4 text-sm">{{ $request->request_type }}</td>
@@ -130,73 +170,65 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <button class="mr-4" title="Edit" @click="showEditDetailsModal = true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700" viewBox="0 0 348.882 348.882">
-                                            <path
-                                                d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
-                                                data-original="#000000" />
-                                            <path
-                                                d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
-                                                data-original="#000000" />
-                                        </svg>
-                                    </button>
-                                    <button class="mr-4" title="View Details" @click="showViewDetailsModal = true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 fill-green-500 hover:fill-green-700" viewBox="0 0 24 24">
-                                            <path
-                                                d="M12 7c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4m0 6c-1.1 0-2-0.9-2-2s0.9-2 2-2 2 0.9 2 2-0.9 2-2 2m0-8c7.7 0 14 6.3 14 14 0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-5.5-4.5-10-10-10s-10 4.5-10 10c0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-7.7 6.3-14 14-14m0 20c3.9 0 7-3.1 7-7s-3.1-7-7-7-7 3.1-7 7 3.1 7 7 7z"
-                                                data-original="#000000" />
-                                        </svg>
-                                    </button>
-                                    <button class="mr-4" title="Delete" @click="console.log(showConfirmationModal); showConfirmationModal = true;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
+                                        <button class="mr-4" title="Edit" @click="openEditDetailsModal({{ $request->id }})">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700" viewBox="0 0 348.882 348.882">
+                                                <path d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z" data-original="#000000" />
+                                                <path d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z" data-original="#000000" />
+                                            </svg>
+                                        </button>
+                                        <button class="mr-4" title="View Details" @click="openViewDetailsModal({{ $request->id }})">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-6 fill-green-500 hover:fill-green-700" viewBox="0 0 24 24">
+                                                <path d="M12 7c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4m0 6c-1.1 0-2-0.9-2-2s0.9-2 2-2 2 0.9 2 2-0.9 2-2 2m0-8c7.7 0 14 6.3 14 14 0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-5.5-4.5-10-10-10s-10 4.5-10 10c0 1.1-0.9 2-2 2-1.1 0-2-0.9-2-2 0-7.7 6.3-14 14-14m0 20c3.9 0 7-3.1 7-7s-3.1-7-7-7-7 3.1-7 7 3.1 7 7 7z" data-original="#000000" />
+                                            </svg>
+                                        </button>
+                                        <button class="mr-4" title="Delete" @click="showConfirmationModal = true; requestToDeleteId = {{ $request->id }};">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                                             <path
                                                 d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
                                                 data-original="#000000" />
                                             <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
                                                 data-original="#000000" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-            <!-- Pagination and entries display -->
-            <div class="flex items-center justify-between">
-                <span class="text-md mb-2 mt-2 text-gray-700 dark:text-gray-400">
-                    Showing <span class="font-semibold text-gray-500">{{ $requests->firstItem() }}</span> to <span class="font-semibold text-gray-500">{{ $requests->lastItem() }}</span> of <span class="font-semibold text-gray-500">{{ $requests->total() }}</span> Entries
-                </span>
-                <nav aria-label="Page navigation example">
-                    <ul class="flex items-center -space-x-px h-10 text-base mb-2 mt-2">
-                        <li>
-                            <a href="{{ $requests->previousPageUrl() }}" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" {{ !$requests->onFirstPage() ? '' : 'aria-disabled="true"' }}>
-                                <span class="sr-only">Previous</span>
-                                <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                                </svg>
-                            </a>
-                        </li>
-                        @foreach($requests->getUrlRange(1, $requests->lastPage()) as $page => $url)
+                <!-- Pagination and entries display -->
+                <div class="flex items-center justify-between">
+                    <span class="text-md mb-2 mt-2 text-gray-700 dark:text-gray-400">
+                        Showing <span class="font-semibold text-gray-500">{{ $requests->firstItem() }}</span> to <span class="font-semibold text-gray-500">{{ $requests->lastItem() }}</span> of <span class="font-semibold text-gray-500">{{ $requests->total() }}</span> Entries
+                    </span>
+                    <nav aria-label="Page navigation example">
+                        <ul class="flex items-center -space-x-px h-10 text-base mb-2 mt-2">
                             <li>
-                                <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {{ $requests->currentPage() == $page ? 'bg-gray-700 text-white' : '' }}" aria-current="{{ $requests->currentPage() == $page ? 'page' : '' }}">{{ $page }}</a>
+                                <a href="{{ $requests->previousPageUrl() }}" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight rounded-s-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" {{ !$requests->onFirstPage() ? '' : 'aria-disabled="true"' }}>
+                                    <span class="sr-only">Previous</span>
+                                    <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                                    </svg>
+                                </a>
                             </li>
-                        @endforeach
-                        <li>
-                            <a href="{{ $requests->nextPageUrl() }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" {{ !$requests->hasMorePages() ? 'aria-disabled="true"' : '' }}>
-                                <span class="sr-only">Next</span>
-                                <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                            @foreach($requests->getUrlRange(1, $requests->lastPage()) as $page => $url)
+                                <li>
+                                    <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {{ $requests->currentPage() == $page ? 'bg-gray-700 text-white' : '' }}" aria-current="{{ $requests->currentPage() == $page ? 'page' : '' }}">{{ $page }}</a>
+                                </li>
+                            @endforeach
+                            <li>
+                                <a href="{{ $requests->nextPageUrl() }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" {{ !$requests->hasMorePages() ? 'aria-disabled="true"' : '' }}>
+                                    <span class="sr-only">Next</span>
+                                    <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
 
-    
-            
                 <!-- Confirmation Modal -->        
                 <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                     <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
@@ -209,13 +241,42 @@
                                 <h4 class="text-lg text-[#333] font-semibold">Are you sure you want to delete this form request?</h4>
                                 <p class="text-sm text-gray-500 mt-4">Once deleted, the from request cannot be recovered. Are you sure you want to proceed?</p>
                             </div>
-                            <div class="flex justify-end gap-4 max-sm:flex-col">
-                                <button type="button" @click="showConfirmationModal = false; deleteItem()" class="px-6 py-2.5 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Yes, delete</button>
-                                <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>        
+                            <div class="mt-6 flex justify-end">
+                                <button type="button" @click="deleteRequest()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                                <button type="button" @click="showConfirmationModal = false" class="bg-gray-500 hover:bg-gray-700 text-white ml-2 font-bold py-2 px-4 rounded">Cancel</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <script>
+                    function deleteRequest() {
+                        const requestId = document.querySelector('[x-data]').__x.$data.requestToDeleteId;
+                        console.log('Deleting request with ID:', requestId);
+
+                        fetch(`/requests/${requestId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Request deleted successfully!');
+                                location.reload(); // Reload the page or remove the row from the UI as needed
+                            } else {
+                                alert('Error deleting request: ' + (data.message || 'Unknown error'));
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while deleting the request.');
+                        });
+                    }
+                </script>
+
                 <div x-show="showEditDetailsModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                     <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
                         <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
@@ -223,97 +284,176 @@
                                 <h4 class="text-lg text-[#333] font-semibold">Edit Details</h4>
                                 <!-- Close button -->
                                 <svg type="button" @click="showEditDetailsModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500" viewBox="0 0 320.591 320.591">
-                                    <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
-                                    <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                                    <!-- SVG paths here -->
                                 </svg>
                             </div>
                             <div class="my-8">
-                      
-                                <!-- Editable fields with placeholders -->
-                                <div class="mt-4">
-                                    <label for="requestor" class="block text-sm font-medium text-gray-700">Name of Requestor</label>
-                                    <input type="text" id="requestor" placeholder="Placeholder for requestor" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-                                <div class="mt-4">
-                                    <label for="typeOfRequest" class="block text-sm font-medium text-gray-700">Type of Request</label>
-                                    <input type="text" id="typeOfRequest" placeholder="Placeholder for type of request" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-                                <div class="mt-4">
-                                    <label for="nameOfRequest" class="block text-sm font-medium text-gray-700">Name of Request</label>
-                                    <input type="text" id="nameOfRequest" placeholder="Placeholder for name of request" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-                                <div class="mt-4">
-                                    <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
-                                    <input type="date" id="date" placeholder="Placeholder for date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-                                <div class="mt-4">
-                                    <label for="lastApprovedBy" class="block text-sm font-medium text-gray-700">Last Approved by</label>
-                                    <input type="text" id="lastApprovedBy" placeholder="Placeholder for approver" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-                                <div class="mt-4">
-                                    <label for="completion" class="block text-sm font-medium text-gray-700">Completion</label>
-                                    <input type="text" id="completion" placeholder="Placeholder for completion" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                </div>
-                                <div class="mt-6 flex justify-end">
-                                    <button @click="showEditDetailsModal = false" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
-                                </div>
+                                <form id="editRequestForm">
+                                    <input type="hidden" id="request_id" name="id" x-bind:value="requestDetails.id" />
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700">Name of Requestor</label>
+                                        <input type="text" disabled id="requestor_name" name="requestor_name" x-bind:value="requestDetails.requestor_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700">Type of Request</label>
+                                        <input type="text" id="request_type" name="request_type" x-bind:value="requestDetails.request_type" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700">Request Name</label>
+                                        <input type="text" id="request_name" name="request_name" x-bind:value="requestDetails.request_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700">Description</label>
+                                        <textarea id="request_description" name="request_description" x-bind:value="requestDetails.request_description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"></textarea>
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700">Date</label>
+                                        <p x-text="requestDetails.created_at" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for created date</p>
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700">Files</label>
+                                        <div class="mt-1">
+                                            <template x-if="requestDetails.files && requestDetails.files.length > 0">
+                                                <div>
+                                                    <template x-for="file in requestDetails.files" :key="file">
+                                                        <a :href="'/uploads/' + file.replace('/uploads/', '')" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                                            <span x-text="file.replace('/uploads/', '')"></span>
+                                                        </a>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                            <template x-if="!(requestDetails.files && requestDetails.files.length > 0)">
+                                                <p class="text-sm text-gray-500">No files available</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 flex justify-end">
+                                        <button type="button" @click="showEditDetailsModal = false" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Close</button>
+                                        <button type="button" id="saveEditButton" class="bg-blue-500 hover:bg-blue-700 text-white ml-2 font-bold py-2 px-4 rounded">Save</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <script>
+                    document.getElementById('saveEditButton').addEventListener('click', function () {
+                        const formData = new FormData(document.getElementById('editRequestForm'));
+
+                        // Send the request
+                        fetch('/update-request', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Request updated successfully!');
+                                // Optionally, refresh or close the modal here
+                            } else {
+                                alert('Error updating request: ' + (data.message || 'Unknown error'));
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while updating the request.');
+                        });
+                    });
+                </script>
+                
+                
                 
                 <div x-show="showViewDetailsModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                     <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
                         <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
                             <div class="flex items-center justify-between">
                                 <h4 class="text-lg text-[#333] font-semibold">View Details</h4>
-                                <!-- Close button -->
                                 <svg type="button" @click="showViewDetailsModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
-                                    <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
-                                    <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                                    <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"></path>
+                                    <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"></path>
                                 </svg>
                             </div>
                             <div class="my-8">
-                      
-                                <!-- Viewable fields with placeholders -->
                                 <div class="mt-4">
                                     <label class="block text-sm font-medium text-gray-700">Name of Requestor</label>
-                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for requestor</p>
+                                    <p x-text="requestDetails.requestor_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for requestor name</p>
                                 </div>
                                 <div class="mt-4">
                                     <label class="block text-sm font-medium text-gray-700">Type of Request</label>
-                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for type of request</p>
+                                    <p x-text="requestDetails.request_type" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for type</p>
                                 </div>
                                 <div class="mt-4">
-                                    <label class="block text-sm font-medium text-gray-700">Name of Request</label>
-                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for name of request</p>
+                                    <label class="block text-sm font-medium text-gray-700">Request Name</label>
+                                    <p x-text="requestDetails.request_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for request name</p>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                                    <p x-text="requestDetails.request_description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for description</p>
                                 </div>
                                 <div class="mt-4">
                                     <label class="block text-sm font-medium text-gray-700">Date</label>
-                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for date</p>
+                                    <p x-text="requestDetails.created_at" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for created date</p>
                                 </div>
                                 <div class="mt-4">
-                                    <label class="block text-sm font-medium text-gray-700">Last Approved by</label>
-                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for approver</p>
-                                </div>
-                                <div class="mt-4">
-                                    <label class="block text-sm font-medium text-gray-700">Completion</label>
-                                    <p class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">Placeholder for completion</p>
-                                </div>
+                                    <label class="block text-sm font-medium text-gray-700">Files</label>
+                                    <div class="mt-1">
+                                        <template x-if="requestDetails.files && requestDetails.files.length > 0">
+                                            <div>
+                                                <template x-for="file in requestDetails.files" :key="file">
+                                                    <a :href="'/uploads/' + file.replace('/uploads/', '')" 
+                                                       target="_blank" 
+                                                       class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                                       <span x-text="file.replace('/uploads/', '')"></span>
+                                                    </a>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template x-if="!(requestDetails.files && requestDetails.files.length > 0)">
+                                            <p class="text-sm text-gray-500">No files available</p>
+                                        </template>
+                                    </div>
+                                </div>                                
                                 <div class="mt-6 flex justify-end">
-                                    <button @click="showViewDetailsModal = false" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Close</button>
+                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="showViewDetailsModal = false">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
 
 
-        <!-- end of history tab -->
+            <script>
+                document.addEventListener('alpine:init', () => {
+                    Alpine.store('modals', {
+                        showViewDetailsModal: false,
+                        requestDetails: {},
+                    });
+                });
+            
+                openViewDetailsModal(requestId) {
+                    fetch(`/api/requests/${requestId}`)
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                this.requestDetails = result.data;
+                                // Ensure files is an array
+                                if (!Array.isArray(this.requestDetails.files)) {
+                                    this.requestDetails.files = [];
+                                }
+                                this.showViewDetailsModal = true;
+                            } else {
+                                alert(result.message);
+                            }
+                        })
+                        .catch(error => console.error('Error fetching request details:', error));
+                }
+            </script>
 
-
-      <!-- End Content -->
     </main>
 
    <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -426,7 +566,6 @@
       });
    }
 
-   
    // start: Tab
    document.querySelectorAll('[data-tab]').forEach(function (item) {
       item.addEventListener('click', function (e) {
@@ -444,8 +583,8 @@
             target.classList.remove('hidden')
       })
    })
-   // end: Tab
-document.addEventListener("DOMContentLoaded", function () {
+    // end: Tab
+    document.addEventListener("DOMContentLoaded", function () {
         const tabLinks = document.querySelectorAll('.tab-link');
         const tabContents = document.querySelectorAll('.tab-content');
 
