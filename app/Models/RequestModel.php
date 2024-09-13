@@ -7,12 +7,14 @@ use App\Models\User;
 
 class RequestModel extends Model
 {
+    // Relationship to the User model
     public function requestor()
     {
         return $this->belongsTo(User::class, 'requestor_id');
     }
     
-    protected $table = 'requests'; // Specify the table name 'requests'
+    // Specify the table name 'requests'
+    protected $table = 'requests';
 
     // Define the primary key if it's not 'id'
     protected $primaryKey = 'id';
@@ -32,12 +34,13 @@ class RequestModel extends Model
         'status',
         'steps',
         'files',
-        'remarks'
+        'remarks',
     ];
 
     // Specify attributes that should be cast to native types
     protected $casts = [
         'files' => 'array', // Assuming 'files' column stores JSON data
+        'steps' => 'integer', // Cast 'steps' to integer for easy manipulation
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

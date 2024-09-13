@@ -5,12 +5,11 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Livewire\ProfileSettings;
 use App\Http\Controllers\ExpenseTableController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RequestTableController;
-use App\Http\Controllers\RequestDetailsController;
-use App\Http\Livewire\TabsLivewire;
+use App\Http\Controllers\RequestApprovalController;
+
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 
@@ -99,10 +98,13 @@ Route::get('/expense-table', function () {
 Route::get('/expense-table', [ExpenseTableController::class, 'index'])->name('expense-table');
 Route::get('/expenses', [ExpenseTableController::class, 'index'])->name('expense.index');
 Route::put('/requests/{id}', [RequestTableController::class, 'update'])->name('requests.update');
+Route::post('/expenses', [ExpenseTableController::class, 'store'])->name('expense.store');
 
 Route::get('/approval-management', function () {
     return view('/approval-management');
 })->name('/approval-management');
+
+Route::get('/approval-management', [RequestApprovalController::class, 'index'])->name('approval-management');
 
 Route::get('/sample', function () {
     return view('sample');
@@ -123,7 +125,6 @@ Route::get('/main-kapitan', function () {
 Route::post('/submit-request', [RequestController::class, 'submit'])->name('request.submit');
 Route::get('/view-all', [RequestController::class, 'viewAll'])->name('view-all');
 Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
-
 });
 
 Route::middleware('web')->group(function () {

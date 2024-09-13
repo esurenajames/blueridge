@@ -38,7 +38,7 @@
                 <span class="mx-4 font-medium">Form Request List</span>
             </a>
 
-            <a class="flex items-center px-4 py-2 mt-2 {{ request()->routeIs('approval-management') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('/approval-management') }}">
+            <a class="flex items-center px-4 py-2 mt-2 {{ request()->routeIs('/approval-management') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('/approval-management') }}">
                 <svg class="w-5 h-5" fill="#c0c0c0" height="64px" width="64px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 219.376 219.376" xml:space="preserve">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

@@ -34,7 +34,8 @@
         </ol>
     </div> 
 
-    <div class="mb-4 mt-10" x-data="{
+    <div class="mb-4 mt-10" 
+    x-data="{
         showConfirmationModal: false,
         showViewDetailsModal: false,
         showEditDetailsModal: false,
@@ -86,7 +87,7 @@
                 </div>
                 <div class="flex items-center">
                     <span class="text-md mr-2 text-gray-600">Show entries:</span>
-                    <form action="{{ route('requests.index') }}" method="GET" class="flex items-center">
+                    <form action="{{ route('requests.index') }}" method="GET" class="flex items-center m-0 p-0">
                         <select name="per_page" onchange="this.form.submit()" class="block px-4 py-2 border rounded-md text-gray-600 bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="10" {{ request('per_page') == '10' ? 'selected' : '' }}>10</option>
                             <option value="20" {{ request('per_page') == '20' ? 'selected' : '' }}>20</option>
@@ -94,7 +95,7 @@
                             <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100</option>
                         </select>
                     </form>
-                </div>
+                </div>                
             </div>
         </div>
         <div class="w-9/12 min-w-80 mx-auto max-w-screen-xl">
@@ -214,7 +215,9 @@
                             </li>
                             @foreach($requests->getUrlRange(1, $requests->lastPage()) as $page => $url)
                                 <li>
-                                    <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white {{ $requests->currentPage() == $page ? 'bg-gray-700 text-white' : '' }}" aria-current="{{ $requests->currentPage() == $page ? 'page' : '' }}">{{ $page }}</a>
+                                    <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white 
+                                        @if ($requests->currentPage() == $page) bg-gray-900 text-white hover:bg-gray-600 @endif"
+                                    aria-current="{{ $requests->currentPage() == $page ? 'page' : '' }}">{{ $page }}</a>
                                 </li>
                             @endforeach
                             <li>
@@ -228,7 +231,7 @@
                         </ul>
                     </nav>
                 </div>
-
+                
                 <!-- Confirmation Modal -->        
                 <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                     <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
