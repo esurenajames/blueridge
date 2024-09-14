@@ -91,10 +91,13 @@
                             <table class="min-w-full divide-y divide-gray-400">
                                 <tbody class="divide-y divide-gray-300">
                                     @foreach($pendingRequests as $request)
-                                        <tr class="bg-white hover:bg-gray-100 cursor-pointer" onclick="window.location.href = '{{ route('/approval-management') }}';">
+                                        <tr class="bg-white hover:bg-gray-100 cursor-pointer" 
+                                            @click="window.location.href = '{{ route('request-approval', ['id' => $request->id]) }}'">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center space-x-2">
-                                                    <img  src="{{ asset('storage/' . $request->requestor->profile_picture) }}"  alt="Profile Picture" class="w-8 h-8 rounded-full">
+                                                    <img src="{{ asset('storage/' . $request->requestor->profile_picture) }}" 
+                                                         alt="Profile Picture" 
+                                                         class="w-8 h-8 rounded-full">
                                                     <p class="text-md font-semibold">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</p>
                                                 </div>
                                             </td>
@@ -119,7 +122,8 @@
                             <table class="min-w-full divide-y divide-gray-400">
                                 <tbody class="divide-y divide-gray-300">
                                     @foreach($inProgressRequests as $request)
-                                        <tr class="bg-white hover:bg-gray-100 cursor-pointer" onclick="window.location.href = '{{ route('/approval-management') }}';">
+                                        <tr class="bg-white hover:bg-gray-100 cursor-pointer" 
+                                            @click="window.location.href = '{{ route('request-approval', ['id' => $request->id]) }}'">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center space-x-2">
                                                     <img  src="{{ asset('storage/' . $request->requestor->profile_picture) }}"  alt="Profile Picture" class="w-8 h-8 rounded-full">
@@ -147,7 +151,8 @@
                             <table class="min-w-full divide-y divide-gray-400">
                                 <tbody class="divide-y divide-gray-300">
                                     @foreach($historyRequests as $request)
-                                        <tr class="bg-white hover:bg-gray-100 cursor-pointer" onclick="window.location.href = '{{ route('/approval-management') }}';">
+                                        <tr class="bg-white hover:bg-gray-100 cursor-pointer" 
+                                            @click="window.location.href = '{{ route('request-approval', ['id' => $request->id]) }}'">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center space-x-2">
                                                     <img  src="{{ asset('storage/' . $request->requestor->profile_picture) }}" alt="Profile Picture" class="w-8 h-8 rounded-full">

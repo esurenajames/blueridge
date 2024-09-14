@@ -38,36 +38,51 @@
         
         <div class="mb-4 mt-10" x-data="{ showConfirmationModal: false, showEditDetailsModal: false, showViewDetailsModal: false, showApproveModal: false, showDeclineModal: false }">
          <div class="flex flex-wrap ml-10 mt-10">
-             <div class="w-full md:w-1/2 lg:w-1/4 mb-4 md:mb-0">
-                 <h2 class="text-xl font-bold mb-4">Request Forms Details</h2>
-                 <div class="flex items-center mb-2">
-                     <p class="w-1/4 font-semibold">Status:</p> <span class="w-3/4 ml-2">Placeholder</span>
-                 </div>
-                 <div class="flex items-center mb-2">
-                     <p class="w-1/4 font-semibold">Department:</p> <span class="w-3/4 ml-2">Placeholder</span>
-                 </div>
-                 <div class="flex items-center mb-2">
-                     <p class="w-1/4 font-semibold">Requestor:</p> <span class="w-3/4 ml-2">Placeholder</span>
-                 </div>
-                 <div class="flex items-center mb-2">
-                     <p class="w-1/4 font-semibold">Title:</p> <span class="w-3/4 ml-2">Placeholder</span>
-                 </div>
-                 <div class="flex items-center mb-2">
-                     <p class="w-1/4 font-semibold">Dates:</p> <span class="w-3/4 ml-2">Placeholder</span>
-                 </div>
-                 <div class="flex items-center mb-4 mt-4">
-                     <span class="w-1/4"></span>
-                     <span class="w-2/4">
-                         <button class="bg-blue-600 text-white w-9/12 py-2 rounded hover:bg-blue-700" @click="showApproveModal = true">Approve Request</button>
-                     </span>
-                 </div>
-                 <div class="flex items-center mb-4 mt-4">
-                     <span class="w-1/4"></span>
-                     <span class="w-2/4">
-                         <button class="bg-gray-600 text-white w-9/12 py-2 rounded hover:bg-gray-700" @click="showDeclineModal = true">Decline Request</button>
-                     </span>
-                 </div>
-             </div>
+            <div class="w-full md:w-1/2 lg:w-1/4 mb-4 md:mb-0">
+                <h2 class="text-xl font-bold mb-4">Request Forms Details</h2>
+                <div class="flex items-center mb-2">
+                    <p class="w-1/4 font-semibold">Steps:</p> 
+                    <span class="w-3/4 ml-2">{{ $steps[$requestData->steps] ?? 'Unknown' }}</span>
+                </div>
+                <div class="flex items-center mb-2">
+                    <p class="w-1/4 font-semibold">Status:</p> 
+                    <span class="w-3/4 ml-2">
+                        <span class="
+                            @if($status[$requestData->status] === 'Pending') text-yellow-500
+                            @elseif($status[$requestData->status] === 'Approved') text-green-600
+                            @elseif($status[$requestData->status] === 'Declined') text-red-600
+                            @else text-gray-500
+                            @endif
+                        ">
+                            {{ $status[$requestData->status] ?? 'Unknown' }}
+                        </span>
+                    </span>
+                </div>                
+                <div class="flex items-center mb-2">
+                    <p class="w-1/4 font-semibold">Requestor:</p> 
+                    <span class="w-3/4 ml-2">{{ $requestData->requestor->fname }} {{ $requestData->requestor->lname }}</span>
+                </div>
+                <div class="flex items-center mb-2">
+                    <p class="w-1/4 font-semibold">Title:</p> 
+                    <span class="w-3/4 ml-2">{{ $requestData->request_name }}</span>
+                </div>
+                <div class="flex items-center mb-2">
+                    <p class="w-1/4 font-semibold">Dates:</p> 
+                    <span class="w-3/4 ml-2">{{ $requestData->created_at->format('F d, Y') }}</span>
+                </div>
+                <div class="flex items-center mb-4 mt-4">
+                    <span class="w-1/4"></span>
+                    <span class="w-2/4">
+                        <button class="bg-blue-600 text-white w-9/12 py-2 rounded hover:bg-blue-700" @click="showApproveModal = true">Approve Request</button>
+                    </span>
+                </div>
+                <div class="flex items-center mb-4 mt-4">
+                    <span class="w-1/4"></span>
+                    <span class="w-2/4">
+                        <button class="bg-gray-600 text-white w-9/12 py-2 rounded hover:bg-gray-700" @click="showDeclineModal = true">Decline Request</button>
+                    </span>
+                </div>
+            </div>
              <div class="w-full md:w-1/2 lg:w-1/4 pl-0 md:pl-5">
                  <h2 class="text-xl font-bold mb-4">Approval History</h2>
                  <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
@@ -86,16 +101,37 @@
                  <h2 class="text-xl font-bold text-green-600">Request Form Details:</h2>
              </div>
              <div class="p-4 bg-gray-100 border border-gray-300 shadow sm:p-8 mt-4">
-                 <div class="flex justify-between items-start mb-4">
-                     <h2 class="text-lg font-bold text-gray-900">Upgrade Barangay Office Computer Systems</h2>
-                 </div>
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-bold text-gray-900">{{ $requestData->request_name }}</h2>
+                </div>
                  <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
                  <!-- Description, Type, and Time -->
                  <div class="request-item">
-                     <p>Description: Modernize the barangay office computer systems by upgrading hardware and software to enhance productivity and efficiency in delivering services to residents.</p>
-                     <p>Type of request: IT Upgrade</p>
-                     <p>Time sent: 11:00 AM</p>
+                    <p class="font-semibold">Description: {{ $requestData->request_description }}</p>
+                    <!-- Dynamically populate the request type -->
+                    <p class="font-semibold">Type of request: {{ $requestData->request_type }}</p>
+                    <!-- Dynamically populate the time sent -->
+                    <p class="font-semibold">Time sent: {{ $requestData->created_at->format('h:i A') }}</p>
                  </div>
+                 <div>
+                    <h2 class="text-sm font-bold text-gray-900 mt-4">Quotation Form Details:</h2>
+                    <div class="mt-4">
+                        <h3 class="text-s font-semibold text-gray-700">Submitted Documents:</h3>
+                        <ul class="mt-2">
+                            @if(!empty($files))
+                                @foreach($files as $file)
+                                    <li>
+                                        <a href="/uploads/{{ $file }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                            {{ basename($file) }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li>No files submitted.</li>
+                            @endif
+                        </ul>
+                    </div>
+                </div>
              </div>
          </div>
          

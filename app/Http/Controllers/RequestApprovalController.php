@@ -42,4 +42,33 @@ class RequestApprovalController extends Controller
         // Return the view with the data
         return view('approval-management', compact('pendingCount', 'inProgressCount', 'historyCount', 'pendingRequests', 'inProgressRequests', 'historyRequests', 'perPage', 'activeTab'));
     }
+
+    public function show(Request $request)
+    {
+        // Get the ID from the query string
+        $id = $request->query('id');
+    
+        // Fetch a specific request detail by ID
+        $requestData = RequestModel::with('requestor')->findOrFail($id); // Renamed to $requestData to avoid conflict with $request from the Request object
+
+        $files = json_decode($requestData->files, true) ?? []; 
+    
+        // Define mappings for steps and status
+        $steps = [
+            1 => 'Request Form',
+            2 => 'Quotation Form',
+            3 => 'Purchase Request',
+            4 => 'Purchase Order'
+        ];
+    
+        $status = [
+            1 => 'Pending',
+            2 => 'Approved',
+            3 => 'Declined',
+            4 => 'Completed'
+        ];
+    
+        // Pass the data to the view
+        return view('request-approval', compact('requestData', 'steps', 'status', 'files'));
+    }    
 }

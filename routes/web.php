@@ -83,6 +83,9 @@ Route::get('/request-approval', function () {
     return view('request-approval');
 })->name('request-approval');
 
+Route::get('/request-approval', [RequestApprovalController::class, 'show'])->name('request-approval');
+
+
 Route::get('/purchase-request', function () {
     return view('purchase-request');
 })->name('purchase-request');
@@ -104,7 +107,7 @@ Route::get('/approval-management', function () {
     return view('/approval-management');
 })->name('/approval-management');
 
-Route::get('/approval-management', [RequestApprovalController::class, 'index'])->name('approval-management');
+Route::get('/approval-management', [RequestApprovalController::class, 'index'])->name('/approval-management');
 
 Route::get('/sample', function () {
     return view('sample');
