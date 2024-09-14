@@ -5,18 +5,21 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Livewire\ProfileSettings;
-use App\Http\Controllers\RequestController;
-use App\Http\Controllers\RequestDetailsController;
-use App\Http\Livewire\TabsLivewire;
-use App\Http\Controllers\RequestApprovalController;
 use App\Http\Controllers\ExpenseTableController;
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\RequestTableController;
+use App\Http\Controllers\RequestApprovalController;
+
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 
 Route::get('/settings', function () {
     return view('settings');
 })->name('settings');
+
+Route::get('/', function () {
+    return view('main');
+})->name('');
 
 Route::get('/forms', function () {
     return view('forms');
@@ -70,11 +73,18 @@ Route::get('/request-table', function () {
     return view('request-table');
 })->name('request-table');
 
+Route::get('/request-table', [RequestTableController::class, 'index'])->name('request-table');
+Route::get('/requests', [RequestTableController::class, 'index'])->name('requests.index');
+Route::get('/api/requests/{id}', [RequestTableController::class, 'getRequestDetails']);
+Route::post('/update-request', [RequestTableController::class, 'updateRequest']);
+Route::delete('/requests/{id}', [RequestTableController::class, 'deleteRequest'])->name('requests.delete');
+
 Route::get('/request-approval', function () {
     return view('request-approval');
 })->name('request-approval');
 
 Route::get('/request-approval', [RequestApprovalController::class, 'show'])->name('request-approval');
+
 
 Route::get('/purchase-request', function () {
     return view('purchase-request');
@@ -90,6 +100,7 @@ Route::get('/expense-table', function () {
 
 Route::get('/expense-table', [ExpenseTableController::class, 'index'])->name('expense-table');
 Route::get('/expenses', [ExpenseTableController::class, 'index'])->name('expense.index');
+Route::put('/requests/{id}', [RequestTableController::class, 'update'])->name('requests.update');
 Route::post('/expenses', [ExpenseTableController::class, 'store'])->name('expense.store');
 
 Route::get('/approval-management', function () {
@@ -117,8 +128,6 @@ Route::get('/main-kapitan', function () {
 Route::post('/submit-request', [RequestController::class, 'submit'])->name('request.submit');
 Route::get('/view-all', [RequestController::class, 'viewAll'])->name('view-all');
 Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
-Route::get('/forms', [RequestController::class, 'createRequestForm'])->name('forms');
-
 });
 
 Route::middleware('web')->group(function () {
@@ -170,6 +179,3 @@ Route::middleware('web')->group(function () {
     Route::post('/Login', [LoginController::class, 'login'])->name('Login'); // Changed to lowercase 'login'
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 }); 
-
-
-
