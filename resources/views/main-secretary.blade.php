@@ -250,7 +250,7 @@
 @import url(https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css);
 </style>
 
-<div class="ml-5 mr-5 mt-5">
+{{-- <div class="ml-5 mr-5 mt-5">
   <h2 class="text-xl pl-6 font-bold mb-2 text-gray-700">Expense Tracker</h2>
       </div>
  
@@ -287,7 +287,7 @@
             <canvas id="chart" class="w-full"></canvas>
         </div>
     </div>
-</div>
+</div> --}}
 
 
 <script>
