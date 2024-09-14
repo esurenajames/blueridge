@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\ProfileSettings;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RequestDetailsController;
-use App\Http\Controllers\RequestApprovalController;
 use App\Http\Livewire\TabsLivewire;
+use App\Http\Controllers\RequestApprovalController;
+use App\Http\Controllers\ExpenseTableController;
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 
@@ -40,10 +41,6 @@ Route::get('/decline', function () {
 Route::get('/details', function () {
     return view('details');
 })->name('details');
-
-Route::get('/details-2', function () {
-    return view('details-2');
-})->name('details-2');
 
 Route::get('/details-3', function () {
     return view('details-3');
@@ -79,7 +76,6 @@ Route::get('/request-approval', function () {
 
 Route::get('/request-approval', [RequestApprovalController::class, 'show'])->name('request-approval');
 
-
 Route::get('/purchase-request', function () {
     return view('purchase-request');
 })->name('purchase-request');
@@ -89,8 +85,12 @@ Route::get('/purchase-order', function () {
 })->name('purchase-order');
 
 Route::get('/expense-table', function () {
-    return view('/expense-table');
-})->name('/expense-table');
+    return view('expense-table');
+})->name('expense-table');
+
+Route::get('/expense-table', [ExpenseTableController::class, 'index'])->name('expense-table');
+Route::get('/expenses', [ExpenseTableController::class, 'index'])->name('expense.index');
+Route::post('/expenses', [ExpenseTableController::class, 'store'])->name('expense.store');
 
 Route::get('/approval-management', function () {
     return view('/approval-management');
