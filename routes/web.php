@@ -9,6 +9,8 @@ use App\Http\Controllers\ExpenseTableController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RequestTableController;
 use App\Http\Controllers\RequestApprovalController;
+use App\Http\Controllers\RequestDetailsController;
+use App\Http\Livewire\TabsLivewire;
 
 
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
@@ -128,6 +130,8 @@ Route::get('/main-kapitan', function () {
 Route::post('/submit-request', [RequestController::class, 'submit'])->name('request.submit');
 Route::get('/view-all', [RequestController::class, 'viewAll'])->name('view-all');
 Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
+Route::get('/forms', [RequestController::class, 'createRequestForm'])->name('forms');
+
 });
 
 Route::middleware('web')->group(function () {

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth; // Correct import
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Log;
 
 class RequestController extends Controller
 {
@@ -46,57 +46,54 @@ class RequestController extends Controller
         // Pass requests and counts to the view
         return view('view-all', ['requests' => $requests, 'counts' => $counts]);
     }
-    
 
+    public function submit(Request $request)
+    {
+        try {
+            // Validate incoming request data
+            $request->validate([
+                'request_name' => 'required|string|max:255',
+                'request_description' => 'required|string',
+                'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
+                'cc_request' => 'array',
+                'cc_request.*' => 'integer|exists:users,id', // Ensure each user ID is valid
+            ]);
 
-
-public function submit(Request $request)
-{
-    try {
-        // Validate incoming request data
-        $request->validate([
-            'request_name' => 'required|string|max:255',
-            'request_description' => 'required|string',
-            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
-            'cc_request' => 'array',
-            'cc_request.*' => 'integer|exists:users,id', // Ensure each user ID is valid
-        ]);
-
-        // Process file uploads and store file paths
-        $filePaths = [];
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                // Use Laravel's store method for secure file uploads
-                $filePath = $file->store('uploads', 'public'); // Store in 'storage/app/public/uploads'
-                $filePaths[] = '/storage/' . $filePath; // Adjust path based on your storage setup
+            // Process file uploads and store file paths
+            $filePaths = [];
+            if ($request->hasFile('files')) {
+                foreach ($request->file('files') as $file) {
+                    // Use Laravel's store method for secure file uploads
+                    $filePath = $file->store('uploads', 'public'); // Store in 'storage/app/public/uploads'
+                    $filePaths[] = '/storage/' . $filePath; // Adjust path based on your storage setup
+                }
             }
+
+            // Save the request data to the database
+            $newRequest = new RequestModel();
+            $newRequest->request_name = $request->request_name;
+            $newRequest->request_description = $request->request_description;
+            $newRequest->files = json_encode($filePaths); // Store file paths as JSON string
+            $newRequest->request_type = '2'; 
+            $newRequest->cc_request = json_encode($request->cc_request); // Save CC user IDs as JSON
+            $newRequest->steps = '1'; 
+            $newRequest->status = '1'; 
+            $newRequest->updated_at = now();
+
+            // Assign the current user's ID as the requestor_id
+            $newRequest->requestor_id = Auth::id();
+
+            // Save the request
+            $newRequest->save();
+
+            // Return JSON response indicating success
+            return response()->json(['success' => true, 'message' => 'Request submitted successfully']);
+        } catch (\Exception $e) {
+            // Log the error and return a failure response
+            Log::error('Error submitting request: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'An error occurred while submitting the request'], 500);
         }
-
-        // Save the request data to the database
-        $newRequest = new RequestModel();
-        $newRequest->request_name = $request->request_name;
-        $newRequest->request_description = $request->request_description;
-        $newRequest->files = json_encode($filePaths); // Store file paths as JSON string
-        $newRequest->request_type = '2'; 
-        $newRequest->cc_request = json_encode($request->cc_request); // Save CC user IDs as JSON
-        $newRequest->steps = '1'; 
-        $newRequest->status = '1'; 
-        $newRequest->updated_at = now();
-
-        // Assign the current user's ID as the requestor_id
-        $newRequest->requestor_id = Auth::id();
-
-        // Save the request
-        $newRequest->save();
-
-        // Return JSON response indicating success
-        return response()->json(['success' => true, 'message' => 'Request submitted successfully']);
-    } catch (\Exception $e) {
-        // Log the error and return a failure response
-        \Log::error('Error submitting request: ' . $e->getMessage());
-        return response()->json(['success' => false, 'message' => 'An error occurred while submitting the request'], 500);
     }
-}
 
 
     public function showDetails($id)
@@ -126,17 +123,20 @@ public function submit(Request $request)
     }
 
     public function filterByStep($step)
-{
-    $this->requests = RequestModel::where('steps', $step)->get();
-}
+    {
+        $request = RequestModel::find($id);
+        
 
-public function createRequestForm()
-{
-    // Fetch users with role_id = 1
-    $users = User::where('role_id', 1)->get();
+        $this-> requests = RequestModel::where('steps', $step)->get();
+    }
 
-    // Pass users to the form view
-    return view('forms', ['users' => $users]);
-}
+    public function createRequestForm()
+    {
+        // Fetch users with role_id = 1
+        $users = User::where('role_id', 1)->get();
+
+        // Pass users to the form view
+        return view('forms', ['users' => $users]);
+    }
 
 }

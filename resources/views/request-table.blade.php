@@ -153,9 +153,15 @@
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 w-10 h-10 relative">
                                             <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
-                                                <img class="w-8 h-8 rounded-full" 
-                                                src="{{ asset('storage/' . $request->requestor->profile_picture) }}" 
-                                                alt="{{ $request->requestor->fname }} {{ $request->requestor->lname }}"/>
+                                                @if($request->requestor)
+                                                    <img class="w-8 h-8 rounded-full" 
+                                                        src="{{ $request->requestor->profile_picture ? asset('storage/' . $request->requestor->profile_picture) : asset('default-profile-picture.png') }}" 
+                                                        alt="{{ $request->requestor->fname ? $request->requestor->fname : 'Unknown' }} {{ $request->requestor->lname ? $request->requestor->lname : 'Requestor' }}"/>
+                                                @else
+                                                    <img class="w-8 h-8 rounded-full" 
+                                                        src="{{ asset('default-profile-picture.png') }}" 
+                                                        alt="Default Profile Picture"/>
+                                                @endif
                                             </div>
                                         </div>
                                         <span class="ml-2">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</span>

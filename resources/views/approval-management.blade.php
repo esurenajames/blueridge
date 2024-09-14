@@ -95,10 +95,17 @@
                                             @click="window.location.href = '{{ route('request-approval', ['id' => $request->id]) }}'">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center space-x-2">
-                                                    <img src="{{ asset('storage/' . $request->requestor->profile_picture) }}" 
-                                                         alt="Profile Picture" 
-                                                         class="w-8 h-8 rounded-full">
-                                                    <p class="text-md font-semibold">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</p>
+                                                    @if($request->requestor)
+                                                        <img src="{{ $request->requestor->profile_picture ? asset('storage/' . $request->requestor->profile_picture) : asset('default-profile-picture.png') }}" 
+                                                            alt="Profile Picture" 
+                                                            class="w-8 h-8 rounded-full">
+                                                        <p class="text-md font-semibold">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</p>
+                                                    @else
+                                                        <img src="{{ asset('default-profile-picture.png') }}" 
+                                                            alt="Default Profile Picture" 
+                                                            class="w-8 h-8 rounded-full">
+                                                        <p class="text-md font-semibold">Unknown Requestor</p>
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
