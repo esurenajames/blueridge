@@ -22,24 +22,33 @@ class RequestController extends Controller
     }
 
     public function viewAll()
-{
-    // Retrieve all requests from the database
-    $requests = RequestModel::orderBy('created_at', 'desc')->get();
+    {
+        // Retrieve the current user's ID
+        $userId = auth()->user()->id;
     
-    // Fetch counts
-    $counts = [
-        'view_all' => $requests->whereIn('steps', [1, 2, 3, 4])->count(),
-        'request_form' => $requests->where('steps', 1)->where('status', 1)->count(),
-        'quotation' => $requests->where('steps', 2)->where('status', 1)->count(),
-        'purchase_request' => $requests->where('steps', 3)->where('status', 1)->count(),
-        'purchase_order' => $requests->where('steps', 4 )->where('status', 1)->count(),
-        'declined' => $requests->where('status', 3)->count(),
-        'history' => $requests->whereIn('status', [2, 3])->count(),
-    ];
+        // Fetch requests where the user is either the requestor or listed in cc_request
+        $requests = RequestModel::where('requestor_id', $userId)
+            ->orWhere('cc_request', 'like', '%' . $userId . '%')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        // Fetch counts based on filtered requests
+        $counts = [
+            'view_all' => $requests->whereIn('steps', [1, 2, 3, 4])->count(),
+            'request_form' => $requests->where('steps', 1)->where('status', 1)->count(),
+            'quotation' => $requests->where('steps', 2)->where('status', 1)->count(),
+            'purchase_request' => $requests->where('steps', 3)->where('status', 1)->count(),
+            'purchase_order' => $requests->where('steps', 4)->where('status', 1)->count(),
+            'declined' => $requests->where('status', 3)->count(),
+            'history' => $requests->whereIn('status', [2, 3])->count(),
+        ];
+    
+        // Pass requests and counts to the view
+        return view('view-all', ['requests' => $requests, 'counts' => $counts]);
+    }
+    
 
-    // Pass requests and counts to the view
-    return view('view-all', ['requests' => $requests, 'counts' => $counts]);
-}
+
 
 public function submit(Request $request)
 {
