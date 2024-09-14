@@ -55,29 +55,25 @@
             <span class="text-green-600 self-end ml-1 font-medium">Completed</span>
         @elseif($request->status == 3)
             <span class="text-yellow-500 self-end ml-1 font-medium">
-                @if($request->steps == 5)
+                @if($request->steps == 4)
                     Declined - Purchase Order
-                @elseif($request->steps == 4)
-                    Declined - Purchase Request
                 @elseif($request->steps == 3)
-                    Declined - Quotation Form
+                    Declined - Purchase Request
                 @elseif($request->steps == 2)
-                    Declined - Request Form
+                    Declined - Quotation Form
                 @elseif($request->steps == 1)
-                    Declined - For Approval
+                    Declined - Request Form
                 @else
                     Declined
                 @endif
             </span>
         @elseif((int)$request->steps === 1)
-            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Approval</span>
-        @elseif((int)$request->steps === 2)
             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Request Form Approval</span>
-        @elseif((int)$request->steps === 3)
+        @elseif((int)$request->steps === 2)
             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Quotation Form Approval</span>
-        @elseif((int)$request->steps === 4)
+        @elseif((int)$request->steps === 3)
             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Request Approval</span>
-        @elseif((int)$request->steps === 5)
+        @elseif((int)$request->steps === 4)
             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Order Approval</span>
         @endif
 
@@ -92,13 +88,14 @@
     <div class="px-8 mt-1 sm:rounded-lg pb-8">
     <!-- Start of Stepper -->
     <div class="flex items-start max-w-screen-lg mx-auto">
-<!-- Step 1 -->
+
 <div class="w-full">
     <div class="flex items-center w-full">
         <div class="w-8 h-8 shrink-0 mx-[-1px] 
             @if($request->steps >= 1)
                 @if($request->steps == 1 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 1 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 1 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 1 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 1) bg-orange-300
                 @elseif($request->steps > 1) bg-green-600
                 @else bg-gray-300 
@@ -110,7 +107,8 @@
         <div class="w-full h-1 mx-4 rounded-lg 
             @if($request->steps > 1 || $request->steps == 1)
                 @if($request->steps == 1 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 1 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 1 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 1 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 1) bg-orange-300
                 @elseif($request->steps > 1) bg-green-600
                 @else bg-gray-300 
@@ -121,18 +119,20 @@
         <h6 class="text-base font-bold 
             @if($request->steps >= 1)
                 @if($request->steps == 1 && $request->status == 3) text-red-600 
-                @elseif($request->steps == 1 && $request->status == 2) text-green-600 
+                @elseif($request->steps == 1 && $request->status == 4) text-green-600 
+                @elseif($request->steps == 1 && $request->status == 2) text-blue-600 
                 @elseif($request->steps == 1) text-orange-300
                 @elseif($request->steps > 1) text-green-600
                 @else text-gray-500 
                 @endif
-            @else text-gray-500 @endif">For Approval</h6>
+            @else text-gray-500 @endif">Request Form</h6>
         <p class="text-xs text-gray-400">
             @if($request->steps >= 1)
                 @if($request->steps == 1 && $request->status == 3) Declined 
-                @elseif($request->steps == 1 && $request->status == 2) Completed 
+                @elseif($request->steps == 1 && $request->status == 4) Completed 
+                @elseif($request->steps == 1 && $request->status == 2) Approved 
                 @elseif($request->steps == 1) Pending 
-                @elseif($request->steps > 1) Completed
+                @elseif($request->steps > 1) Approved
                 @else Pending 
                 @endif
             @else Pending @endif
@@ -141,13 +141,14 @@
     </div>
 </div>
 
-<!-- Step 2 -->
+<!-- Step 2: Quotation Form -->
 <div class="w-full">
     <div class="flex items-center w-full">
         <div class="w-8 h-8 shrink-0 mx-[-1px] 
             @if($request->steps >= 2)
                 @if($request->steps == 2 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 2 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 2 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 2 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 2) bg-orange-300
                 @elseif($request->steps > 2) bg-green-600
                 @else bg-gray-300 
@@ -159,7 +160,8 @@
         <div class="w-full h-1 mx-4 rounded-lg 
             @if($request->steps >= 2)
                 @if($request->steps == 2 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 2 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 2 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 2 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 2) bg-orange-300
                 @elseif($request->steps > 2) bg-green-600
                 @else bg-gray-300 
@@ -170,18 +172,20 @@
         <h6 class="text-base font-bold 
             @if($request->steps >= 2)
                 @if($request->steps == 2 && $request->status == 3) text-red-600 
-                @elseif($request->steps == 2 && $request->status == 2) text-green-600 
+                @elseif($request->steps == 2 && $request->status == 4) text-green-600 
+                @elseif($request->steps == 2 && $request->status == 2) text-blue-600 
                 @elseif($request->steps == 2) text-orange-300 
                 @elseif($request->steps > 2) text-green-600
                 @else text-gray-500 
                 @endif
-            @else text-gray-500 @endif">Request Form</h6>
+            @else text-gray-500 @endif">Quotation Form</h6>
         <p class="text-xs text-gray-400">
             @if($request->steps >= 2)
                 @if($request->steps == 2 && $request->status == 3) Declined 
-                @elseif($request->steps == 2 && $request->status == 2) Completed 
+                @elseif($request->steps == 2 && $request->status == 4) Completed 
+                @elseif($request->steps == 2 && $request->status == 2) Approved 
                 @elseif($request->steps == 2) Pending 
-                @elseif($request->steps > 2) Completed
+                @elseif($request->steps > 2) Approved
                 @else Pending 
                 @endif
             @else Pending @endif
@@ -190,13 +194,14 @@
     </div>
 </div>
 
-<!-- Step 3 -->
+<!-- Step 3: Purchase Request -->
 <div class="w-full">
     <div class="flex items-center w-full">
         <div class="w-8 h-8 shrink-0 mx-[-1px] 
             @if($request->steps >= 3)
                 @if($request->steps == 3 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 3 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 3 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 3 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 3) bg-orange-300
                 @elseif($request->steps > 3) bg-green-600
                 @else bg-gray-300 
@@ -208,7 +213,8 @@
         <div class="w-full h-1 mx-4 rounded-lg 
             @if($request->steps >= 3)
                 @if($request->steps == 3 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 3 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 3 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 3 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 3) bg-orange-300
                 @elseif($request->steps > 3) bg-green-600
                 @else bg-gray-300 
@@ -219,18 +225,20 @@
         <h6 class="text-base font-bold 
             @if($request->steps >= 3)
                 @if($request->steps == 3 && $request->status == 3) text-red-600 
-                @elseif($request->steps == 3 && $request->status == 2) text-green-600 
+                @elseif($request->steps == 3 && $request->status == 4) text-green-600 
+                @elseif($request->steps == 3 && $request->status == 2) text-blue-600 
                 @elseif($request->steps == 3) text-orange-300 
                 @elseif($request->steps > 3) text-green-600
                 @else text-gray-500 
                 @endif
-            @else text-gray-500 @endif">Quotation Form</h6>
+            @else text-gray-500 @endif">Purchase Request</h6>
         <p class="text-xs text-gray-400">
             @if($request->steps >= 3)
                 @if($request->steps == 3 && $request->status == 3) Declined 
-                @elseif($request->steps == 3 && $request->status == 2) Completed 
+                @elseif($request->steps == 3 && $request->status == 4) Completed 
+                @elseif($request->steps == 3 && $request->status == 2) Approved 
                 @elseif($request->steps == 3) Pending 
-                @elseif($request->steps > 3) Completed
+                @elseif($request->steps > 3) Approved
                 @else Pending 
                 @endif
             @else Pending @endif
@@ -239,12 +247,14 @@
     </div>
 </div>
 
+<!-- Step 4: Purchase Order -->
 <div class="w-full">
     <div class="flex items-center w-full">
         <div class="w-8 h-8 shrink-0 mx-[-1px] 
             @if($request->steps >= 4)
                 @if($request->steps == 4 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 4 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 4 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 4 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 4) bg-orange-300
                 @elseif($request->steps > 4) bg-green-600
                 @else bg-gray-300 
@@ -256,7 +266,8 @@
         <div class="w-full h-1 mx-4 rounded-lg 
             @if($request->steps >= 4)
                 @if($request->steps == 4 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 4 && $request->status == 2) bg-green-600 
+                @elseif($request->steps == 4 && $request->status == 4) bg-green-600 
+                @elseif($request->steps == 4 && $request->status == 2) bg-blue-600 
                 @elseif($request->steps == 4) bg-orange-300
                 @elseif($request->steps > 4) bg-green-600
                 @else bg-gray-300 
@@ -267,18 +278,20 @@
         <h6 class="text-base font-bold 
             @if($request->steps >= 4)
                 @if($request->steps == 4 && $request->status == 3) text-red-600 
-                @elseif($request->steps == 4 && $request->status == 2) text-green-600 
+                @elseif($request->steps == 4 && $request->status == 4) text-green-600 
+                @elseif($request->steps == 4 && $request->status == 2) text-blue-600 
                 @elseif($request->steps == 4) text-orange-300 
                 @elseif($request->steps > 4) text-green-600
                 @else text-gray-500 
                 @endif
-            @else text-gray-500 @endif">Purchase Request</h6>
+            @else text-gray-500 @endif">Purchase Order</h6>
         <p class="text-xs text-gray-400">
             @if($request->steps >= 4)
                 @if($request->steps == 4 && $request->status == 3) Declined 
-                @elseif($request->steps == 4 && $request->status == 2) Completed 
+                @elseif($request->steps == 4 && $request->status == 4) Completed 
+                @elseif($request->steps == 4 && $request->status == 2) Approved 
                 @elseif($request->steps == 4) Pending 
-                @elseif($request->steps > 4) Completed
+                @elseif($request->steps > 4) Approved
                 @else Pending 
                 @endif
             @else Pending @endif
@@ -287,54 +300,6 @@
     </div>
 </div>
 
-<!-- Step 5 -->
-<div class="w-full">
-    <div class="flex items-center w-full">
-        <div class="w-8 h-8 shrink-0 mx-[-1px] 
-            @if($request->steps >= 5)
-                @if($request->steps == 5 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 5 && $request->status == 2) bg-green-600 
-                @elseif($request->steps == 5) bg-orange-300
-                @elseif($request->steps > 5) bg-green-600
-                @else bg-gray-300 
-                @endif
-            @else bg-gray-300 @endif
-            p-1.5 flex items-center justify-center rounded-full">
-            <span class="text-base text-white font-bold">5</span>
-        </div>
-        <div class="w-full h-1 mx-4 rounded-lg 
-            @if($request->steps >= 5)
-                @if($request->steps == 5 && $request->status == 3) bg-red-600 
-                @elseif($request->steps == 5 && $request->status == 2) bg-green-600 
-                @elseif($request->steps == 5) bg-orange-300
-                @elseif($request->steps > 5) bg-green-600
-                @else bg-gray-300 
-                @endif
-            @else bg-gray-300 @endif"></div>
-    </div>
-    <div class="mt-2 mr-4">
-        <h6 class="text-base font-bold 
-            @if($request->steps >= 5)
-                @if($request->steps == 5 && $request->status == 3) text-red-600 
-                @elseif($request->steps == 5 && $request->status == 2) text-green-600 
-                @elseif($request->steps == 5) text-orange-300 
-                @elseif($request->steps > 5) text-green-600
-                @else text-gray-500 
-                @endif
-            @else text-gray-500 @endif">Purchase Order</h6>
-        <p class="text-xs text-gray-400">
-            @if($request->steps >= 5)
-                @if($request->steps == 5 && $request->status == 3) Declined 
-                @elseif($request->steps == 5 && $request->status == 2) Completed 
-                @elseif($request->steps == 5) Pending 
-                @elseif($request->steps > 5) Completed
-                @else Pending 
-                @endif
-            @else Pending @endif
-        </p>
-        <p class="text-xs text-gray-400">Date Placeholder</p>
-    </div>
-</div>
 
 
 

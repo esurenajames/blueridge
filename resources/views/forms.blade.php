@@ -263,11 +263,38 @@
                         <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
                         <input type="text" id="request_name" name="request_name" x-model="requestData.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
                     </div>
+               
+                <div x-data="dropdown()" class="relative mb-2 sm:mb-6">
+                    <label for="cc_request" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">CC</label>
 
-                   <!-- Type of Request -->
-                    <div class="mb-2 sm:mb-6">
-                        <label for="request_type" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Type of Request</label>
-                        <input type="text" id="request_type" name="request_type" x-model="requestData.type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request type" required>
+                    <!-- Selected Users Inside Input Box -->
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <template x-for="userId in selectedUsers" :key="userId">
+                            <div class="flex items-center bg-gray-200 text-gray-800 px-2 py-1 rounded-lg">
+                                <span x-text="getFullName(userId)" class="text-sm"></span>
+                                <button type="button" @click="removeUser(userId)" class="ml-2 text-gray-600 hover:text-gray-800">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Searchable Dropdown -->
+                    <input type="text" id="cc_request" name="cc_request" x-model="search" @input="filterUsers" @focus="openDropdown"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                    placeholder="Search users" autocomplete="off" x-ref="input" />
+
+                    <!-- Dropdown Options -->
+                    <div x-show="open" x-ref="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg">
+                        <template x-for="user in filteredUsers" :key="user.id">
+                            <div @click="selectUser(user)" class="px-4 py-2 hover:bg-indigo-500 hover:text-white cursor-pointer rounded-lg text-sm">
+                                <span x-text="getFullName(user.id)"></span>
+                            </div>
+                        </template>
+                        <div x-show="filteredUsers.length === 0" class="px-4 py-2 text-gray-500 text-sm">No users found</div>
+                        </div>
                     </div>
 
                     <!-- Request Description -->
@@ -277,167 +304,244 @@
                     </div>
                     
                     <!-- File Upload Section -->
-                    <div class="mb-6">
-                        <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
-                        <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
-                    </div>
-                    
-                    <div x-show="hasFiles" class="mt-4">
-                        <h3 class="text-lg font-medium mb-2">Selected Files</h3>
-                        <template x-for="(file, index) in files" :key="index">
-                            <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2">
-                                <div class="flex items-center space-x-2">
-                                    <!-- File Preview (Clickable for Full View) -->
-                                    <a :href="file.url" target="_blank" class="w-20 h-25 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
-                                        <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-25 h-25" alt="Image preview">
-                                        <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-400 h-400"></span>
-                                    </a>
-                                    <!-- File Name and Size -->
-                                    <div class="flex flex-col">
-                                        <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline" x-text="file.name"></a>
-                                        <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
-                                    </div>
+                    <div class="mb-6 max-w-full overflow-hidden">
+                    <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
+                    <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
+                </div>
+                
+                <div x-show="hasFiles" class="mt-4 max-w-full overflow-hidden">
+                    <h3 class="text-lg font-medium mb-2">Selected Files</h3>
+                    <template x-for="(file, index) in files" :key="index">
+                        <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2 max-w-full overflow-hidden">
+                            <div class="flex items-center space-x-2">
+                                <!-- File Preview (Clickable for Full View) -->
+                                <a :href="file.url" target="_blank" class="w-20 h-20 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
+                                    <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-20 h-20" alt="Image preview">
+                                    <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-20 h-20 flex items-center justify-center"></span>
+                                </a>
+                                <!-- File Name and Size -->
+                                <div class="flex flex-col w-52"> <!-- Set a fixed width for truncation -->
+                                    <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline truncate" x-text="file.name"></a>
+                                    <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
                                 </div>
-                                <!-- Remove Button -->
-                                <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
                             </div>
-                        </template>
-                    </div>     
+                            <!-- Remove Button -->
+                            <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+    
                 </form>
             </div>
 
-<script>
-    function fileUploader() {
-        return {
-            requestData: {
-                name: '',
-                description: ''
-            },
-            files: [],
-            hasFiles: false,
 
-            init() {
-                this.hasFiles = this.files.length > 0;
-            },
+            <script>
+const sharedData = {
+    selectedUsers: []
+};
 
-            previewFiles(event) {
-                const files = event.target.files;
-                if (!files || files.length === 0) return;
+function dropdown() {
+    return {
+        open: false,
+        search: '',
+        users: @json($users).filter(user => user.role_id === 1 && user.id !== @json(auth()->user()->id)), // Exclude current user
+        filteredUsers: [],
+        selectedUsers: [],  // Define selectedUsers here
 
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.files.push({
-                            name: file.name,
-                            size: file.size,
-                            type: file.type,
-                            url: e.target.result
-                        });
-                    };
-                    reader.readAsDataURL(file);
-                }
+        getFullName(userId) {
+            const user = this.users.find(user => user.id === userId);
+            return user ? `${user.fname} ${user.lname}` : 'Unknown';
+        },
 
-                this.hasFiles = true;
-            },
+        openDropdown() {
+            this.open = true;
+            this.filteredUsers = this.users;
+            this.$nextTick(() => {
+                this.handleOutsideClick = this.handleOutsideClick.bind(this);
+                document.addEventListener('click', this.handleOutsideClick);
+            });
+        },
 
-            removeFile(index) {
-                this.files.splice(index, 1);
-                if (this.files.length === 0) {
-                    this.hasFiles = false;
-                }
-            },
+        filterUsers() {
+            const searchTerm = this.search.toLowerCase();
+            this.filteredUsers = searchTerm ? 
+                this.users.filter(user =>
+                    `${user.fname} ${user.lname}`.toLowerCase().includes(searchTerm)
+                ) : this.users;
+        },
 
-            formatBytes(bytes, decimals = 2) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const dm = decimals < 0 ? 0 : decimals;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-            },
+        selectUser(user) {
+            if (!this.selectedUsers.includes(user.id)) {
+                this.selectedUsers.push(user.id);
+                sharedData.selectedUsers.push(user.id); // Update sharedData as well
+                console.log('Selected User IDs (Component):', [...this.selectedUsers]);
+                console.log('Selected User IDs (SharedData):', [...sharedData.selectedUsers]);
+            }
 
-            getFileIcon(file) {
-                const fileType = file.type.split('/')[1];
-                let iconHtml = '';
+            this.open = false;
+            this.search = '';
+            this.filteredUsers = this.users;
+        },
 
-                switch (fileType) {
-                    case 'pdf':
-                        iconHtml = '<i class="far fa-file-pdf"></i>';
-                        break;
-                    case 'doc':
-                    case 'docx':
-                        iconHtml = '<i class="far fa-file-word"></i>';
-                        break;
-                    case 'xls':
-                    case 'xlsx':
-                        iconHtml = '<i class="far fa-file-excel"></i>';
-                        break;
-                    default:
-                        iconHtml = '<i class="far fa-file-alt"></i>';
-                        break;
-                }
+        removeUser(userId) {
+            this.selectedUsers = this.selectedUsers.filter(id => id !== userId);
+            sharedData.selectedUsers = sharedData.selectedUsers.filter(id => id !== userId); // Update sharedData as well
+            console.log('Removed User ID:', userId);
+            console.log('Selected User IDs:', [...this.selectedUsers]);
+        },
 
-                return iconHtml;
-            },
-
-            submitRequest() {
-                const formData = new FormData();
-                formData.append('request_name', this.requestData.name);
-                formData.append('request_description', this.requestData.description);
-                formData.append('request_type', this.requestData.type); // Add request_type
-
-                this.files.forEach(file => {
-                    const fileData = this.dataURLtoFile(file.url, file.name);
-                    formData.append('files[]', fileData);
-                });
-
-                const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-                const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
-
-                fetch('{{ route('request.submit') }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = '{{ route('main') }}'; // Redirect on success
-                    } else {
-                        console.error('Submission failed:', data.message); // Handle submission failure
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error); // Handle fetch errors
-                });
-            },
-
-
-            dataURLtoFile(dataurl, filename) {
-                const arr = dataurl.split(',');
-                const mime = arr[0].match(/:(.*?);/)[1];
-                const bstr = atob(arr[1]);
-                let n = bstr.length;
-                const u8arr = new Uint8Array(n);
-                while (n--) {
-                    u8arr[n] = bstr.charCodeAt(n);
-                }
-                return new File([u8arr], filename, { type: mime });
+        handleOutsideClick(event) {
+            if (!this.$refs.dropdown.contains(event.target) && !this.$refs.input.contains(event.target)) {
+                this.open = false;
+                this.search = ''; // Clear search input
+                document.removeEventListener('click', this.handleOutsideClick);
             }
         }
-    }
+    };
+}
+
+function fileUploader() {
+    return {
+        requestData: {
+            name: '',
+            description: ''
+        },
+        files: [],
+        hasFiles: false,
+
+        init() {
+            this.hasFiles = this.files.length > 0;
+        },
+
+        previewFiles(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.files.push({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        url: e.target.result
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+
+            this.hasFiles = true;
+        },
+
+        removeFile(index) {
+            this.files.splice(index, 1);
+            if (this.files.length === 0) {
+                this.hasFiles = false;
+            }
+        },
+
+        formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        },
+
+        getFileIcon(file) {
+            const fileType = file.type.split('/')[1];
+            let iconHtml = '';
+
+            switch (fileType) {
+                case 'pdf':
+                    iconHtml = '<i class="far fa-file-pdf"></i>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    iconHtml = '<i class="far fa-file-word"></i>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    iconHtml = '<i class="far fa-file-excel"></i>';
+                    break;
+                default:
+                    iconHtml = '<i class="far fa-file-alt"></i>';
+                    break;
+            }
+
+            return iconHtml;
+        },
+
+        submitRequest() {
+            const formData = new FormData();
+            formData.append('request_name', this.requestData.name);
+            formData.append('request_description', this.requestData.description);
+
+            // Append selected users to FormData as cc_request[]
+            if (Array.isArray(sharedData.selectedUsers) && sharedData.selectedUsers.length > 0) {
+                sharedData.selectedUsers.forEach(userId => {
+                    formData.append('cc_request[]', userId); // Append user IDs correctly as array
+                });
+            } else {
+                console.warn('No selected users to submit');
+            }
+
+            // Append files to FormData
+            this.files.forEach((file, index) => {
+                formData.append('files[]', this.dataURLtoFile(file.url, file.name));
+            });
+
+            // Log selectedUsers and formData for debugging
+            console.log('Submitting with Selected User IDs:', sharedData.selectedUsers);
+            console.log('FormData Entries:', Array.from(formData.entries()));
+
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+            fetch('{{ route('request.submit') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '{{ route('main') }}'; // Redirect on success
+                } else {
+                    console.error('Submission failed:', data.message); // Handle submission failure
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error); // Handle fetch errors
+            });
+        },
+
+        dataURLtoFile(dataurl, filename) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+    };
+}
 </script>
 
                     <div class="flex justify-end w-full mt-4">

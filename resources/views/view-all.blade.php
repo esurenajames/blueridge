@@ -33,7 +33,6 @@
       </div>
     </div>     
  
-<!-- Tab View -->
 
 
 <div>
@@ -48,21 +47,11 @@
                 <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500">{{ $counts['view_all'] ?? '0' }}</span>
             </a>
         </li>
-        <li class="flex-1">
-            <a href="#" data-tab="approval-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
+            <li class="flex-1">
+                <a href="#" data-tab="request-form-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
                 <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 64 64">
                     <path fill="#808080" d="M62.828,29.172l-28-28C34.078,0.422,33.062,0,32,0H4C1.789,0,0,1.789,0,4v28 c0,1.062,0.422,2.078,1.172,2.828l28,28C29.953,63.609,30.977,64,32,64s2.047-0.391,2.828-1.172l28-28 C64.391,33.266,64.391,30.734,62.828,29.172z M20,28.004c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S24.418,28.004,20,28.004z"/>
                 </svg>
-                For Approval
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500">{{ $counts['approval'] }}</span>
-            </a>
-        </li>
-
-            <li class="flex-1">
-                <a href="#" data-tab="request-form-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
-                    <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 30 30">
-                        <path fill="#808080" d="M 6 4 C 4.892 4 4 4.892 4 6 L 4 14 L 14 14 L 14 4 L 6 4 z M 16 4 L 16 14 L 26 14 L 26 6 C 26 4.892 25.108 4 24 4 L 16 4 z M 4 16 L 4 24 C 4 25.108 4.892 26 6 26 L 14 26 L 14 16 L 4 16 z M 16 16 L 16 26 L 24 26 C 25.108 26 26 25.108 26 24 L 26 16 L 16 16 z"/>
-                    </svg>
                     Request Form
                     <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-500">{{ $counts['request_form'] }}</span>
                 </a>
@@ -136,38 +125,33 @@
                         <i class='bx bx-question-mark'></i>
                     </span>
                     <span class="self-end ml-1 font-light">|</span>
-                        @if($request->status == 2 && $request->steps == 5)
+                        @if($request->status == 2 && $request->steps == 4)
                             <span class="text-green-600 self-end ml-1 font-medium">Completed</span>
                         @elseif($request->status == 3)
                             <span class="text-yellow-500 self-end ml-1 font-medium">
-                                @if($request->steps == 5)
+                                @if($request->steps == 4)
                                     Declined - Purchase Order
-                                @elseif($request->steps == 4)
-                                    Declined - Purchase Request
                                 @elseif($request->steps == 3)
-                                    Declined - Quotation Form
+                                    Declined - Purchase Request
                                 @elseif($request->steps == 2)
-                                    Declined - Request Form
+                                    Declined - Quotation Form
                                 @elseif($request->steps == 1)
-                                    Declined - For Approval
+                                    Declined - Request Form
                                 @else
                                     Declined
                                 @endif
                             </span>
                         @elseif((int)$request->steps === 1)
-                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Approval</span>
-                        @elseif((int)$request->steps === 2)
                             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Request Form Approval</span>
-                        @elseif((int)$request->steps === 3)
+                        @elseif((int)$request->steps === 2)
                             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Quotation Form Approval</span>
-                        @elseif((int)$request->steps === 4)
+                        @elseif((int)$request->steps === 3)
                             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Request Approval</span>
-                        @elseif((int)$request->steps === 5)
+                        @elseif((int)$request->steps === 4)
                             <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Order Approval</span>
                         @endif
-
-                        </div>
-                        </div>
+                </div>
+            </div>
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
             <div>
                 <p>Description: {{ $request->request_description }}</p>
@@ -181,6 +165,7 @@
         </div>
     @endforeach
 </div>
+
 
 
 
@@ -214,16 +199,14 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (tab) {
             case 'view-all':
                 return true;
-            case 'approval-tab':
-                return steps === 1 && status === 1;
             case 'request-form-tab':
-                return steps === 2 && status === 1;
+                return steps === 1 && status === 1;
             case 'quotation-tab':
-                return steps === 3 && status === 1;
+                return steps === 2 && status === 1;
             case 'purchase-request-tab':
-                return steps === 4 && status === 1;
+                return steps === 3 && status === 1;
             case 'purchase-order-tab':
-                return steps === 5 && status === 1;
+                return steps === 4 && status === 1;
             case 'declined-tab':
                 return status === 3;
             case 'history-tab':
