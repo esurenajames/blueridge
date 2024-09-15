@@ -356,13 +356,6 @@
             <p>Time sent: {{ $request->created_at->format('h:i:s A') }}</p>
         </div>  
     </div>
-<div>
-    <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks: </h2>
-    <p class="text-sm">
-    {{ $request->remarks ? $request->remarks : 'No Remarks' }}
-</p>
-
-</div>
 <!-- Quotation Form Details Section -->
 <div>
     <h2 class="text-sm font-bold text-gray-900 mt-10">Quotation Form Details:</h2>
@@ -462,8 +455,8 @@
         </ul>
     </div>
     <div>
-        <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks:</h2>
-        <p class="text-sm">Wait for further updates.</p>
+        <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks: </h2>
+        <p class="text-sm">{{ $request->remarks ? $request->remarks : 'No Remarks' }}</p>
     </div>
 </div>
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Carbon\Carbon;
 
 class RequestApprovalController extends Controller
 {
@@ -47,12 +49,25 @@ class RequestApprovalController extends Controller
     {
         // Get the ID from the query string
         $id = $request->query('id');
-    
+            
         // Fetch a specific request detail by ID
         $requestData = RequestModel::with('requestor')->findOrFail($id); // Renamed to $requestData to avoid conflict with $request from the Request object
 
         $files = json_decode($requestData->files, true) ?? []; 
-    
+
+        // Decode the cc_request field
+        $ccRequest = json_decode($requestData->cc_request, true) ?? [];
+
+        // Fetch the users who are listed in the cc_request array
+        $ccUsers = User::whereIn('id', $ccRequest)->get();
+
+        // Decode approval_dates, approval_ids, and approval_status
+        $approvalDates = json_decode($requestData->approval_dates, true) ?? [];
+        $approvalIds = json_decode($requestData->approval_ids, true) ?? [];
+        $approvalStatus = json_decode($requestData->approval_status, true) ?? []; // New field for approval status
+
+        $approvers = User::whereIn('id', $approvalIds)->get()->keyBy('id');
+
         // Define mappings for steps and status
         $steps = [
             1 => 'Request Form',
@@ -60,15 +75,100 @@ class RequestApprovalController extends Controller
             3 => 'Purchase Request',
             4 => 'Purchase Order'
         ];
-    
+        
         $status = [
             1 => 'Pending',
             2 => 'Approved',
             3 => 'Declined',
             4 => 'Completed'
         ];
+
+        // Prepare the data to pass to the view
+        $approvalDetails = [];
+        foreach ($approvalDates as $index => $date) {
+            $approvalDetails[] = [
+                'date' => $date,
+                'user' => $approvers[$approvalIds[$index]] ?? null,
+                'status' => $approvalStatus[$index] ?? null
+            ];
+        }
     
         // Pass the data to the view
-        return view('request-approval', compact('requestData', 'steps', 'status', 'files'));
+        return view('request-approval', compact('requestData', 'ccUsers', 'steps', 'status', 'files', 'approvalDates', 'approvalIds', 'approvalStatus', 'approvers'));
     }    
+
+    public function approveRequest(Request $request, $id)
+    {
+        // Find the request by ID
+        $requestData = RequestModel::findOrFail($id);
+    
+        // Increment the step (assuming max step is 4)
+        if ($requestData->steps < 4) {
+            $requestData->steps += 1;
+        }
+    
+        // Set the status to 'Approved' (assuming '1' means approved)
+        $requestData->status = 1;
+    
+        // Get the current approval date and approver's ID
+        $currentDate = Carbon::now()->toDateTimeString();
+        $approverId = auth()->user()->id;
+    
+        // Append the new approval date and approver ID to the arrays
+        $approvalDates = json_decode($requestData->approval_dates, true) ?? [];
+        $approvalIds = json_decode($requestData->approval_ids, true) ?? [];
+        $approvalStatus = json_decode($requestData->approval_status, true) ?? [];
+    
+        $approvalDates[] = $currentDate;
+        $approvalIds[] = $approverId;
+        $approvalStatus[] = 1; // 1 = Approved
+    
+        // Save remarks
+        $requestData->remarks = $request->input('remarks');
+    
+        // Save back as JSON
+        $requestData->approval_dates = json_encode($approvalDates);
+        $requestData->approval_ids = json_encode($approvalIds);
+        $requestData->approval_status = json_encode($approvalStatus);
+    
+        // Save the updated request
+        $requestData->save();
+    
+        return redirect()->back()->with('success', 'Request approved successfully.');
+    }    
+
+    public function declineRequest(Request $request, $id)
+    {
+        // Find the request by ID
+        $requestData = RequestModel::findOrFail($id);
+
+        // Set the status to 'Declined' (assuming '3' means declined)
+        $requestData->status = 3;
+
+        // Get the current date and approver's ID
+        $currentDate = Carbon::now()->toDateTimeString();
+        $approverId = auth()->user()->id;
+
+        // Append the new approval date and approver ID to the arrays
+        $approvalDates = json_decode($requestData->approval_dates, true) ?? [];
+        $approvalIds = json_decode($requestData->approval_ids, true) ?? [];
+        $approvalStatus = json_decode($requestData->approval_status, true) ?? [];
+
+        $approvalDates[] = $currentDate;
+        $approvalIds[] = $approverId;
+        $approvalStatus[] = 3; // 3 = Declined
+
+        // Save the remarks for the decline action
+        $requestData->remarks = $request->input('remarks');
+
+        // Save back as JSON
+        $requestData->approval_dates = json_encode($approvalDates);
+        $requestData->approval_ids = json_encode($approvalIds);
+        $requestData->approval_status = json_encode($approvalStatus);
+
+        // Save the updated request
+        $requestData->save();
+
+        return redirect()->back()->with('success', 'Request declined successfully.');
+    }
 }

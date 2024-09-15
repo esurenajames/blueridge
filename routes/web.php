@@ -86,7 +86,8 @@ Route::get('/request-approval', function () {
 })->name('request-approval');
 
 Route::get('/request-approval', [RequestApprovalController::class, 'show'])->name('request-approval');
-
+Route::post('/approve-request/{id}', [RequestApprovalController::class, 'approveRequest'])->name('approve.request');
+Route::post('/decline-request/{id}', [RequestApprovalController::class, 'declineRequest'])->name('decline.request');
 
 Route::get('/purchase-request', function () {
     return view('purchase-request');

@@ -41,6 +41,9 @@ class RequestModel extends Model
     protected $casts = [
         'files' => 'array', // Assuming 'files' column stores JSON data
         'steps' => 'integer', // Cast 'steps' to integer for easy manipulation
+        'approval_dates' => 'array',
+        'approval_ids' => 'array',
+        'approval_status' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
