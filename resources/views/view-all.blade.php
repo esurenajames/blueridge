@@ -36,10 +36,10 @@
 
 
 <div>
-<div class="space-y-5 rounded-md bg-white p-3 mt-5 shadow-md w-3/4 mx-auto mt-7">
+<div class="text-base space-y-5 rounded-md bg-white p-3 mt-5 shadow-md w-3/4 mx-auto mt-7">
     <ul class="-mb-px flex flex-wrap items-center gap-1 text-md">
         <li class="flex-1">
-            <a href="#" data-tab="view-all" class="tab-link box-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
+            <a href="#" data-tab="view-all" class="tab-link box-link relative flex items-center justify-center gap-2 px-2 py-1 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
                 <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 30 30">
                     <path fill="#808080" d="M 6 4 C 4.892 4 4 4.892 4 6 L 4 14 L 14 14 L 14 4 L 6 4 z M 16 4 L 16 14 L 26 14 L 26 6 C 26 4.892 25.108 4 24 4 L 16 4 z M 4 16 L 4 24 C 4 25.108 4.892 26 6 26 L 14 26 L 14 16 L 4 16 z M 16 16 L 16 26 L 24 26 C 25.108 26 26 25.108 26 24 L 26 16 L 16 16 z"/>
                 </svg>
@@ -48,7 +48,7 @@
             </a>
         </li>
             <li class="flex-1">
-                <a href="#" data-tab="request-form-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
+                <a href="#" data-tab="request-form-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-1 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
                 <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 64 64">
                     <path fill="#808080" d="M62.828,29.172l-28-28C34.078,0.422,33.062,0,32,0H4C1.789,0,0,1.789,0,4v28 c0,1.062,0.422,2.078,1.172,2.828l28,28C29.953,63.609,30.977,64,32,64s2.047-0.391,2.828-1.172l28-28 C64.391,33.266,64.391,30.734,62.828,29.172z M20,28.004c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S24.418,28.004,20,28.004z"/>
                 </svg>
@@ -58,7 +58,7 @@
             </li>
             
             <li class="flex-1">
-                <a href="#" data-tab="quotation-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
+                <a href="#" data-tab="quotation-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-1 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
                     <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 64 64">
                         <path fill="#808080" d="M62.828,29.172l-28-28C34.078,0.422,33.062,0,32,0H4C1.789,0,0,1.789,0,4v28 c0,1.062,0.422,2.078,1.172,2.828l28,28C29.953,63.609,30.977,64,32,64s2.047-0.391,2.828-1.172l28-28 C64.391,33.266,64.391,30.734,62.828,29.172z M20,28.004c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S24.418,28.004,20,28.004z"/>
                     </svg>
@@ -68,7 +68,7 @@
             </li>
             
             <li class="flex-1">
-                <a href="#" data-tab="purchase-request-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
+                <a href="#" data-tab="purchase-request-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-1 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
                     <svg class="w-6 h-6 fill-current text-gray-500" viewBox="0 0 24 24">
                         <path fill="#808080" fill-rule="evenodd" d="M10 2a3.001 3.001 0 0 0-2.83 2H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3h-1.17A3.001 3.001 0 0 0 14 2h-4zM9 5a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1zm6.78 6.625a1 1 0 1 0-1.56-1.25l-3.303 4.128-1.21-1.21a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.488-.082l4-5z" clip-rule="evenodd"></path>
                     </svg>
@@ -78,7 +78,7 @@
             </li>
 
             <li class="flex-1">
-                <a href="#" data-tab="purchase-order-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
+                <a href="#" data-tab="purchase-order-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-1 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
                     <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 32 32">
                         <path d="M27.857,27.864C27.935,29.572,26.571,31,24.861,31H7.139c-1.71,0-3.075-1.428-2.997-3.136L4.957,9.955 C4.981,9.42,5.421,9,5.956,9h20.089c0.535,0,0.975,0.42,0.999,0.955L27.857,27.864z M16.185,1.003C12.787,0.901,10,3.625,10,7v1h2V7 c0-2.209,1.791-4,4-4s4,1.791,4,4v1h2V7.252C22,3.966,19.468,1.101,16.185,1.003z"></path>
                     </svg>
@@ -88,7 +88,7 @@
             </li>
             
             <li class="flex-1">
-                <a href="#" data-tab="declined-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-2 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
+                <a href="#" data-tab="declined-tab" class="tab-link whitespace-nowrap relative flex items-center justify-center gap-2 px-2 py-1 bg-white rounded-t-md hover:text-blue-800 overflow-hidden">
                     <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#808080">
                         <path fill="none" d="M0 0h24v24H0z"></path>
                         <path d="M21 11.674A7 7 0 0 0 12.255 22H3.993A1 1 0 0 1 3 21.008V2.992C3 2.444 3.445 2 3.993 2H16l5 5v4.674zM18 23a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm-1.293-2.292a3 3 0 0 0 4.001-4.001l-4.001 4zm-1.415-1.415l4.001-4a3 3 0 0 0-4.001 4.001z"></path>
@@ -99,7 +99,7 @@
             </li>
 
             <li class="flex-1">
-                <a href="#" data-tab="history-tab" class="tab-link relative flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-t-md hover:text-blue-800">
+                <a href="#" data-tab="history-tab" class="tab-link relative flex items-center justify-center gap-2 px-2 py-1 bg-white rounded-t-md hover:text-blue-800">
                     <svg class="w-5 h-5 fill-current text-gray-500" viewBox="0 0 512 512">
                         <path d="M437.11,74.98c-99.974-99.974-262.064-99.973-362.038,0.001l0,0c-12.09-12.09-32.776-5.827-36.129,10.939L24.801,156.63 c-2.996,14.979,10.211,28.186,25.19,25.19l70.711-14.142c16.766-3.353,23.029-24.039,10.939-36.129l0,0 c68.622-68.622,180.279-68.622,248.901-0.001c68.9,68.899,68.9,180.003,0,248.903c-68.623,68.622-180.279,68.622-248.901-0.001 C97.329,346.14,80.174,301.07,80.174,256h-0.082c0-22.215-18.109-40.2-40.37-39.998c-22.076,0.2-39.694,18.688-39.629,40.765 c0.194,65.26,25.187,130.46,74.98,180.253c99.974,99.974,262.064,99.974,362.038,0.001C536.84,337.291,536.84,174.709,437.11,74.98 z"></path>
                         <path d="M336.837,267.978l-50.746-29.298v-88.596c0-16.569-13.431-30-30-30h0c-16.569,0-30,13.431-30,30V256 c0,11.103,6.036,20.79,15.002,25.978l-0.002,0.003l65.746,37.958c14.349,8.284,32.696,3.368,40.981-10.981v0 C356.102,294.61,351.186,276.262,336.837,267.978z"></path>
@@ -116,7 +116,16 @@
 
 <div class="mt-2 w-3/4 mx-auto" id="request-container">
     @foreach ($requests as $request)
-        <div class="request-item w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4"
+        @php
+            // Get the requestor for the current request
+            $requestor = $requestors->where('id', $request->requestor_id)->first();
+
+            // Decode the collaborators JSON and filter the collaborators for this request
+            $collaboratorsList = json_decode($request->collaborators, true) ?? [];
+            $filteredCollaborators = $allCollaborators->whereIn('id', $collaboratorsList);
+        @endphp
+
+        <div class="request-item w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4 rounded-md"
              data-steps="{{ $request->steps }}" data-status="{{ $request->status }}">
             <div class="flex justify-between items-start mb-4">
                 <h2 class="text-lg font-bold text-gray-900">{{ $request->request_name }}</h2>
@@ -125,38 +134,90 @@
                         <i class='bx bx-question-mark'></i>
                     </span>
                     <span class="self-end ml-1 font-light">|</span>
-                        @if($request->status == 2 && $request->steps == 4)
-                            <span class="text-green-600 self-end ml-1 font-medium">Completed</span>
-                        @elseif($request->status == 3)
-                            <span class="text-yellow-500 self-end ml-1 font-medium">
-                                @if($request->steps == 4)
+                    @if($request->status == 2 && $request->steps == 4)
+                        <span class="text-green-600 self-end ml-1 font-medium">Completed</span>
+                    @elseif($request->status == 3)
+                        <span class="text-yellow-500 self-end ml-1 font-medium">
+                            @switch($request->steps)
+                                @case(4)
                                     Declined - Purchase Order
-                                @elseif($request->steps == 3)
+                                    @break
+                                @case(3)
                                     Declined - Purchase Request
-                                @elseif($request->steps == 2)
+                                    @break
+                                @case(2)
                                     Declined - Quotation Form
-                                @elseif($request->steps == 1)
+                                    @break
+                                @case(1)
                                     Declined - Request Form
-                                @else
+                                    @break
+                                @default
                                     Declined
-                                @endif
-                            </span>
-                        @elseif((int)$request->steps === 1)
-                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Request Form Approval</span>
-                        @elseif((int)$request->steps === 2)
-                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Quotation Form Approval</span>
-                        @elseif((int)$request->steps === 3)
-                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Request Approval</span>
-                        @elseif((int)$request->steps === 4)
-                            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Order Approval</span>
-                        @endif
+                            @endswitch
+                        </span>
+                    @elseif($request->status == 1)
+                        @switch($request->steps)
+                            @case(1)
+                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Request Form Approval</span>
+                                @break
+                            @case(2)
+                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Quotation Form Approval</span>
+                                @break
+                            @case(3)
+                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Request Approval</span>
+                                @break
+                            @case(4)
+                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Order Approval</span>
+                                @break
+                        @endswitch
+                    @endif
                 </div>
             </div>
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-            <div>
-                <p>Description: {{ $request->request_description }}</p>
-                <p>Type of request: {{ $request->request_type }}</p>
-                <p>Time sent: {{ $request->created_at->format('h:i A') }}</p>
+            <div class="flex">
+                <!-- Left Column (1/4 width) -->
+                <div class="w-1/4 pr-4 border-r border-gray-300">
+                    <!-- Requestor -->
+                    <p class="font-bold text-gray-900 text-base mb-2">Requestor</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        @if($requestor)
+                            <div class="flex items-center bg-white border border-gray-300 text-gray-800 pr-2 pl-0.5 py-1 rounded-xl text-base">
+                                <img src="{{ $requestor->profile_picture ? asset('storage/' . $requestor->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $requestor->fname }}" class="w-8 h-8 rounded-xl mr-2">
+                                <span class="text-sm">{{ $requestor->fname }} {{ $requestor->lname }}</span>
+                            </div>
+                        @else
+                            <div class="flex items-center bg-gray-200 text-gray-800 px-3 pt-3 rounded-lg text-base">
+                                <span class="text-sm">Requestor not found</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Collaborators -->
+                    <p class="font-bold text-gray-900 text-base mb-2">Collaborators</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3 text-base">
+                        @forelse($filteredCollaborators as $collaborator)
+                            <div class="flex items-center bg-white border border-gray-300 text-gray-800 pr-3 pl-0.5 py-1 rounded-xl text-base">
+                                <img src="{{ $collaborator->profile_picture ? asset('storage/' . $collaborator->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $collaborator->fname }}" class="w-8 h-8 rounded-xl mr-2">
+                                <span class="text-xs">{{ $collaborator->fname }} {{ $collaborator->lname }}</span>
+                            </div>
+                        @empty
+                            <div class="">
+                                <span class="text-base">No collaborators</span>
+                            </div>
+                        @endforelse
+                    </div>
+                    </div>
+
+
+                <!-- Right Column (3/4 width) -->
+                <div class="w-3/4 pl-4">
+                    <!-- Description and Time Sent -->
+                    <p class="text-base font-bold text-gray-900 mb-2">Description</p>
+                    <p class="text-sm mb-3">{{ $request->request_description }}</p>
+
+                    <p class="font-bold text-gray-900 text-base mb-2">Time Sent</p>
+                    <p class="text-sm">{{ $request->created_at->format('h:i:s A') }}</p>
+                </div>
             </div>
             <div class="flex justify-end mt-4">
                 <a href="{{ route('details-2', ['id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">View Details</a>

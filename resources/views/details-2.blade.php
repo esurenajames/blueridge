@@ -2,9 +2,11 @@
 <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
+
 
 <body class="mb-5 bg-gray-200">
     <!--sidenav -->
@@ -83,9 +85,9 @@
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
 
         <!-- Existing content -->
-        <div class="px-8 mt-1 sm:rounded-lg pb-8">
+        <div class="px-4 mt-1 sm:rounded-lg pb-8">
     <!-- Start of Stepper -->            
-    <div class="px-8 mt-1 sm:rounded-lg pb-8">
+    <div class="px-4 mt-1 sm:rounded-lg pb-8">
     <!-- Start of Stepper -->
     <div class="flex items-start max-w-screen-lg mx-auto">
 
@@ -301,167 +303,287 @@
 </div>
 
 
+</div>
 
+<h2 class="text-sm font-bold text-gray-900 mt-8">Request Form Details:</h2>
 
+<div class="w-full p-6 bg-white border border-gray-200 shadow sm:pd-6 mt-4 rounded-md">
+    <div class="flex justify-between items-start mb-4">
+        <h2 class="text-base font-bold text-gray-900">{{ $request->request_name }}</h2>
+        <div>
+            <span class="question-mark-btn mr-1">
+                <i class='bx bx-question-mark'></i>
+            </span>
+            <span class="self-end ml-1 font-light">|</span>
+            <span class="text-yellow-500 self-end ml-1 font-medium mr-2">
+                @if($request->status == 2)
+                    @if((int)$request->steps == 5)
+                        Completed
+                    @else
+                        Completed
+                    @endif
+                @elseif($request->status == 3)
+                    @if((int)$request->steps == 5)
+                        Declined
+                    @else
+                        Declined
+                    @endif
+                @elseif((int)$request->steps + 1 == 2)
+                    For Request Form
+                @elseif((int)$request->steps + 1 == 3)
+                    For Quotation Form
+                @elseif((int)$request->steps + 1 == 4)
+                    For Purchase Request
+                @elseif((int)$request->steps + 1 == 5)
+                    For Purchase Order
+                @else
+                    <!-- Optional: Display nothing or a default message -->
+                @endif
+            </span>
+        </div>
+    </div>
+    <hr class="border-t border-gray-300 w-full my-4">
+    <div class="flex">
+        <!-- Left Column (1/4 width) -->
+        <div class="w-2/4 pr-4 border-r border-gray-300">
+            <!-- Requestor -->
+            <p class="font-bold text-gray-900 text-base mb-2">Requestor</p>
+            <div class="flex flex-wrap gap-2 mb-2">
+                @if($requestor)
+                    <div class="flex items-center bg-white border border-gray-300 text-gray-800 pr-3 pl-0.5 py-0.5 rounded-xl text-base">
+                        <img src="{{ asset('storage/' . $requestor->profile_picture) }}" alt="{{ $requestor->fname }}" class="w-8 h-8 rounded-xl mr-2">
+                        <span class="text-sm">{{ $requestor->fname }} {{ $requestor->lname }}</span>
+                    </div>
+                @else
+                    <div class="flex items-center bg-gray-200 text-gray-800 px-3 pt-3 rounded-lg text-base">
+                        <span class="text-sm">Requestor not found</span>
+                    </div>
+                @endif
+            </div>
+
+            <!-- Collaborators -->
+            <p class="font-bold text-gray-900 text-base mb-2">Collaborators</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3 text-base">
+                @forelse($collaborators as $collaborator)
+                    <div class="flex items-center bg-white border border-gray-300 text-gray-800 pr-2 pl-0.5 py-1 rounded-xl text-base">
+                        <img src="{{ $collaborator->profile_picture ? asset('storage/' . $collaborator->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $collaborator->fname }}" class="w-8 h-8 rounded-xl mr-2">
+                        <span class="text-sm">{{ $collaborator->fname }} {{ $collaborator->lname }}</span>
+                    </div>
+                @empty
+                    <div class="">
+                        <span class="test-base">No collaborators</span>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Right Column (3/4 width) -->
+        <div class="w-3/4 pl-4">
+            <!-- Description -->
+            <p class="text-base font-bold text-gray-900 mb-2">Description</p>
+            <p class="text-sm mb-2">{{ $request->request_description }}</p>
+
+            <!-- Time Sent -->
+            <p class="font-bold text-gray-900 text-base mb-2">Time Sent</p>
+            <p class="text-sm">{{ $request->created_at->format('h:i:s A') }}</p>
+        </div>
+    </div>
 </div>
 
 
 
+<div>
+<h2 id="requestTitle" class="text-sm font-bold text-gray-900 mt-6">Request Details:</h2>
+<div id="requestSection" class="mt-2 hidden">
+    <h3 id="requestDocumentsTitle" class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
+    <ul class="mt-2">
+        <li>
+            <span id="fileLinksContainer"></span>
+        </li>
+    </ul>
+</div>
 
-                <h2 class="text-sm font-bold text-gray-900 mt-10">Request Form Details:</h2>
-    <div class="w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4">
-        <div class="flex justify-between items-start mb-4">
-            <h2 class="text-lg font-bold text-gray-900">{{ $request->request_name }}</h2>
-            <div>        
-                <span class="question-mark-btn mr-1">
-                    <i class='bx bx-question-mark'></i>
-                </span> 
-                <span class="self-end ml-1 font-light">|</span>
-                <span class="text-yellow-500 self-end ml-1 font-medium">
-                    @if($request->status == 2)
-                        @if((int)$request->steps == 5)
-                            Completed
-                        @else
-                            Completed
-                        @endif
-                    @elseif($request->status == 3)
-                        @if((int)$request->steps == 5)
-                            Declined
-                        @else
-                            Declined
-                        @endif
-                    @elseif((int)$request->steps + 1 == 2)
-                        For Request Form
-                    @elseif((int)$request->steps + 1 == 3)
-                        For Quotation Form
-                    @elseif((int)$request->steps + 1 == 4)
-                        For Purchase Request
-                    @elseif((int)$request->steps + 1 == 5)
-                        For Purchase Order
-                    @else
-                        <!-- Optional: Display nothing or a default message -->
-                    @endif
-                </span>
+<h2 id="quotationTitle" class="text-sm font-bold text-gray-900 mt-3 hidden">Quotation Details:</h2>
+<div id="quotationSection" class="mt-2 hidden">
+    <h3 id="quotationDocumentsTitle" class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
+    <ul class="mt-2">
+        <li>
+            <span id="quotationFileLinksContainer"></span>
+        </li>
+    </ul>
+</div>
+
+<h2 id="purchaseRequestTitle" class="text-sm font-bold text-gray-900 mt-3 hidden">Purchase Request Details:</h2>
+<div id="purchaseRequestSection" class="mt-2 hidden">
+    <h3 id="purchaseRequestDocumentsTitle" class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
+    <ul class="mt-2">
+        <li>
+            <span id="purchaseRequestFileLinksContainer"></span>
+        </li>
+    </ul>
+</div>
+
+<h2 id="purchaseOrderTitle" class="text-sm font-bold text-gray-900 mt-3 hidden">Purchase Order Details:</h2>
+<div id="purchaseOrderSection" class="mt-2 hidden">
+    <h3 id="purchaseOrderDocumentsTitle" class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
+    <ul class="mt-2">
+        <li>
+            <span id="purchaseOrderFileLinksContainer"></span>
+        </li>
+    </ul>
+</div>
+
+
+<h2 class="text-sm font-bold text-gray-900 mt-3">Remarks:</h2>
+<p class="text-sm">
+    {{ $request->remarks ? $request->remarks : 'No Remarks' }}
+</p>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const steps = @json($request->steps); // Get the steps value from Laravel
+        const fileLinksContainer = document.getElementById('fileLinksContainer');
+        const quotationFileLinksContainer = document.getElementById('quotationFileLinksContainer');
+        const purchaseRequestFileLinksContainer = document.getElementById('purchaseRequestFileLinksContainer');
+        const purchaseOrderFileLinksContainer = document.getElementById('purchaseOrderFileLinksContainer');
+
+        const showSection = (sectionId, titleId) => {
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(titleId).classList.remove('hidden');
+        };
+
+        const hideSection = (sectionId, titleId) => {
+            document.getElementById(sectionId).classList.add('hidden');
+            document.getElementById(titleId).classList.add('hidden');
+        };
+
+        const updateDocumentTitlesAndLinks = (steps) => {
+            // Hide all sections and titles initially
+            hideSection('requestSection', 'requestTitle');
+            hideSection('quotationSection', 'quotationTitle');
+            hideSection('purchaseRequestSection', 'purchaseRequestTitle');
+            hideSection('purchaseOrderSection', 'purchaseOrderTitle');
+
+            // Update sections and titles based on steps
+            if (steps >= 1) {
+                showSection('requestSection', 'requestTitle');
+                document.getElementById('requestDocumentsTitle').textContent = steps === 1 ? 'Submitted Documents:' : 'Approved Documents:';
+                if (steps === 1) {
+                    document.querySelectorAll('#fileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
+                } else {
+                    document.querySelectorAll('#fileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
+                }
+            }
+            if (steps >= 2) {
+                showSection('quotationSection', 'quotationTitle');
+                document.getElementById('quotationDocumentsTitle').textContent = steps === 2 ? 'Submitted Documents:' : 'Approved Documents:';
+                if (steps === 2) {
+                    document.querySelectorAll('#quotationFileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
+                } else {
+                    document.querySelectorAll('#quotationFileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
+                }
+            }
+            if (steps >= 3) {
+                showSection('purchaseRequestSection', 'purchaseRequestTitle');
+                document.getElementById('purchaseRequestDocumentsTitle').textContent = steps === 3 ? 'Submitted Documents:' : 'Approved Documents:';
+                if (steps === 3) {
+                    document.querySelectorAll('#purchaseRequestFileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
+                } else {
+                    document.querySelectorAll('#purchaseRequestFileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
+                }
+            }
+            if (steps >= 4) {
+                showSection('purchaseOrderSection', 'purchaseOrderTitle');
+                document.getElementById('purchaseOrderDocumentsTitle').textContent = steps === 4 ? 'Submitted Documents:' : 'Approved Documents:';
+                if (steps === 4) {
+                    document.querySelectorAll('#purchaseOrderFileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
+                } else {
+                    document.querySelectorAll('#purchaseOrderFileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
+                }
+            }
+        };
+
+        // Function to generate file links
+        const generateFileLinks = (filesArray, container) => {
+    if (filesArray && filesArray.length > 0) {
+        filesArray.forEach((file) => {
+            const fileName = file.split('/').pop(); // Extract the file name from the path
+            const fileExtension = fileName.split('.').pop().toLowerCase(); // Get file extension
+
+            // Create a link wrapper for the icon and file name
+            const linkWrapper = document.createElement('a');
+            linkWrapper.href = file; // Set the file URL directly to the href
+            linkWrapper.download = fileName; // Set the download attribute with the file name
+            linkWrapper.classList.add('flex', 'items-center', 'text-sm', 'text-blue-500', 'hover:underline'); // Styling
+            linkWrapper.setAttribute('data-file', file); // Set the data attribute with the file URL
+
+            // Create the icon or image element
+            let iconOrImage;
+
+            switch (fileExtension) {
+                case 'pdf':
+                    iconOrImage = document.createElement('i');
+                    iconOrImage.classList.add('fas', 'fa-file-pdf', 'mr-1', 'fa-1.5x'); // Larger Font Awesome PDF icon
+                    break;
+                case 'doc':
+                case 'docx':
+                    iconOrImage = document.createElement('i');
+                    iconOrImage.classList.add('fas', 'fa-file-word', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Word icon
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    iconOrImage = document.createElement('i');
+                    iconOrImage.classList.add('fas', 'fa-file-excel', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Excel icon
+                    break;
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                case 'gif':
+                    iconOrImage = document.createElement('i');
+                    iconOrImage.classList.add('fas', 'fa-file-image', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Image icon
+                    break;
+                default:
+                    iconOrImage = document.createElement('img');
+                    iconOrImage.src = 'path/to/stock-file-icon.png'; // Use a stock image logo
+                    iconOrImage.alt = 'File icon';
+                    iconOrImage.classList.add('w-6', 'h-6', 'mr-2', 'rounded-xl'); // Larger stock file icon
+            }
+
+            // Create the text element
+            const linkText = document.createElement('span');
+            linkText.textContent = fileName;
+
+            // Append the icon or image and text to the link wrapper
+            linkWrapper.appendChild(iconOrImage);
+            linkWrapper.appendChild(linkText);
+
+            // Append the link wrapper to the container
+            container.appendChild(linkWrapper);
+        });
+    } else {
+        // If filesArray is empty or invalid, display a message
+        container.textContent = "No files available.";
+    }
+};
+
+
+        // Call the function to generate file links for different sections
+        generateFileLinks(@json(json_decode($request->files)), fileLinksContainer);
+        generateFileLinks(@json(json_decode($request->quotation_files)), quotationFileLinksContainer);
+        generateFileLinks(@json(json_decode($request->purchase_request_files)), purchaseRequestFileLinksContainer);
+        generateFileLinks(@json(json_decode($request->purchase_order_files)), purchaseOrderFileLinksContainer);
+
+        // Update the document titles and links based on steps
+        updateDocumentTitlesAndLinks(steps);
+    });
+</script>
+
 
 
 
 
             </div>
         </div>
-        <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-        <!-- Description, Type, and Time -->
-        <div class="request-item">
-            <p>Description: {{ $request->request_description }}</p>
-            <p>Type of request: {{ $request->request_type}}</p>
-            <p>Time sent: {{ $request->created_at->format('h:i:s A') }}</p>
-        </div>  
-    </div>
-<!-- Quotation Form Details Section -->
-<div>
-    <h2 class="text-sm font-bold text-gray-900 mt-10">Quotation Form Details:</h2>
-    <!-- List of Submitted Documents -->
-    <div class="mt-4">
-        <h3 class="text-xs font-semibold text-gray-700">Submitted Documents:</h3>
-        <ul class="mt-2">
-            <li>
-            <span id="fileLinksContainer"></span>
-
-<!-- Modal HTML -->
-<div id="fileModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-    <div class="bg-white p-4 rounded relative">
-        <span id="closeModal" class="absolute top-2 right-2 cursor-pointer text-red-500">&times;</span>
-        <div id="modalFile"></div>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const fileLinksContainer = document.getElementById('fileLinksContainer');
-        const fileModal = document.getElementById('fileModal');
-        const closeModal = document.getElementById('closeModal');
-
-        // Parse the JSON-encoded files array from Laravel
-        const filesArray = @json(json_decode($request->files)); // Decode the JSON-encoded file paths
-
-        // Check if filesArray has valid content
-        if (filesArray && filesArray.length > 0) {
-            // Generate file links dynamically
-            filesArray.forEach((file) => {
-                const fileName = file.split('/').pop(); // Extract the file name from the path
-
-                // Create a link wrapper for the icon and file name
-                const linkWrapper = document.createElement('a');
-                linkWrapper.href = file; // Set the file URL directly to the href
-                linkWrapper.download = fileName; // Set the download attribute with the file name
-                linkWrapper.classList.add('flex', 'items-center', 'text-sm', 'text-blue-500', 'hover:underline'); // Styling
-                linkWrapper.setAttribute('data-file', file); // Set the data attribute with the file URL
-
-                // Create the SVG icon element
-                const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                svgIcon.setAttribute('class', 'h-4 w-4');
-                svgIcon.setAttribute('viewBox', '0 0 20 20');
-                svgIcon.setAttribute('fill', 'currentColor');
-                svgIcon.innerHTML = `
-                    <path fill-rule="evenodd" d="M17.707 1.293A1 1 0 0 1 19 2v16a1 1 0 0 1-1.707.707L13 14.414V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.586l4.293-4.293zM12 7a1 1 0 0 1-1-1V1.414L5.707 7H12z" clip-rule="evenodd"/>`;
-
-                // Create the text element
-                const linkText = document.createElement('span');
-                linkText.textContent = fileName;
-
-                // Append the SVG icon and text to the link wrapper
-                linkWrapper.appendChild(svgIcon);
-                linkWrapper.appendChild(linkText);
-
-                // Append the link wrapper to the container
-                fileLinksContainer.appendChild(linkWrapper);
-            });
-        } else {
-            // If filesArray is empty or invalid, display a message
-            fileLinksContainer.textContent = "No files available.";
-        }
-
-        // Close the modal when clicking outside of the modal content
-        fileModal.addEventListener('click', function(event) {
-            if (event.target === fileModal) {
-                fileModal.classList.add('hidden');
-            }
-        });
-
-        // Close the modal button
-        closeModal.addEventListener('click', function() {
-            fileModal.classList.add('hidden');
-        });
-    });
-</script>
-
-                </a>
-            </li>
-            <!-- Add more documents as needed -->
-        </ul>
-    </div>
-    <!-- List of Approved Documents -->
-    <div class="mt-4">
-        <h3 class="text-xs font-semibold text-gray-700">Approved Documents:</h3>
-        <ul class="mt-2">
-            <li>
-                <a href="#" class="flex items-center space-x-2 text-sm text-green-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M17.707 1.293A1 1 0 0 1 19 2v16a1 1 0 0 1-1.707.707L13 14.414V16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.586l4.293-4.293zM12 7a1 1 0 0 1-1-1V1.414L5.707 7H12z" clip-rule="evenodd"/>
-                    </svg>
-                    <span>Approved Quotation</span>
-                </a>
-            </li>
-            <!-- Add more documents as needed -->
-        </ul>
-    </div>
-    <div>
-        <h2 class="text-sm font-bold text-gray-900 mt-10">Remarks: </h2>
-        <p class="text-sm">{{ $request->remarks ? $request->remarks : 'No Remarks' }}</p>
-    </div>
-</div>
-
-        
-            <!-- End of Stepper --> 
     </div>
 </div>
 

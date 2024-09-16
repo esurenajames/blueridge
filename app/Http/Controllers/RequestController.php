@@ -10,42 +10,79 @@ use Illuminate\Support\Facades\Log;
 
 class RequestController extends Controller
 {
-    public function showRequest($id)
-    {
-        $request = RequestModel::find($id);
-        
-        if (!$request) {
-            return redirect()->back()->with('error', 'Request not found.');
-        }
-        
-        return view('details-2', ['request' => $request]);
+    public function showDetails($id)
+{
+    // Fetch the request by ID
+    $request = RequestModel::find($id);
+
+    if (!$request) {
+        return redirect()->back()->with('error', 'Request not found.');
     }
 
-    public function viewAll()
-    {
-        // Retrieve the current user's ID
-        $userId = auth()->user()->id;
+    // Fetch the requestor
+    $requestor = User::find($request->requestor_id);
+
+    // Fetch collaborators
+    $collaboratorIds = json_decode($request->collaborators, true);
     
-        // Fetch requests where the user is either the requestor or listed in cc_request
-        $requests = RequestModel::where('requestor_id', $userId)
-            ->orWhere('cc_request', 'like', '%' . $userId . '%')
-            ->orderBy('created_at', 'desc')
-            ->get();
+    // Ensure $collaboratorIds is an array
+    $collaboratorIds = is_array($collaboratorIds) ? $collaboratorIds : [];
     
-        // Fetch counts based on filtered requests
-        $counts = [
-            'view_all' => $requests->whereIn('steps', [1, 2, 3, 4])->count(),
-            'request_form' => $requests->where('steps', 1)->where('status', 1)->count(),
-            'quotation' => $requests->where('steps', 2)->where('status', 1)->count(),
-            'purchase_request' => $requests->where('steps', 3)->where('status', 1)->count(),
-            'purchase_order' => $requests->where('steps', 4)->where('status', 1)->count(),
-            'declined' => $requests->where('status', 3)->count(),
-            'history' => $requests->whereIn('status', [2, 3])->count(),
-        ];
-    
-        // Pass requests and counts to the view
-        return view('view-all', ['requests' => $requests, 'counts' => $counts]);
-    }
+    $collaborators = User::whereIn('id', $collaboratorIds)->get();
+
+    // Pass these variables to the view
+    return view('details-2', [
+        'request' => $request,
+        'requestor' => $requestor,
+        'collaborators' => $collaborators
+    ]);
+}
+
+
+public function viewAll()
+{
+    $userId = auth()->user()->id;
+
+    // Fetch requests where the user is either a requestor or a collaborator
+    $requests = RequestModel::where('requestor_id', $userId)
+        ->orWhere('collaborators', 'like', '%' . $userId . '%')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    // Fetch unique requestor IDs from the requests
+    $requestorIds = $requests->pluck('requestor_id')->unique();
+    $requestors = User::whereIn('id', $requestorIds)->get();
+
+    // Fetch unique collaborator IDs from the requests
+    $collaboratorIds = $requests->flatMap(function ($request) {
+        return json_decode($request->collaborators, true) ?: [];
+    })->unique();
+
+    // Fetch all collaborators for these requests
+    $allCollaborators = User::whereIn('id', $collaboratorIds)->get();
+
+    // Fetch counts based on filtered requests
+    $counts = [
+        'view_all' => $requests->whereIn('steps', [1, 2, 3, 4])->count(),
+        'request_form' => $requests->where('steps', 1)->where('status', 1)->count(),
+        'quotation' => $requests->where('steps', 2)->where('status', 1)->count(),
+        'purchase_request' => $requests->where('steps', 3)->where('status', 1)->count(),
+        'purchase_order' => $requests->where('steps', 4)->where('status', 1)->count(),
+        'declined' => $requests->where('status', 3)->count(),
+        'history' => $requests->whereIn('status', [2, 3])->count(),
+    ];
+
+    // Pass data to the view
+    return view('view-all', [
+        'requests' => $requests,
+        'requestors' => $requestors,
+        'allCollaborators' => $allCollaborators, // Pass all collaborators
+        'counts' => $counts
+    ]);
+}
+
+
+
 
     public function submit(Request $request)
     {
@@ -55,8 +92,8 @@ class RequestController extends Controller
                 'request_name' => 'required|string|max:255',
                 'request_description' => 'required|string',
                 'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
-                'cc_request' => 'array',
-                'cc_request.*' => 'integer|exists:users,id', // Ensure each user ID is valid
+                'collaborators' => 'array',
+                'collaborators.*' => 'integer|exists:users,id', // Ensure each user ID is valid
             ]);
 
             // Process file uploads and store file paths
@@ -75,7 +112,7 @@ class RequestController extends Controller
             $newRequest->request_description = $request->request_description;
             $newRequest->files = json_encode($filePaths); // Store file paths as JSON string
             $newRequest->request_type = '2'; 
-            $newRequest->cc_request = json_encode($request->cc_request); // Save CC user IDs as JSON
+            $newRequest->collaborators = json_encode($request->collaborators); // Save CC user IDs as JSON
             $newRequest->steps = '1'; 
             $newRequest->status = '1'; 
             $newRequest->updated_at = now();
@@ -95,19 +132,6 @@ class RequestController extends Controller
         }
     }
 
-
-    public function showDetails($id)
-    {
-        $request = RequestModel::find($id);
-
-        if (!$request) {
-            return abort(404, 'Request not found');
-        }
-
-        return view('details-2', compact('request'));
-    }
-
-    // Controller method
     public function show(Request $request)
     {
         $files = $request->files; // Assuming $request->files is an array of file paths
