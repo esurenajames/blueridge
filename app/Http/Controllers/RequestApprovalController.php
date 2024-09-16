@@ -56,7 +56,7 @@ class RequestApprovalController extends Controller
         $files = json_decode($requestData->files, true) ?? []; 
 
         // Decode the cc_request field
-        $ccRequest = json_decode($requestData->cc_request, true) ?? [];
+        $ccRequest = json_decode($requestData->collaborators, true) ?? [];
 
         // Fetch the users who are listed in the cc_request array
         $ccUsers = User::whereIn('id', $ccRequest)->get();
