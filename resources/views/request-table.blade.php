@@ -167,7 +167,17 @@
                                         <span class="ml-2">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</span>
                                     </div>
                                 </td>                            
-                                <td class="px-6 py-4 text-sm">{{ $request->request_type }}</td>
+                                <td class="px-6 py-4 text-sm">
+                                    @if($request->request_type == 1)
+                                        Punong Barangay's Certification Form
+                                    @elseif($request->request_type == 2)
+                                        Request Form
+                                    @elseif($request->request_type == 3)
+                                        Fetty Cash Voucher
+                                    @else
+                                        Unknown Request Type
+                                    @endif
+                                </td>                                
                                 <td class="px-6 py-4 text-sm">{{ $request->request_name }}</td>
                                 <td class="px-6 py-4 text-sm">{{ $request->created_at->format('m/d/Y') }}</td>
                                 <td class="px-6 py-4 text-sm">{{ $request->last_approved_by }}</td>

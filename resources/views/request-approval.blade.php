@@ -99,28 +99,28 @@
                     @foreach($approvalDates as $index => $date)
                         <div class="flex items-center mb-2">
                             <!-- Display the formatted approval date -->
-                            <p class="w-1/5">{{ \Carbon\Carbon::parse($date)->format('M j, Y g:i a') }}</p>
+                            <p class="w-2/5">{{ \Carbon\Carbon::parse($date)->format('M j, Y g:i a') }}</p>
                             
                             <!-- Display the approval status (Approved/Declined) -->
                             @if(isset($approvalStatus[$index]))
                                 @if($approvalStatus[$index] == 1)
-                                    <span class="w-1/5 ml-2 text-green-600">Approved</span>
+                                    <span class="w-1/5 text-green-600">Approved</span>
                                 @elseif($approvalStatus[$index] == 3)
-                                    <span class="w-1/5 ml-2 text-red-600">Declined</span>
+                                    <span class="w-1/5 text-red-600">Declined</span>
                                 @else
-                                    <span class="w-1/5 ml-2 text-yellow-500">Pending</span>
+                                    <span class="w-1/5 text-yellow-500">Pending</span>
                                 @endif
                             @else
-                                <span class="w-1/5 ml-2 text-yellow-500">Pending</span>
+                                <span class="w-1/5 text-yellow-500">Pending</span>
                             @endif
             
                             <!-- Display the approver's first and last name -->
                             @if(isset($approvers[$approvalIds[$index]]))
-                                <span class="w-1/5 whitespace-nowrap ml-2">
+                                <span class="w-1/5 whitespace-nowrap">
                                     {{ $approvers[$approvalIds[$index]]->fname ?? 'Unknown' }} {{ $approvers[$approvalIds[$index]]->lname ?? 'Approver' }}
                                 </span>
                             @else
-                                <span class="w-1/5 whitespace-nowrap ml-2">Unknown Approver</span>
+                                <span class="w-1/5 whitespace-nowrap">Unknown Approver</span>
                             @endif
                         </div>
                     @endforeach
@@ -140,35 +140,87 @@
                     <h2 class="text-lg font-bold text-gray-900">{{ $requestData->request_name }}</h2>
                 </div>
                  <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
-                 <!-- Description, Type, and Time -->
-                 <div class="request-item">
-                    <p class="font-semibold">Description: <span class="font-medium">{{ $requestData->request_description }}</span></p>
-                    <!-- Dynamically populate the request type -->
-                    <p class="font-semibold">Type of request: <span class="font-medium">{{ $requestData->request_type }}</span></p>
-                    <!-- Dynamically populate the time sent -->
-                    <p class="font-semibold">Time sent: <span class="font-medium">{{ $requestData->created_at->format('h:i A') }}</span></p>
-                 </div>
-                 <div>
-                    <h2 class="text-sm font-bold text-gray-900 mt-4">Quotation Form Details:</h2>
-                    <div class="mt-4">
-                        <h3 class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
-                        <ul class="mt-2">
-                            @if(!empty($files))
-                                @foreach($files as $file)
-                                    <li>
-                                        <a href="/uploads/{{ $file }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
-                                            {{ basename($file) }}
-                                        </a>
-                                    </li>
-                                @endforeach
+                 
+                <div class="flex">
+                    <!-- Left Column (1/4 width) -->
+                    <div class="w-1/4 pr-4 border-r border-gray-300">
+                        <!-- Requestor -->
+                        <p class="font-bold text-gray-900 text-base mb-2">Requestor</p>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            @if($requestData->requestor)
+                                <div class="flex items-center bg-white border border-gray-300 text-gray-800 pr-2 pl-0.5 py-1 rounded-xl text-base">
+                                    <img src="{{ $requestData->requestor->profile_picture ? asset('storage/' . $requestData->requestor->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $requestData->requestor->fname }}" class="w-8 h-8 rounded-xl mr-2">
+                                    <span class="text-sm">{{ $requestData->requestor->fname }} {{ $requestData->requestor->lname }}</span>
+                                </div>
                             @else
-                                <li>No files submitted.</li>
+                                <div class="flex items-center bg-gray-200 text-gray-800 px-3 pt-3 rounded-lg text-base">
+                                    <span class="text-sm">Requestor not found</span>
+                                </div>
                             @endif
-                        </ul>
+                        </div>
+                
+                        <!-- Collaborators -->
+                        <p class="font-bold text-gray-900 text-base mb-2">Collaborators</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3 text-base">
+                            @forelse ($collaborators as $collaborator)
+                                <div class="flex items-center bg-white border border-gray-300 text-gray-800 pr-3 pl-0.5 py-1 rounded-xl text-base">
+                                    <img src="{{ $collaborator->profile_picture ? asset('storage/' . $collaborator->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $collaborator->fname }}" class="w-8 h-8 rounded-xl mr-2">
+                                    <span class="text-sm">{{ $collaborator->fname }} {{ $collaborator->lname }}</span>
+                                </div>
+                            @empty
+                                <div class="text-base">
+                                    <span>No collaborators</span>
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
-                </div>
+                
+                    <!-- Right Column -->
+                    <div class="request-item ml-4 w-3/4 ">
+                        <p class="font-semibold">Description: <span class="font-medium">{{ $requestData->request_description }}</span></p>
+                        <!-- Dynamically populate the request type -->
+                        <p class="font-semibold">Type of request: 
+                            <span class="font-medium">
+                                @if($requestData->request_type == 1)
+                                    Punong Barangay's Certification Form
+                                @elseif($requestData->request_type == 2)
+                                    Request Form
+                                @elseif($requestData->request_type == 3)
+                                    Fetty Cash Voucher
+                                @else
+                                    Unknown Request Type
+                                @endif
+                            </span>
+                        </p>                        
+                        <!-- Dynamically populate the time sent -->
+                        <p class="font-semibold">Time sent: <span class="font-medium">{{ $requestData->created_at->format('h:i A') }}</span></p>
+                        <div>
+                            <h2 class="text-sm font-bold text-gray-900 mt-4">Quotation Form Details:</h2>
+                            <div class="mt-4">
+                                <h3 class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
+                                <ul class="mt-2">
+                                    @if(!empty($files))
+                                        @foreach($files as $file)
+                                            <li>
+                                                <a href="{{ asset('uploads/' . $file) }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                                    {{ basename($file) }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li>No files submitted.</li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>            
              </div>
          </div>
+
+         
+
+                
          
          <!-- Approve Modal -->
          <form method="POST" action="{{ route('approve.request', $requestData->id) }}">
@@ -228,6 +280,8 @@
         </form>        
      </div>
   
+
+     
      
 
       <!-- End Content -->

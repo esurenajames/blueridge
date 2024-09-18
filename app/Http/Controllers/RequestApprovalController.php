@@ -49,6 +49,15 @@ class RequestApprovalController extends Controller
     {
         // Get the ID from the query string
         $id = $request->query('id');
+
+        $request = RequestModel::find($id);
+
+        // Fetch collaborators
+        $files = json_decode($request->files, true) ?? [];
+        $collaboratorIds = json_decode($request->collaborators, true) ?? [];
+    
+        // Fetch the collaborators' details from the 'users' table
+        $collaborators = User::whereIn('id', $collaboratorIds)->get();
             
         // Fetch a specific request detail by ID
         $requestData = RequestModel::with('requestor')->findOrFail($id); // Renamed to $requestData to avoid conflict with $request from the Request object
@@ -94,7 +103,7 @@ class RequestApprovalController extends Controller
         }
     
         // Pass the data to the view
-        return view('request-approval', compact('requestData', 'ccUsers', 'steps', 'status', 'files', 'approvalDates', 'approvalIds', 'approvalStatus', 'approvers'));
+        return view('request-approval', compact('requestData', 'ccUsers', 'steps', 'status', 'files', 'approvalDates', 'approvalIds', 'approvalStatus', 'approvers', 'collaborators'));
     }    
 
     public function approveRequest(Request $request, $id)
