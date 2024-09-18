@@ -49,34 +49,30 @@ class RequestApprovalController extends Controller
     {
         // Get the ID from the query string
         $id = $request->query('id');
-
-        $request = RequestModel::find($id);
-
-        // Fetch collaborators
+    
+        // Fetch the request record by ID
+        $request = RequestModel::findOrFail($id);
+    
+        // Decode files and collaborators fields
         $files = json_decode($request->files, true) ?? [];
         $collaboratorIds = json_decode($request->collaborators, true) ?? [];
-    
-        // Fetch the collaborators' details from the 'users' table
+        
+        // Fetch collaborators' details
         $collaborators = User::whereIn('id', $collaboratorIds)->get();
             
-        // Fetch a specific request detail by ID
-        $requestData = RequestModel::with('requestor')->findOrFail($id); // Renamed to $requestData to avoid conflict with $request from the Request object
-
-        $files = json_decode($requestData->files, true) ?? []; 
-
-        // Decode the cc_request field
+        // Fetch specific request details by ID
+        $requestData = RequestModel::with('requestor')->findOrFail($id);
+    
+        // Decode the fields
+        $files = json_decode($requestData->files, true) ?? [];
         $ccRequest = json_decode($requestData->collaborators, true) ?? [];
-
-        // Fetch the users who are listed in the cc_request array
         $ccUsers = User::whereIn('id', $ccRequest)->get();
-
-        // Decode approval_dates, approval_ids, and approval_status
         $approvalDates = json_decode($requestData->approval_dates, true) ?? [];
         $approvalIds = json_decode($requestData->approval_ids, true) ?? [];
-        $approvalStatus = json_decode($requestData->approval_status, true) ?? []; // New field for approval status
-
+        $approvalStatus = json_decode($requestData->approval_status, true) ?? [];
+    
         $approvers = User::whereIn('id', $approvalIds)->get()->keyBy('id');
-
+    
         // Define mappings for steps and status
         $steps = [
             1 => 'Request Form',
@@ -91,7 +87,7 @@ class RequestApprovalController extends Controller
             3 => 'Declined',
             4 => 'Completed'
         ];
-
+    
         // Prepare the data to pass to the view
         $approvalDetails = [];
         foreach ($approvalDates as $index => $date) {
@@ -101,10 +97,11 @@ class RequestApprovalController extends Controller
                 'status' => $approvalStatus[$index] ?? null
             ];
         }
-    
+        
         // Pass the data to the view
         return view('request-approval', compact('requestData', 'ccUsers', 'steps', 'status', 'files', 'approvalDates', 'approvalIds', 'approvalStatus', 'approvers', 'collaborators'));
-    }    
+    }
+       
 
     public function approveRequest(Request $request, $id)
     {

@@ -177,7 +177,8 @@
                                     @else
                                         Unknown Request Type
                                     @endif
-                                </td>                                
+                                </td>
+                                
                                 <td class="px-6 py-4 text-sm">{{ $request->request_name }}</td>
                                 <td class="px-6 py-4 text-sm">{{ $request->created_at->format('m/d/Y') }}</td>
                                 <td class="px-6 py-4 text-sm">{{ $request->last_approved_by }}</td>
@@ -335,10 +336,10 @@
                                             <template x-if="requestDetails.files && requestDetails.files.length > 0">
                                                 <div>
                                                     <template x-for="file in requestDetails.files" :key="file">
-                                                        <a :href="'/uploads/' + file.replace('/uploads/', '')" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
-                                                            <span x-text="file.replace('/uploads/', '')"></span>
+                                                        <a :href="'/' + file.replace('/uploads', '')" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                                            <span x-text="file.replace('/uploads', '')"></span>
                                                         </a>
-                                                    </template>
+                                                    </template>                                                    
                                                 </div>
                                             </template>
                                             <template x-if="!(requestDetails.files && requestDetails.files.length > 0)">
@@ -384,8 +385,6 @@
                     });
                 </script>
                 
-                
-                
                 <div x-show="showViewDetailsModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                     <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
                         <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
@@ -423,10 +422,8 @@
                                         <template x-if="requestDetails.files && requestDetails.files.length > 0">
                                             <div>
                                                 <template x-for="file in requestDetails.files" :key="file">
-                                                    <a :href="'/uploads/' + file.replace('/uploads/', '')" 
-                                                       target="_blank" 
-                                                       class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
-                                                       <span x-text="file.replace('/uploads/', '')"></span>
+                                                    <a :href="file" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                                        <span x-text="file.substring(file.lastIndexOf('/') + 1)"></span>
                                                     </a>
                                                 </template>
                                             </div>

@@ -202,7 +202,7 @@
                                     @if(!empty($files))
                                         @foreach($files as $file)
                                             <li>
-                                                <a href="{{ asset('uploads/' . $file) }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                                <a href="{{ asset('' . $file) }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
                                                     {{ basename($file) }}
                                                 </a>
                                             </li>
@@ -213,6 +213,7 @@
                                 </ul>
                             </div>
                         </div>
+                        
                     </div>
                 </div>            
              </div>
