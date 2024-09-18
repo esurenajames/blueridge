@@ -5,6 +5,7 @@
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -265,7 +266,7 @@
                     </div>
                
                 <div x-data="dropdown()" class="relative mb-2 sm:mb-6">
-                    <label for="cc_request" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">CC</label>
+                    <label for="collaborators" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Collaborators</label>
 
                     <!-- Selected Users Inside Input Box -->
                     <div class="flex flex-wrap gap-2 mb-2">
@@ -282,7 +283,7 @@
                     </div>
 
                     <!-- Searchable Dropdown -->
-                    <input type="text" id="cc_request" name="cc_request" x-model="search" @input="filterUsers" @focus="openDropdown"
+                    <input type="text" id="collaborators" name="collaborators" x-model="search" @input="filterUsers" @focus="openDropdown"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
                     placeholder="Search users" autocomplete="off" x-ref="input" />
 
@@ -483,10 +484,10 @@ function fileUploader() {
             formData.append('request_name', this.requestData.name);
             formData.append('request_description', this.requestData.description);
 
-            // Append selected users to FormData as cc_request[]
+
             if (Array.isArray(sharedData.selectedUsers) && sharedData.selectedUsers.length > 0) {
                 sharedData.selectedUsers.forEach(userId => {
-                    formData.append('cc_request[]', userId); // Append user IDs correctly as array
+                    formData.append('collaborators[]', userId); // Append user IDs correctly as array
                 });
             } else {
                 console.warn('No selected users to submit');
