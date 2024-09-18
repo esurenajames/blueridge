@@ -367,7 +367,7 @@
                 @forelse($collaborators as $collaborator)
                     <div class="flex items-center bg-white border border-gray-300 text-gray-800 pr-2 pl-0.5 py-1 rounded-xl text-base">
                         <img src="{{ $collaborator->profile_picture ? asset('storage/' . $collaborator->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $collaborator->fname }}" class="w-8 h-8 rounded-xl mr-2">
-                        <span class="text-sm">{{ $collaborator->fname }} {{ $collaborator->lname }}</span>
+                        <span class="text-xs">{{ $collaborator->fname }} {{ $collaborator->lname }}</span>
                     </div>
                 @empty
                     <div class="">
@@ -381,7 +381,8 @@
         <div class="w-3/4 pl-4">
             <!-- Description -->
             <p class="text-base font-bold text-gray-900 mb-2">Description</p>
-            <p class="text-sm mb-2">{{ $request->request_description }}</p>
+            <p class="text-sm mb-2 break-words">{{ $request->request_description }}</p>
+
 
             <!-- Time Sent -->
             <p class="font-bold text-gray-900 text-base mb-2">Time Sent</p>
