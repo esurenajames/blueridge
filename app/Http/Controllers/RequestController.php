@@ -81,9 +81,6 @@ public function viewAll()
     ]);
 }
 
-
-
-
     public function submit(Request $request)
     {
         try {
@@ -91,6 +88,7 @@ public function viewAll()
             $request->validate([
                 'request_name' => 'required|string|max:255',
                 'request_description' => 'required|string',
+                'category' => 'required|string|max:255', // Validate category
                 'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
                 'collaborators' => 'array',
                 'collaborators.*' => 'integer|exists:users,id', // Ensure each user ID is valid
@@ -110,6 +108,7 @@ public function viewAll()
             $newRequest = new RequestModel();
             $newRequest->request_name = $request->request_name;
             $newRequest->request_description = $request->request_description;
+            $newRequest->category = $request->category; // Assign the category value
             $newRequest->files = json_encode($filePaths); // Store file paths as JSON string
             $newRequest->request_type = '2'; 
             $newRequest->collaborators = json_encode($request->collaborators); // Save CC user IDs as JSON

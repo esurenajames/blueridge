@@ -264,6 +264,32 @@
                         <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Name of Request</label>
                         <input type="text" id="request_name" name="request_name" x-model="requestData.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Enter request name" required>
                     </div>
+
+                  <!-- Category Dropdown -->
+                    <div class="mb-2 sm:mb-6">
+                        <label for="category" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Category</label>
+                        <select x-model="requestData.category" 
+                            @change="requestData.category === 'Other' ? showOtherInput = true : showOtherInput = false"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
+                            required>
+                            <option value="">Select Category</option>
+                            <template x-for="category in categoryOptions" :key="category">
+                                <option :value="category" x-text="category"></option>
+                            </template>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Other Category Input -->
+                    <div x-show="showOtherInput" class="mb-2 sm:mb-6" x-transition>
+                        <label for="otherCategory" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Specify Other Category</label>
+                        <input type="text" x-model="requestData.otherCategory" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
+                            placeholder="Enter category">
+                    </div>
+
+
+                    
                
                 <div x-data="dropdown()" class="relative mb-2 sm:mb-6">
                     <label for="collaborators" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Collaborators</label>
@@ -409,10 +435,13 @@ function fileUploader() {
     return {
         requestData: {
             name: '',
-            description: ''
+            description: '',
+            category: '' // Leave it empty for now
         },
+        categoryOptions: ['Office Supplies', 'Technology & Electronics', 'Furniture', 'Cleaning & Maintenance', 'Breakroom Supplies'],
         files: [],
         hasFiles: false,
+        showOtherInput: false,
 
         init() {
             this.hasFiles = this.files.length > 0;
@@ -481,19 +510,28 @@ function fileUploader() {
 
         submitRequest() {
             const formData = new FormData();
+
+            // Validate and append category: use otherCategory if 'Other' is selected
+            if (this.requestData.category === 'Other' && this.requestData.otherCategory.trim() !== '') {
+                formData.append('category', this.requestData.otherCategory); // Use the custom category
+            } else {
+                formData.append('category', this.requestData.category); // Use the selected category
+            }
+
+            // Append other form data
             formData.append('request_name', this.requestData.name);
             formData.append('request_description', this.requestData.description);
 
-
+            // Handle collaborators
             if (Array.isArray(sharedData.selectedUsers) && sharedData.selectedUsers.length > 0) {
                 sharedData.selectedUsers.forEach(userId => {
-                    formData.append('collaborators[]', userId); // Append user IDs correctly as array
+                    formData.append('collaborators[]', userId);
                 });
             } else {
                 console.warn('No selected users to submit');
             }
 
-            // Append files to FormData
+            // Append files
             this.files.forEach((file, index) => {
                 formData.append('files[]', this.dataURLtoFile(file.url, file.name));
             });
@@ -502,9 +540,11 @@ function fileUploader() {
             console.log('Submitting with Selected User IDs:', sharedData.selectedUsers);
             console.log('FormData Entries:', Array.from(formData.entries()));
 
+            // CSRF token setup
             const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
             const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
 
+            // Submit form using fetch
             fetch('{{ route('request.submit') }}', {
                 method: 'POST',
                 headers: {
@@ -530,6 +570,7 @@ function fileUploader() {
             });
         },
 
+
         dataURLtoFile(dataurl, filename) {
             const arr = dataurl.split(',');
             const mime = arr[0].match(/:(.*?);/)[1];
@@ -543,6 +584,7 @@ function fileUploader() {
         }
     };
 }
+
 </script>
 
                     <div class="flex justify-end w-full mt-4">
