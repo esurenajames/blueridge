@@ -35,6 +35,7 @@ class RequestModel extends Model
         'steps',
         'files',
         'remarks',
+        'reason',
     ];
 
     // Specify attributes that should be cast to native types

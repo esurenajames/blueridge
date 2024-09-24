@@ -30,14 +30,12 @@ class RequestTableController extends Controller
     {
         switch ($steps) {
             case 1:
-                return 20;
+                return 25;
             case 2:
-                return 40;
+                return 50;
             case 3:
-                return 60;
+                return 75;
             case 4:
-                return 80;
-            case 5:
                 return 100;
             default:
                 return 0;
@@ -47,13 +45,23 @@ class RequestTableController extends Controller
     // Method to get request details
     public function getRequestDetails($id)
     {
+        // Define the request type mapping
+        $requestTypeMapping = [
+            1 => "Punong Barangay's Certification Form",
+            2 => "Request Form",
+            3 => "Fetty Cash Voucher"
+        ];
+        
         // Fetch the request with the requestor relationship
         $request = RequestModel::with('requestor')->find($id);
-    
+
         if ($request) {
             // Decode the files JSON string to an array and ensure it's an array
             $files = json_decode($request->files, true) ?? [];
-    
+
+            // Get the human-readable request type
+            $requestType = $requestTypeMapping[$request->request_type] ?? 'Unknown Type';
+
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -61,7 +69,7 @@ class RequestTableController extends Controller
                     'requestor_name' => $request->requestor->fname . ' ' . $request->requestor->lname, // Full name from the user table
                     'requestor_profile_picture' => $request->requestor->profile_picture, // Profile picture from user table
                     'request_name' => $request->request_name,
-                    'request_type' => $request->request_type,
+                    'request_type' => $requestType, // Use the human-readable request type
                     'request_description' => $request->request_description, // Adding the request description
                     'created_at' => $request->created_at->format('Y-m-d'),
                     'last_approved_by' => null, // Leave as is, or you can adjust based on your logic

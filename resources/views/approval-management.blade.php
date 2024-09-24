@@ -47,8 +47,8 @@
                         <li :class="activeTab === 'In progress' ? 'text-blue-600 font-bold border-b-2 border-blue-500' : 'text-gray-600 font-bold'" 
                             class="flex items-center min-w-36 whitespace-nowrap text-[15px] py-3 px-4 cursor-pointer transition-all relative z-10" 
                             @click="activeTab = 'In progress'">
-                            In progress 
-                            <span class="ml-2 bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center text-[12px]">{{ $inProgressCount }}</span>
+                            Returned 
+                            <span class="ml-2 bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center text-[12px]">{{ $returnCount }}</span>
                         </li>
                         <li :class="activeTab === 'History' ? 'text-blue-600 font-bold border-b-2 border-blue-500' : 'text-gray-600 font-bold'" 
                             class="flex items-center min-w-36 whitespace-nowrap text-[15px] py-3 px-4 cursor-pointer transition-all relative z-10" 
@@ -112,7 +112,7 @@
                                                 <p class="text-gray-600">{{ $request->request_name }}</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <p class="text-gray-600">Steps {{ $request->steps }}/5</p>
+                                                <p class="text-gray-600">Steps {{ $request->steps }}/4</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right">
                                                 <p class="text-sm font-bold text-gray-500">{{ $request->created_at->format('M d, Y') }}</p>
@@ -128,7 +128,7 @@
                         <div class="overflow-x-auto mt-4 rounded-md">
                             <table class="min-w-full divide-y divide-gray-400">
                                 <tbody class="divide-y divide-gray-300">
-                                    @foreach($inProgressRequests as $request)
+                                    @foreach($returnRequests as $request)
                                         <tr class="bg-white hover:bg-gray-100 cursor-pointer" 
                                             @click="window.location.href = '{{ route('request-approval', ['id' => $request->id]) }}'">
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -141,7 +141,7 @@
                                                 <p class="text-gray-600">{{ $request->request_name }}</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <p class="text-gray-600">Steps {{ $request->steps }}/5</p>
+                                                <p class="text-gray-600">Steps {{ $request->steps }}/4</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right">
                                                 <p class="text-sm font-bold text-gray-500">{{ $request->created_at->format('M d, Y') }}</p>
@@ -170,7 +170,7 @@
                                                 <p class="text-gray-600">{{ $request->request_name }}</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <p class="text-gray-600">Steps {{ $request->steps }}/5</p>
+                                                <p class="text-gray-600">Steps {{ $request->steps }}/4</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right">
                                                 <p class="text-sm font-bold text-gray-500">{{ $request->created_at->format('M d, Y') }}</p>

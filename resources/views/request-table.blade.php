@@ -178,7 +178,6 @@
                                         Unknown Request Type
                                     @endif
                                 </td>
-                                
                                 <td class="px-6 py-4 text-sm">{{ $request->request_name }}</td>
                                 <td class="px-6 py-4 text-sm">{{ $request->created_at->format('m/d/Y') }}</td>
                                 <td class="px-6 py-4 text-sm">{{ $request->last_approved_by }}</td>
