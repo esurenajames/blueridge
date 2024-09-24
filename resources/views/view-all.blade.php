@@ -126,53 +126,54 @@
         @endphp
 
         <div class="request-item w-full p-4 bg-white border border-gray-200 shadow sm:p-8 mt-4 rounded-md"
-             data-steps="{{ $request->steps }}" data-status="{{ $request->status }}">
-            <div class="flex justify-between items-start mb-4">
-                <h2 class="text-lg font-bold text-gray-900">{{ $request->request_name }}</h2>
-                <div>
-                    <span class="question-mark-btn mr-1">
-                        <i class='bx bx-question-mark'></i>
+     data-steps="{{ $request->steps }}" data-status="{{ $request->status }}">
+    <div class="flex justify-between items-start mb-4">
+        <h2 class="text-lg font-bold text-gray-900">{{ $request->request_name }}</h2>
+        <div>
+            <span class="question-mark-btn mr-1">
+                <i class='bx bx-question-mark'></i>
+            </span>
+            <span class="self-end mr-1 font-light">|</span>
+
+            @switch($request->status)
+                @case(1)
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Pending
                     </span>
-                    <span class="self-end ml-1 font-light">|</span>
-                    @if($request->status == 2 && $request->steps == 4)
-                        <span class="text-green-600 self-end ml-1 font-medium">Completed</span>
-                    @elseif($request->status == 3)
-                        <span class="text-yellow-500 self-end ml-1 font-medium">
-                            @switch($request->steps)
-                                @case(4)
-                                    Declined - Purchase Order
-                                    @break
-                                @case(3)
-                                    Declined - Purchase Request
-                                    @break
-                                @case(2)
-                                    Declined - Quotation Form
-                                    @break
-                                @case(1)
-                                    Declined - Request Form
-                                    @break
-                                @default
-                                    Declined
-                            @endswitch
-                        </span>
-                    @elseif($request->status == 1)
-                        @switch($request->steps)
-                            @case(1)
-                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Request Form Approval</span>
-                                @break
-                            @case(2)
-                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Quotation Form Approval</span>
-                                @break
-                            @case(3)
-                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Request Approval</span>
-                                @break
-                            @case(4)
-                                <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Order Approval</span>
-                                @break
-                        @endswitch
-                    @endif
-                </div>
-            </div>
+                    @break
+                @case(2)
+                    <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Approved
+                    </span>
+                    @break
+                @case(3)
+                    <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Declined
+                    </span>
+                    @break
+                @case(4)
+                    <span class="bg-blue-200 text-blue-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Completed
+                    </span>
+                    @break
+                @case(5)
+                    <span class="bg-orange-100 text-orange-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Returned
+                    </span>
+                    @break
+                @case(6)
+                    <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Resubmit
+                    </span>
+                    @break
+                @default
+                    <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Unknown Status
+                    </span>
+            @endswitch
+        </div>
+    </div>
+
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
             <div class="flex">
                 <!-- Left Column (1/4 width) -->
@@ -213,10 +214,13 @@
                 <div class="w-3/4 pl-4">
                     <!-- Description and Time Sent -->
                     <p class="text-base font-bold text-gray-900 mb-2">Description</p>
-                    <p class="text-sm mb-3">{{ $request->request_description }}</p>
+                    <p class="text-sm mb-2">{{ $request->request_description }}</p>
 
-                    <p class="font-bold text-gray-900 text-base mb-2">Time Sent</p>
-                    <p class="text-sm">{{ $request->created_at->format('h:i:s A') }}</p>
+                    <p class="text-sm font-bold text-gray-900 mb-1">Category</p>
+                    <p class="text-xs mb-1">{{ $request->category }}</p>
+
+                    <p class="font-bold text-gray-900 text-sm mb-1">Time Sent</p>
+                    <p class="text-xs">{{ $request->created_at->format('m/d/Y h:i A') }} ({{ $request->created_at->format('l') }})</p>
                 </div>
             </div>
             <div class="flex justify-end mt-4">
