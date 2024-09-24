@@ -233,7 +233,9 @@
              </div>
          </div>
          
-         <form method="POST" action="{{ route('approve.request', $requestData->id) }}" x-ref="approveForm">
+
+        <!-- Approve Modal -->
+        <form method="POST" action="{{ route('approve.request', $requestData->id) }}" x-ref="approveForm">
             @csrf
             <div x-show="showApproveModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                 <!-- Modal Content -->
@@ -253,7 +255,7 @@
             </div>
         </form>
         
-        <!-- Decline Modal -->
+        <!-- Decline/Return Modal -->
         <form method="POST" action="{{ route('decline.request', $requestData->id) }}" x-ref="declineForm">
             @csrf
             <div x-show="showDeclineModal" class="fixed inset-0 overflow-y-auto z-[1000]">
@@ -319,6 +321,7 @@
             </div>
         </div>
 
+        <!-- Success Modal -->
         <div x-data="{ showModal: @if(session()->has('success')) true @else false @endif }">
             <div x-show="showModal" class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
                 <div class="fixed inset-0 flex items-center justify-center">

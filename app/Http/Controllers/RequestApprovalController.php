@@ -73,7 +73,7 @@ class RequestApprovalController extends Controller
         ->paginate($perPage, ['*'], 'historyPage')
         ->appends($request->except('historyPage'));
     
-        // Return the view with the data
+        // Return the view with the datas
         return view('approval-management', compact('pendingCount', 'inProgressCount', 'historyCount', 'returnCount', 'pendingRequests', 'inProgressRequests', 'returnRequests', 'historyRequests', 'perPage', 'activeTab'));
     }
     
