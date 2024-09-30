@@ -8,7 +8,7 @@
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Form Request List</title>
 
-<body>
+<body class="bg-gray-200">
     <!--sidenav -->
     @livewire('sidebar-secretary')
       <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
@@ -17,7 +17,6 @@
         <!-- navbar -->
         @livewire('navbar')
         <!-- end navbar -->
-
        
         <div class="ml-5 mr-5">
             <h2 class="text-3xl pt-6 pl-6 font-bold mb-2">Request Approval</h2>
@@ -74,9 +73,9 @@
                     <span class="w-3/4 ml-2">{{ $requestData->requestor->fname }} {{ $requestData->requestor->lname }}</span>
                 </div>
                 <div class="flex items-center mb-2">
-                    <p class="w-1/4 font-semibold">CC:</p>
+                    <p class="w-1/4 font-semibold">Colaborators:</p>
                     <span class="w-3/4 ml-2">
-                        @foreach($ccUsers as $user)
+                        @foreach($collaborators as $user)
                             <span>{{ $user->fname }} {{ $user->lname }}</span>@if (!$loop->last), @endif
                         @endforeach
                     </span>
@@ -141,7 +140,7 @@
                 @else
                     <p>No approval history available.</p>
                 @endif
-            </div>            
+            </div>    
          </div>
          
          <!-- Cut -->
@@ -268,16 +267,16 @@
                                 <label class="block text-sm font-medium text-gray-700">Action</label>
                                 <div class="flex items-center space-x-4 mt-2">
                                     <label>
-                                        <input type="radio" name="action" value="decline" x-model="action" /> Decline
+                                        <input class="sm:text-sm" type="radio" name="action" value="decline" x-model="action" /> Decline
                                     </label>
                                     <label>
-                                        <input type="radio" name="action" value="return" x-model="action" /> Return
+                                        <input class="sm:text-sm" type="radio" name="action" value="return" x-model="action" /> Return
                                     </label>
                                 </div>
                             </div>
                             <div x-show="action === 'decline'" class="mt-4">
                                 <label class="block text-sm font-medium text-gray-700">Reason for Decline</label>
-                                <select name="decline_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                <select name="decline_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
                                     <option value="" selected>Select reason</option>
                                     <option value="Budget constraint">Budget constraint</option>
                                     <option value="Not feasible">Not feasible</option>
@@ -286,13 +285,13 @@
                             </div>
                             <div x-show="action === 'return'" class="mt-4">
                                 <label class="block text-sm font-medium text-gray-700">Reason for Return</label>
-                                <select name="return_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                <select name="return_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
                                     <option value="" selected>Select reason</option>
                                     <option value="Incomplete information">Incomplete information</option>
                                     <option value="Incorrect details">Incorrect details</option>
                                     <option value="Other">Other</option>
                                 </select>
-                            </div>
+                            </div>                            
                             <div class="mt-4">
                                 <label class="block text-sm font-medium text-gray-700">Remarks</label>
                                 <textarea name="remarks" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" rows="4" placeholder="Enter your remarks here"></textarea>
