@@ -3,6 +3,7 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="https://cdn.tailwindcss.com"></script>
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
@@ -53,31 +54,42 @@
         </span>
     </span>
             <span class="self-end ml-1 font-light">|</span>
-        @if($request->status == 2 && $request->steps == 5)
-            <span class="text-green-600 self-end ml-1 font-medium">Completed</span>
-        @elseif($request->status == 3)
-            <span class="text-yellow-500 self-end ml-1 font-medium">
-                @if($request->steps == 4)
-                    Declined - Purchase Order
-                @elseif($request->steps == 3)
-                    Declined - Purchase Request
-                @elseif($request->steps == 2)
-                    Declined - Quotation Form
-                @elseif($request->steps == 1)
-                    Declined - Request Form
-                @else
-                    Declined
-                @endif
-            </span>
-        @elseif((int)$request->steps === 1)
-            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Request Form Approval</span>
-        @elseif((int)$request->steps === 2)
-            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Quotation Form Approval</span>
-        @elseif((int)$request->steps === 3)
-            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Request Approval</span>
-        @elseif((int)$request->steps === 4)
-            <span class="text-yellow-500 self-end ml-1 font-medium">Pending Purchase Order Approval</span>
-        @endif
+            @switch($request->status)
+                @case(1)
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Pending
+                    </span>
+                    @break
+                @case(2)
+                    <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Approved
+                    </span>
+                    @break
+                @case(3)
+                    <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Declined
+                    </span>
+                    @break
+                @case(4)
+                    <span class="bg-blue-200 text-blue-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Completed
+                    </span>
+                    @break
+                @case(5)
+                    <span class="bg-orange-100 text-orange-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Returned
+                    </span>
+                    @break
+                @case(6)
+                    <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Resubmit
+                    </span>
+                    @break
+                @default
+                    <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                        Unknown Status
+                    </span>
+            @endswitch
 
         </div>
         </div>
@@ -315,30 +327,37 @@
                 <i class='bx bx-question-mark'></i>
             </span>
             <span class="self-end ml-1 font-light">|</span>
-            <span class="text-yellow-500 self-end ml-1 font-medium mr-2">
-                @if($request->status == 2)
-                    @if((int)$request->steps == 5)
-                        Completed
-                    @else
-                        Completed
-                    @endif
-                @elseif($request->status == 3)
-                    @if((int)$request->steps == 5)
-                        Declined
-                    @else
-                        Declined
-                    @endif
-                @elseif((int)$request->steps + 1 == 2)
-                    For Request Form
-                @elseif((int)$request->steps + 1 == 3)
-                    For Quotation Form
-                @elseif((int)$request->steps + 1 == 4)
-                    For Purchase Request
-                @elseif((int)$request->steps + 1 == 5)
-                    For Purchase Order
-                @else
-                    <!-- Optional: Display nothing or a default message -->
-                @endif
+            
+            @if($request->status == 1)
+                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                    Pending Approval
+                </span>
+            @elseif($request->status == 2)
+                <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                    Approved
+                </span>
+            @elseif($request->status == 3)
+                <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                    Declined
+                </span>
+            @elseif($request->status == 4)
+                <span class="bg-blue-200 text-blue-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                    Completed
+                </span>
+            @elseif($request->status == 5)
+                <span class="bg-orange-100 text-orange-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                    Pending Resubmission
+                </span>
+            @elseif($request->status == 6)
+                <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                    Resubmit
+                </span>
+            @else
+                <span class="bg-gray-100 text-gray-800 text-sm font-medium mr-2 px-3.5 py-1 rounded-full">
+                    Unknown Status
+                </span>
+            @endif
+
             </span>
         </div>
     </div>
@@ -380,13 +399,13 @@
         <!-- Right Column (3/4 width) -->
         <div class="w-3/4 pl-4">
             <!-- Description -->
-            <p class="text-base font-bold text-gray-900 mb-2">Description</p>
-            <p class="text-sm mb-2 break-words">{{ $request->request_description }}</p>
-
-
+            <p class="text-base font-bold text-gray-900 mb-1">Description</p>
+            <p class="text-sm mb-1 break-words">{{ $request->request_description }}</p>
+            <p class="text-sm mb-1 font-bold text-gray-900">Category</p>
+            <p class="text-xs mb-1 break-words">{{ $request->category }}</p>
             <!-- Time Sent -->
-            <p class="font-bold text-gray-900 text-base mb-2">Time Sent</p>
-            <p class="text-sm">{{ $request->created_at->format('h:i:s A') }}</p>
+            <p class="font-bold mb-1 text-gray-900 text-sm">Time Sent</p>
+            <p class="text-xs">{{ $request->created_at->format('m/d/Y h:i A') }} ({{ $request->created_at->format('l') }})</p>
         </div>
     </div>
 </div>
@@ -440,6 +459,333 @@
     {{ $request->remarks ? $request->remarks : 'No Remarks' }}
 </p>
 
+
+
+@if($request->steps == 2) 
+<div x-data="fileUploader({{ $request->id }})" @submit.prevent="quotationSubmit">
+    <div class="flex justify-end mt-4">
+        <button @click="showModal = true" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg mr-2" style="border: 1px solid gray;">
+            Submit Quotation Documents
+
+        <button @click="openModal($event, {{ $request->id }})" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">
+            Create Quotation Form
+        </button>
+
+        <a href="{{ route('quotation', ['request_id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg ml-2" style="background-color: #4F46E5;">
+            Submit Form
+        </a>
+    </div>
+
+    <!-- Quotation Document Modal -->
+    <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showModal = false" style="display: none;">
+        <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
+            <h2 class="text-lg font-semibold mb-4">Document Submission</h2>
+
+            <form @submit.prevent="quotationSubmit">
+                <div class="mb-4">
+                    <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
+                    <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
+                </div>
+
+                <div x-show="hasFiles" class="mt-4 max-w-full overflow-hidden">
+                    <h3 class="text-lg font-medium mb-2">Selected Files</h3>
+                    <div class="max-h-60 overflow-y-auto scrollbar">
+                        <template x-for="(file, index) in files" :key="index">
+                            <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2 max-w-full overflow-hidden">
+                                <div class="flex items-center space-x-2">
+                                    <!-- File Preview (Clickable for Full View) -->
+                                    <a :href="file.url" target="_blank" class="w-20 h-20 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
+                                        <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-20 h-20" alt="Image preview">
+                                        <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-20 h-20 flex items-center justify-center"></span>
+                                    </a>
+                                    <!-- File Name and Size -->
+                                    <div class="flex flex-col w-52">
+                                        <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline truncate" x-text="file.name"></a>
+                                        <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
+                                    </div>
+                                </div>
+                                <!-- Remove Button -->
+                                <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-4">
+                    <button type="button" @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function fileUploader(requestId) {
+        return {
+            requestData: {
+                id: requestId, // Initialize with request ID from Blade
+                name: '',
+                description: '',
+                category: ''
+            },
+            categoryOptions: ['Office Supplies', 'Technology & Electronics', 'Furniture', 'Cleaning & Maintenance', 'Breakroom Supplies'],
+            files: [],
+            hasFiles: false,
+            showModal: false, 
+            showOtherInput: false,
+
+            init() {
+                this.hasFiles = this.files.length > 0;
+            },
+
+            previewFiles(event) {
+                const files = event.target.files;
+                if (!files || files.length === 0) return;
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.files.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            url: e.target.result
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+                this.hasFiles = true;
+            },
+
+            removeFile(index) {
+                this.files.splice(index, 1);
+                if (this.files.length === 0) {
+                    this.hasFiles = false;
+                }
+            },
+
+            formatBytes(bytes, decimals = 2) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const dm = decimals < 0 ? 0 : decimals;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            },
+
+            getFileIcon(file) {
+                const fileType = file.type.split('/')[1];
+                let iconHtml = '';
+
+                switch (fileType) {
+                    case 'pdf':
+                        iconHtml = '<i class="far fa-file-pdf"></i>';
+                        break;
+                    case 'doc':
+                    case 'docx':
+                        iconHtml = '<i class="far fa-file-word"></i>';
+                        break;
+                    case 'xls':
+                    case 'xlsx':
+                        iconHtml = '<i class="far fa-file-excel"></i>';
+                        break;
+                    default:
+                        iconHtml = '<i class="far fa-file-alt"></i>';
+                        break;
+                }
+
+                return iconHtml;
+            },
+
+            openModal(event, requestId) {
+            this.currentRequestId = requestId; // Store the request ID
+            this.isModalOpen = true; // Open the modal
+        },
+            
+
+            quotationSubmit() {
+                const formData = new FormData();
+
+                // Append files
+                this.files.forEach((file) => {
+                    formData.append('files[]', this.dataURLtoFile(file.url, file.name));
+                });
+
+                // Append request ID
+                formData.append('id', this.requestData.id);
+
+                // Log request ID
+                console.log('Request ID:', this.requestData.id);
+
+                // CSRF token setup
+                const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+                const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+                // Submit form using fetch
+                fetch('{{ route('quotation.submit') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '{{ route('main') }}'; // Redirect on success
+                    } else {
+                        console.error('Submission failed:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    // Close the modal after submission
+                    this.showModal = false;
+                });
+            },
+
+            dataURLtoFile(dataurl, filename) {
+                const arr = dataurl.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new File([u8arr], filename, { type: mime });
+            }
+
+                    };
+                }
+            </script>
+
+
+<<div x-show="isModalOpen" @click.away="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full p-6 relative"> <!-- Increased max width -->
+        <!-- Close button -->
+        <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">
+            &times; <!-- X icon -->
+        </button>
+        <div>
+            <h2 class="pt-2 text-xl font-bold sm:text-xl">Quotation Form</h2>
+            <h2 class="pt-4 text-l font-bold sm:text-l">Company 1</h2>
+            <div class="grid mt-4">
+
+                <!-- Hidden input to store request_id -->
+                <input type="hidden" id="request_id" x-model="currentRequestId">
+
+                <!-- Request Name -->
+                <div class="mb-4">
+                    <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
+                    <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
+                </div>
+
+                <!-- Request Date -->
+                <div class="mb-4">
+                    <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
+                    <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
+                </div>
+
+                <!-- Request Description -->
+                <div class="mb-4">
+                    <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                    <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
+                </div>
+
+                <!-- Quotation Items -->
+                <div class="mb-4 flex flex-col">
+                    <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
+                    <div class="overflow-x-auto mb-2">
+                        <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="(row, index) in rows" :key="index">
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
+                                        </td>
+                                        <td class="border px-4 py-2">
+                                            <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-end">
+                        <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                    </div>
+                    <tfoot>
+                        <tr id="total-row">
+                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
+                        </tr>
+                    </tfoot>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button @click="submitQuotation" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+@endif
+
+<script src="//unpkg.com/alpinejs" defer></script>
+
+            
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const steps = @json($request->steps); // Get the steps value from Laravel
@@ -465,114 +811,96 @@
             hideSection('purchaseRequestSection', 'purchaseRequestTitle');
             hideSection('purchaseOrderSection', 'purchaseOrderTitle');
 
-            // Update sections and titles based on steps
+            // Show sections based on the steps
             if (steps >= 1) {
                 showSection('requestSection', 'requestTitle');
-                document.getElementById('requestDocumentsTitle').textContent = steps === 1 ? 'Submitted Documents:' : 'Approved Documents:';
-                if (steps === 1) {
-                    document.querySelectorAll('#fileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
-                } else {
-                    document.querySelectorAll('#fileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
-                }
+                document.getElementById('requestDocumentsTitle').textContent = 'Submitted Documents:';
             }
             if (steps >= 2) {
                 showSection('quotationSection', 'quotationTitle');
-                document.getElementById('quotationDocumentsTitle').textContent = steps === 2 ? 'Submitted Documents:' : 'Approved Documents:';
-                if (steps === 2) {
-                    document.querySelectorAll('#quotationFileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
-                } else {
-                    document.querySelectorAll('#quotationFileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
-                }
+                document.getElementById('quotationDocumentsTitle').textContent = 'Submitted Documents:';
             }
             if (steps >= 3) {
                 showSection('purchaseRequestSection', 'purchaseRequestTitle');
-                document.getElementById('purchaseRequestDocumentsTitle').textContent = steps === 3 ? 'Submitted Documents:' : 'Approved Documents:';
-                if (steps === 3) {
-                    document.querySelectorAll('#purchaseRequestFileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
-                } else {
-                    document.querySelectorAll('#purchaseRequestFileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
-                }
+                document.getElementById('purchaseRequestDocumentsTitle').textContent = 'Submitted Documents:';
             }
             if (steps >= 4) {
                 showSection('purchaseOrderSection', 'purchaseOrderTitle');
-                document.getElementById('purchaseOrderDocumentsTitle').textContent = steps === 4 ? 'Submitted Documents:' : 'Approved Documents:';
-                if (steps === 4) {
-                    document.querySelectorAll('#purchaseOrderFileLinksContainer a').forEach(link => link.classList.remove('text-green-500'));
-                } else {
-                    document.querySelectorAll('#purchaseOrderFileLinksContainer a').forEach(link => link.classList.add('text-green-500'));
-                }
+                document.getElementById('purchaseOrderDocumentsTitle').textContent = 'Submitted Documents:';
             }
         };
 
-        // Function to generate file links
-        const generateFileLinks = (filesArray, container) => {
-    if (filesArray && filesArray.length > 0) {
-        filesArray.forEach((file) => {
-            const fileName = file.split('/').pop(); // Extract the file name from the path
-            const fileExtension = fileName.split('.').pop().toLowerCase(); // Get file extension
+        // Function to generate file links based on the specified step
+        const generateFileLinks = (filesArray, container, step) => {
+            const filteredFiles = filesArray.filter(file => file.step === step); // Filter files by step
 
-            // Create a link wrapper for the icon and file name
-            const linkWrapper = document.createElement('a');
-            linkWrapper.href = file; // Set the file URL directly to the href
-            linkWrapper.download = fileName; // Set the download attribute with the file name
-            linkWrapper.classList.add('flex', 'items-center', 'text-sm', 'text-blue-500', 'hover:underline'); // Styling
-            linkWrapper.setAttribute('data-file', file); // Set the data attribute with the file URL
+            if (filteredFiles.length > 0) {
+                filteredFiles.forEach((file) => {
+                    const fileName = file.file_path.split('/').pop(); // Extract the file name from the path
+                    const fileExtension = fileName.split('.').pop().toLowerCase(); // Get file extension
 
-            // Create the icon or image element
-            let iconOrImage;
+                    // Create a link wrapper for the icon and file name
+                    const linkWrapper = document.createElement('a');
+                    linkWrapper.href = file.file_path; // Set the file URL directly to the href
+                    linkWrapper.download = fileName; // Set the download attribute with the file name
+                    linkWrapper.classList.add('flex', 'items-center', 'text-sm', 'text-blue-500', 'hover:underline'); // Styling
 
-            switch (fileExtension) {
-                case 'pdf':
-                    iconOrImage = document.createElement('i');
-                    iconOrImage.classList.add('fas', 'fa-file-pdf', 'mr-1', 'fa-1.5x'); // Larger Font Awesome PDF icon
-                    break;
-                case 'doc':
-                case 'docx':
-                    iconOrImage = document.createElement('i');
-                    iconOrImage.classList.add('fas', 'fa-file-word', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Word icon
-                    break;
-                case 'xls':
-                case 'xlsx':
-                    iconOrImage = document.createElement('i');
-                    iconOrImage.classList.add('fas', 'fa-file-excel', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Excel icon
-                    break;
-                case 'jpg':
-                case 'jpeg':
-                case 'png':
-                case 'gif':
-                    iconOrImage = document.createElement('i');
-                    iconOrImage.classList.add('fas', 'fa-file-image', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Image icon
-                    break;
-                default:
-                    iconOrImage = document.createElement('img');
-                    iconOrImage.src = 'path/to/stock-file-icon.png'; // Use a stock image logo
-                    iconOrImage.alt = 'File icon';
-                    iconOrImage.classList.add('w-6', 'h-6', 'mr-2', 'rounded-xl'); // Larger stock file icon
+                    // Create the icon or image element
+                    let iconOrImage;
+                    switch (fileExtension) {
+                        case 'pdf':
+                            iconOrImage = document.createElement('i');
+                            iconOrImage.classList.add('fas', 'fa-file-pdf', 'mr-1', 'fa-1.5x'); // Larger Font Awesome PDF icon
+                            break;
+                        case 'doc':
+                        case 'docx':
+                            iconOrImage = document.createElement('i');
+                            iconOrImage.classList.add('fas', 'fa-file-word', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Word icon
+                            break;
+                        case 'xls':
+                        case 'xlsx':
+                            iconOrImage = document.createElement('i');
+                            iconOrImage.classList.add('fas', 'fa-file-excel', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Excel icon
+                            break;
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                        case 'gif':
+                            iconOrImage = document.createElement('i');
+                            iconOrImage.classList.add('fas', 'fa-file-image', 'mr-1', 'fa-1.5x'); // Larger Font Awesome Image icon
+                            break;
+                        default:
+                            iconOrImage = document.createElement('img');
+                            iconOrImage.src = 'path/to/stock-file-icon.png'; // Use a stock image logo
+                            iconOrImage.alt = 'File icon';
+                            iconOrImage.classList.add('w-6', 'h-6', 'mr-2', 'rounded-xl'); // Larger stock file icon
+                    }
+
+                    // Create the text element
+                    const linkText = document.createElement('span');
+                    linkText.textContent = fileName;
+
+                    // Append the icon or image and text to the link wrapper
+                    linkWrapper.appendChild(iconOrImage);
+                    linkWrapper.appendChild(linkText);
+
+                    // Append the link wrapper to the container
+                    container.appendChild(linkWrapper);
+                });
+            } else {
+                // If no files available for the step, display a message
+                const message = document.createElement('div');
+                message.textContent = "No files available for this step.";
+                container.appendChild(message);
             }
+        };
 
-            // Create the text element
-            const linkText = document.createElement('span');
-            linkText.textContent = fileName;
-
-            // Append the icon or image and text to the link wrapper
-            linkWrapper.appendChild(iconOrImage);
-            linkWrapper.appendChild(linkText);
-
-            // Append the link wrapper to the container
-            container.appendChild(linkWrapper);
-        });
-    } else {
-        // If filesArray is empty or invalid, display a message
-        container.textContent = "No files available.";
-    }
-};
-
-
-        // Call the function to generate file links for different sections
-        generateFileLinks(@json(json_decode($request->files)), fileLinksContainer);
-        generateFileLinks(@json(json_decode($request->quotation_files)), quotationFileLinksContainer);
-        generateFileLinks(@json(json_decode($request->purchase_request_files)), purchaseRequestFileLinksContainer);
-        generateFileLinks(@json(json_decode($request->purchase_order_files)), purchaseOrderFileLinksContainer);
+        // Call the function to generate file links for each section based on the step
+        const filesArray = @json(json_decode($request->files));
+        generateFileLinks(filesArray, fileLinksContainer, 1); // Step 1
+        generateFileLinks(filesArray, quotationFileLinksContainer, 2); // Step 2
+        generateFileLinks(filesArray, purchaseRequestFileLinksContainer, 3); // Step 3
+        generateFileLinks(filesArray, purchaseOrderFileLinksContainer, 4); // Step 4
 
         // Update the document titles and links based on steps
         updateDocumentTitlesAndLinks(steps);
@@ -754,3 +1082,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
    </script>
 </body>
+
+
