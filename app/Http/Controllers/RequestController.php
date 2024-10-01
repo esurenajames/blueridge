@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File; 
 
-
 class RequestController extends Controller
 {
     public function showDetails($id)
@@ -39,7 +38,6 @@ class RequestController extends Controller
         'collaborators' => $collaborators
     ]);
 }
-
 
 public function viewAll()
 {

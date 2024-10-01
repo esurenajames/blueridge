@@ -675,7 +675,7 @@
             </script>
 
 
-<<div x-show="isModalOpen" @click.away="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
+<div x-show="isModalOpen" @click.away="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
     <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full p-6 relative"> <!-- Increased max width -->
         <!-- Close button -->
         <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">
@@ -769,18 +769,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 @endif
 
 <script src="//unpkg.com/alpinejs" defer></script>
