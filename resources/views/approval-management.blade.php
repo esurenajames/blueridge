@@ -8,7 +8,7 @@
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
 
-<body>
+<body class="bg-gray-200">
     <!--sidenav -->
       @livewire('sidebar-secretary')
 
@@ -44,9 +44,9 @@
                             Pending Request 
                             <span class="ml-2 bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center text-[12px]">{{ $pendingCount }}</span>
                         </li>
-                        <li :class="activeTab === 'In progress' ? 'text-blue-600 font-bold border-b-2 border-blue-500' : 'text-gray-600 font-bold'" 
+                        <li :class="activeTab === 'Returned' ? 'text-blue-600 font-bold border-b-2 border-blue-500' : 'text-gray-600 font-bold'" 
                             class="flex items-center min-w-36 whitespace-nowrap text-[15px] py-3 px-4 cursor-pointer transition-all relative z-10" 
-                            @click="activeTab = 'In progress'">
+                            @click="activeTab = 'Returned'">
                             Returned 
                             <span class="ml-2 bg-gray-300 text-black rounded-full w-6 h-6 flex items-center justify-center text-[12px]">{{ $returnCount }}</span>
                         </li>
@@ -96,8 +96,8 @@
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center space-x-2">
                                                     @if($request->requestor)
-                                                        <img src="{{ $request->requestor->profile_picture ? asset('storage/' . $request->requestor->profile_picture) : asset('default-profile-picture.png') }}" 
-                                                            alt="Profile Picture" 
+                                                        <img src="{{ $request->requestor->profile_picture ? asset('storage/' . $request->requestor->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}"  
+                                                            alt="{{ $request->requestor->fname }}"
                                                             class="w-8 h-8 rounded-full">
                                                         <p class="text-md font-semibold">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</p>
                                                     @else
@@ -109,7 +109,10 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <p class="text-gray-600">{{ $request->request_name }}</p>
+                                                <p class="text-gray-700 font-semibold">{{ $request->request_name }}</p>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <p class="text-gray-600">{{ Str::limit($request->request_description, 100, '...') }}</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <p class="text-gray-600">Steps {{ $request->steps }}/4</p>
@@ -124,7 +127,7 @@
                         </div>
                     </div>
                     
-                    <div x-show="activeTab === 'In progress'">
+                    <div x-show="activeTab === 'Returned'">
                         <div class="overflow-x-auto mt-4 rounded-md">
                             <table class="min-w-full divide-y divide-gray-400">
                                 <tbody class="divide-y divide-gray-300">
@@ -133,12 +136,17 @@
                                             @click="window.location.href = '{{ route('request-approval', ['id' => $request->id]) }}'">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center space-x-2">
-                                                    <img  src="{{ asset('storage/' . $request->requestor->profile_picture) }}"  alt="Profile Picture" class="w-8 h-8 rounded-full">
+                                                    <img src="{{ $request->requestor->profile_picture ? asset('storage/' . $request->requestor->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}"  
+                                                    alt="{{ $request->requestor->fname }}"
+                                                    class="w-8 h-8 rounded-full">
                                                     <p class="text-md font-semibold">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</p>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <p class="text-gray-600">{{ $request->request_name }}</p>
+                                                <p class="text-gray-700 font-semibold">{{ $request->request_name }}</p>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <p class="text-gray-600">{{ Str::limit($request->request_description, 100, '...') }}</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <p class="text-gray-600">Steps {{ $request->steps }}/4</p>
@@ -162,12 +170,17 @@
                                             @click="window.location.href = '{{ route('request-approval', ['id' => $request->id]) }}'">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center space-x-2">
-                                                    <img  src="{{ asset('storage/' . $request->requestor->profile_picture) }}" alt="Profile Picture" class="w-8 h-8 rounded-full">
+                                                    <img src="{{ $request->requestor->profile_picture ? asset('storage/' . $request->requestor->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}"  
+                                                    alt="{{ $request->requestor->fname }}"
+                                                    class="w-8 h-8 rounded-full">
                                                     <p class="text-md font-semibold">{{ $request->requestor->fname }} {{ $request->requestor->lname }}</p>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <p class="text-gray-600">{{ $request->request_name }}</p>
+                                                <p class="text-gray-700 font-semibold">{{ $request->request_name }}</p>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                                <p class="text-gray-600">{{ Str::limit($request->request_description, 100, '...') }}</p>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                                 <p class="text-gray-600">Steps {{ $request->steps }}/4</p>
@@ -233,16 +246,16 @@
                                 </nav>
                             </div>
                     
-                            <!-- Content for In Progress Requests -->
-                            <div x-show="activeTab === 'In progress'" class="flex items-center justify-between mt-2">
+                            <!-- Content for Returned Requests -->
+                            <div x-show="activeTab === 'Returned'" class="flex items-center justify-between mt-2">
                                 <span class="text-md mb-2 mt-2 text-gray-700 dark:text-gray-400">
-                                    Showing <span class="font-semibold text-gray-500">{{ $inProgressRequests->firstItem() }}</span> to <span class="font-semibold text-gray-500">{{ $inProgressRequests->lastItem() }}</span> of <span class="font-semibold text-gray-500">{{ $inProgressRequests->total() }}</span> Entries
+                                    Showing <span class="font-semibold text-gray-500">{{ $returnRequests->firstItem() }}</span> to <span class="font-semibold text-gray-500">{{ $returnRequests->lastItem() }}</span> of <span class="font-semibold text-gray-500">{{ $returnRequests->total() }}</span> Entries
                                 </span>
                                 <!-- Pagination for In Progress Requests -->
                                 <nav aria-label="Page navigation example">
                                     <ul class="flex items-center -space-x-px h-10 text-base mb-2 mt-2">
                                         <!-- Previous Link -->
-                                        @if ($inProgressRequests->onFirstPage())
+                                        @if ($returnRequests->onFirstPage())
                                             <li aria-disabled="true">
                                                 <span class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white dark:bg-gray-800 dark:border-gray-700">
                                                     <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -252,7 +265,7 @@
                                             </li>
                                         @else
                                             <li>
-                                                <a href="{{ $inProgressRequests->previousPageUrl() }}" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                                <a href="{{ $returnRequests->previousPageUrl() }}" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                                     <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
                                                     </svg>
@@ -261,7 +274,7 @@
                                         @endif
                     
                                         <!-- Page Numbers -->
-                                        @foreach ($inProgressRequests->links()->elements[0] as $page => $url)
+                                        @foreach ($returnRequests->links()->elements[0] as $page => $url)
                                             <li>
                                                 <a href="{{ $url }}" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                                     {{ $page }}
@@ -271,7 +284,7 @@
                     
                                         <!-- Next Link -->
                                         <li>
-                                            <a href="{{ $inProgressRequests->nextPageUrl() }}" class="flex items-center justify-center px-4 h-10 leading-tight dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                            <a href="{{ $returnRequests->nextPageUrl() }}" class="flex items-center justify-center px-4 h-10 leading-tight dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                                 <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                                                 </svg>
