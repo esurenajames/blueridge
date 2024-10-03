@@ -7,6 +7,7 @@ use App\Models\Quotation;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class RequestApprovalController extends Controller
 {
@@ -195,9 +196,6 @@ class RequestApprovalController extends Controller
         return view('quotation-approval', compact('requestData', 'collaborators', 'steps', 'status', 'files', 'approvalDates', 'approvalIds', 'approvalStatus', 'approvers', 'quotations', 'companyNames'));
     }
 
-        
-
-
     public function approveRequest(Request $request, $id)
     {
         // Find the request by ID
@@ -206,6 +204,15 @@ class RequestApprovalController extends Controller
         // Increment the step (assuming max step is 4)
         if ($requestData->steps < 4) {
             $requestData->steps += 1;
+        }
+
+        $selectedIds = explode(',', $request->input('selected_ids'));
+
+        foreach ($selectedIds as $itemId) {
+            // Update the item status in the quotation table
+            DB::table('quotations') // Change 'quotations' to your actual table name
+                ->where('id', $itemId)
+                ->update(['item_status' => 1]); // Set item status to 'Approved'
         }
     
         // Set the status to 'Approved' (assuming '1' means approved)

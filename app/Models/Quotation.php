@@ -21,6 +21,7 @@ class Quotation extends Model
         'qty',
         'unit',
         'unit_price',
+        'item_status',
         'amount'
     ];
 

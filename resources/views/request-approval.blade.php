@@ -4,6 +4,7 @@
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+<script src="//unpkg.com/alpinejs" defer></script>
 
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Form Request List</title>

@@ -3,6 +3,10 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+<script src="//unpkg.com/alpinejs" defer></script>
+
+
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
 
@@ -34,7 +38,45 @@
             </ol>
         </div>
 
-        <div class="mb-4 mt-10">
+        <div class="mb-4 mt-10" 
+        x-data="{ 
+            showConfirmationModal: false, 
+            showEditDetailsModal: false, 
+            showViewDetailsModal: false, 
+            showApproveModal: false, 
+            showDeclineModal: false, 
+            action: '', 
+            showModal: @if(session()->has('success')) true @else false @endif,
+            selectedCells: {}, // Track selected cells by row
+            total: 0,
+            updateTotal() {
+                this.total = Object.values(this.selectedCells).reduce((sum, cell) => {
+                    return sum + (cell.price * cell.qty); // Multiply price by qty
+                }, 0);
+            },
+            toggleCell(row, quotation) {
+                const price = quotation.unit_price; // Get the unit price from the quotation
+                const qty = quotation.qty; // Get the quantity from the quotation
+
+                // Check if the clicked cell is already selected
+                const isCurrentlySelected = this.selectedCells[row] && this.selectedCells[row].id === quotation.id;
+
+                // If it's already selected, unselect it
+                if (isCurrentlySelected) {
+                    delete this.selectedCells[row]; // Unselect if already selected
+                } else {
+                    // Select the clicked cell
+                    this.selectedCells[row] = {
+                        id: quotation.id,
+                        price: price,
+                        item_description: quotation.item_description,
+                        qty: qty,
+                    };
+                }
+                this.updateTotal();
+            }
+        }">
+   
             <div class="flex flex-wrap ml-10 mt-10">
                 <div class="w-full md:w-1/2 lg:w-1/4 mb-4 md:mb-0">
                     <h2 class="text-xl font-bold mb-4">Request Forms Details</h2>
@@ -63,7 +105,7 @@
                         <span class="w-3/4 ml-2">{{ $requestData->requestor->fname }} {{ $requestData->requestor->lname }}</span>
                     </div>
                     <div class="flex items-center mb-2">
-                        <p class="w-1/4 font-semibold">Colaborators:</p>
+                        <p class="w-1/4 font-semibold">Collaborators:</p>
                         <span class="w-3/4 ml-2">
                             @foreach($collaborators as $user)
                                 <span>{{ $user->fname }} {{ $user->lname }}</span>@if (!$loop->last), @endif
@@ -207,28 +249,33 @@
                            </div>
 
                            <div class="mt-2 w-4/4 mx-auto">
-                            <div x-data="{ rows: [{},], totalAmount: 0 }" class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-xl mt-7 ">
-                                <div class="flex justify-between items-start">
-                                </div>
-                            <!-- Existing content -->
-                                    <div class="px-8 mt-1 sm:rounded-lg pb-8 mt-10">
-                                        <!-- Start of Table -->    
-                                        <div x-data="{ selectedCell: null }">
-                                            <table class="selectable-table">
-                                                <thead>
+                            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-xl mt-7 justify">
+                                <div class="flex justify-between items-start"></div>
+                                <div class="px-8 mt-1 sm:rounded-lg pb-8 mt-10">
+                                    <!-- Start of Table -->    
+                                    <div>
+                                        <table class="selectable-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    @foreach ($companyNames as $companyName)
+                                                        <th class="cursor-pointer">{{ $companyName }}</th>
+                                                    @endforeach
+                                                </tr>
+                                            </thead>
+                                            <tbody id="selectableTableBody">
+                                                @if ($quotations->isEmpty())
                                                     <tr>
-                                                        <th>Item</th>
-                                                        @foreach ($companyNames as $companyName)
-                                                            <th>{{ $companyName }}</th>
-                                                        @endforeach
+                                                        <td colspan="{{ count($companyNames) + 1 }}" class="text-center text-gray-600">
+                                                            No quotations have been submitted yet.
+                                                        </td>
                                                     </tr>
-                                                </thead>
-                                                <tbody id="selectableTableBody">
+                                                @else
                                                     @php
                                                         // Group quotations by item_type
                                                         $groupedQuotations = $quotations->groupBy('item_type');
                                                     @endphp
-                                            
+                                                    
                                                     @foreach ($groupedQuotations as $itemType => $group)
                                                         <tr>
                                                             @php
@@ -236,74 +283,208 @@
                                                                 $firstQuotation = $group->first();
                                                             @endphp
                                                             <td>{{ $itemType }}</td> <!-- Display the item_type -->
-                                            
+                                                            
                                                             @foreach ($companyNames as $companyName)
-                                                                <td x-on:click="selectedCell = {{ $firstQuotation->company_id }}" x-bind:class="{ 'selected': selectedCell === {{ $firstQuotation->company_id }} }" class="company">
-                                                                    @php
-                                                                        // Find quotation for this company in the group
-                                                                        $quotation = $group->firstWhere('company_id', $loop->index + 1);
-                                                                    @endphp
-                                                                    @if ($quotation)
-                                                                        <span class="block text-gray-600 text-base">{{ $quotation->item_description }}</span>
-                                                                        <span class="block text-gray-600 text-sm">₱{{ $quotation->unit_price }}</span>
-                                                                        <span class="block text-gray-600 text-base">{{ $firstQuotation->qty }}{{ $firstQuotation->unit }}</span>
-                                                                    @else
-                                                                        <span class="block text-gray-600 text-base">N/A</span>
-                                                                        <span class="block text-gray-600 text-sm">₱0</span>
-                                                                    @endif
-                                                                </td>
+                                                                @php
+                                                                    // Find quotation for this company in the group
+                                                                    $quotation = $group->firstWhere('company_id', $loop->index + 1);
+                                                                @endphp
+                                                               <td x-on:click="toggleCell('{{ $itemType }}', {{ $quotation }})" 
+                                                               x-bind:class="{ 'bg-blue-200': selectedCells['{{ $itemType }}'] && selectedCells['{{ $itemType }}'].id === {{ $quotation ? $quotation->id : 'null' }} }" 
+                                                               class="company cursor-pointer">
+                                                               @if ($quotation)
+                                                                   <span class="block text-gray-600 text-base">{{ $quotation->item_description }}</span>
+                                                                   <span class="block text-gray-600 text-sm">₱{{ $quotation->unit_price }}</span>
+                                                                   <span class="block text-gray-600 text-base">{{ $quotation->qty }}{{ $quotation->unit }}</span>
+                                                               @else
+                                                                   <span class="block text-gray-600 text-base">N/A</span>
+                                                                   <span class="block text-gray-600 text-sm">₱0</span>
+                                                               @endif
+                                                           </td>
                                                             @endforeach
                                                         </tr>
                                                     @endforeach
-                                            
-                                                    <tr id="totalsRow"> 
+                                                    
+                                                    <tr id="totalsRow">
                                                         <td>Total</td>
                                                         @foreach ($companyNames as $companyName)
                                                             @php
                                                                 // Calculate total for the current company based on company_id
                                                                 $total = $quotations->where('company_id', $loop->index + 1)->sum(function ($quotation) {
-                                                                    return $quotation->unit_price * $quotation->qty; // Total price calculation
+                                                                    return $quotation ? $quotation->unit_price * $quotation->qty : 0; // Total price calculation
                                                                 });
                                                             @endphp
-                                                            <td id="{{ strtolower($companyName) }}Total" class="text-gray-800 text-md">₱{{ $total }}</td>
+                                                            <td id="{{ strtolower($companyName) }}Total" class="text-gray-800 text-md">₱{{ number_format($total, 2) }}</td>
                                                         @endforeach
                                                     </tr>
-                                                </tbody>
-                                            </table>
-                                            
-                                            
-                                        </div>
-                            
-                                        <div class="flex justify-end mt-4">
-                                            <span class="text-gray-700 text-base font-semibold">Selected Total:</span>
-                                            <span id="selectedTotal" class="text-gray-700 text-base font-semibold ml-2">₱0.00</span>
-                                        </div>
-                                        
-                                        <!-- Send button -->
-                                        <div class="flex justify-end mt-6 space-x-4">
-                                            <!-- Approve Button -->
-                                            <button class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition ease-in-out duration-300" @click="showApproveModal = true">
-                                                Approve Quotation
-                                            </button>
-                                        
-                                            <!-- Decline/Return Button -->
-                                            <button class="bg-gray-600 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-700 transition ease-in-out duration-300" @click="showDeclineModal = true">
-                                                Decline / Return
-                                            </button>
-                                        </div>
+                                                @endif
+                                            </tbody>
+                                        </table>                                       
                                     </div>
-                                </div>       
-                            </div>
+                                    
+                                    <div class="flex justify-end mt-4">
+                                        <span class="text-gray-700 text-base font-semibold">Selected Total:</span>
+                                        <span id="selectedTotal" class="text-gray-700 text-base font-semibold ml-2">₱<span x-text="total.toFixed(2)"></span></span>
+                                    </div>
+                                    
+                                    <!-- Send button -->
+                                    <div class="flex justify-end mt-6 space-x-4">
+                                        <!-- Approve Button -->
+                                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition ease-in-out duration-300" @click="showApproveModal = true">
+                                            Approve Quotation
+                                        </button>
+                                        <!-- Decline/Return Button -->
+                                        <button class="bg-gray-600 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-700 transition ease-in-out duration-300" 
+                                        @click.prevent="showDeclineModal = true">
+                                            Decline / Return
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>       
+                        </div>
+                            
                        </div>
                    </div>            
                 </div>
             </div>
+
+            <form method="POST" action="{{ route('approve.request', $requestData->id) }}" x-ref="approveForm">
+                @csrf
+                <div x-show="showApproveModal" class="fixed inset-0 overflow-y-auto z-[1000]">
+                    <!-- Modal Content -->
+                    <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
+                        <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
+                            <h4 class="text-lg text-[#333] font-semibold">Approve Quotation</h4>
+            
+                            <!-- Selected Items Display -->
+                            <div class="my-4">
+                                <h5 class="font-semibold text-gray-700">Selected Items:</h5>
+                                <ul class="list-disc pl-5">
+                                    <template x-for="(cell, key) in selectedCells" :key="key">
+                                        <li x-text="cell.item_description + ' - Quantity: ' + cell.qty + ' - ₱' + (cell.price * cell.qty).toFixed(2)"></li>
+                                    </template>
+                                </ul>
+                                <!-- Total Price Display -->
+                                <div class="mt-2 font-semibold text-gray-800">
+                                    Total Price: ₱<span x-text="total.toFixed(2)"></span>
+                                </div>
+                            </div>
+            
+                            <!-- Hidden input to store selected item IDs -->
+                            <input type="hidden" name="selected_ids" :value="Object.values(selectedCells).map(cell => cell.id).join(',')">
+            
+                            <!-- Remarks Field -->
+                            <div class="my-8">
+                                <label class="block text-sm font-medium text-gray-700">Remarks</label>
+                                <textarea name="remarks" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" rows="4" placeholder="Enter your remarks here"></textarea>
+                            </div>
+            
+                            <!-- Action Buttons -->
+                            <div class="mt-6 flex justify-end">
+                                <button type="button" @click="showConfirmationModal = true; action = 'approve'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Approve</button>
+                                <button type="button" @click="showApproveModal = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+
+            <!-- Decline/Return Modal -->
+            <form method="POST" action="{{ route('decline.request', $requestData->id) }}" x-ref="declineForm">
+                @csrf
+                <div x-show="showDeclineModal" class="fixed inset-0 overflow-y-auto z-[1000]">
+                    <!-- Modal Content -->
+                    <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
+                        <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
+                            <h4 class="text-lg text-[#333] font-semibold">Decline Request</h4>
+                            <div class="my-8">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                                    <div class="flex items-center space-x-4 mt-2">
+                                        <label>
+                                            <input class="sm:text-sm" type="radio" name="action" value="decline" x-model="action" @click="console.log('Decline radio button clicked:', showDeclineModal, action)" /> Decline
+                                        </label>
+                                        <label>
+                                            <input class="sm:text-sm" type="radio" name="action" value="return" x-model="action" @click="console.log('Return radio button clicked:', showDeclineModal, action)" /> Return
+                                        </label>
+                                    </div>
+                                </div>
+                                <div x-show="action === 'decline'" class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Reason for Decline</label>
+                                    <select name="decline_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
+                                        <option value="" selected>Select reason</option>
+                                        <option value="Budget constraint">Budget constraint</option>
+                                        <option value="Not feasible">Not feasible</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div x-show="action === 'return'" class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Reason for Return</label>
+                                    <select name="return_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
+                                        <option value="" selected>Select reason</option>
+                                        <option value="Budget exceeds allocation">Budget exceeds allocation</option>
+                                        <option value="Insufficient funds for execution">Insufficient funds for execution</option>
+                                        <option value="Price too low">Price too low</option>
+                                        <option value="Price too high">Price too high</option>
+                                        <option value="Looking for other suppliers">Looking for other suppliers</option>
+                                        <option value="Incomplete information">Incomplete information</option>
+                                        <option value="Incorrect details">Incorrect details</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>                       
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700">Remarks</label>
+                                    <textarea name="remarks" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" rows="4" placeholder="Enter your remarks here"></textarea>
+                                </div>
+                                <div class="mt-6 flex justify-end">
+                                    <button type="button" @click="showConfirmationModal = true; showDeclineModal = true" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">Submit</button>
+                                    <button type="button" @click="showDeclineModal = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Confirmation Modal -->
+            <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
+                <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
+                    <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
+                        <h4 class="text-lg text-[#333] font-semibold">Confirm Action</h4>
+                        <p class="mt-4">Are you sure you want to <span x-text="action === 'approve' ? 'approve' : action === 'decline' ? 'decline' : 'return'" class="font-bold"></span> this request?</p>
+                        <div class="mt-6 flex justify-end">
+                            <button type="button" @click="action === 'approve' ? $refs.approveForm.submit() : $refs.declineForm.submit()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Yes</button>
+                            <button type="button" @click="showConfirmationModal = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Modal -->
+            <div x-data="{ showModal: @if(session()->has('success')) true @else false @endif }">
+                <div x-show="showModal" class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
+                    <div class="fixed inset-0 flex items-center justify-center">
+                        <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+                            <div class="text-center mt-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 fill-current text-[#333] inline-block mb-4" viewBox="0 0 512 512">
+                                    <path d="M383.841 171.838c-7.881-8.31-21.02-8.676-29.343-.775L221.987 296.732l-63.204-64.893c-8.005-8.213-21.13-8.393-29.35-.387-8.213 7.998-8.386 21.137-.388 29.35l77.492 79.561a20.687 20.687 0 0 0 14.869 6.275 20.744 20.744 0 0 0 14.288-5.694l147.373-139.762c8.316-7.888 8.668-21.027.774-29.344z"/>
+                                    <path d="M256 0C114.84 0 0 114.84 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0zm0 470.487c-118.265 0-214.487-96.214-214.487-214.487 0-118.265 96.221-214.487 214.487-214.487 118.272 0 214.487 96.221 214.487 214.487 0 118.272-96.215 214.487-214.487 214.487z"/>
+                                </svg>
+                                <h4 class="text-2xl text-[#333] font-semibold mt-6">{{ session('success') }}</h4>
+                                <p class="text-sm text-gray-500 mt-4">{{ session('success_message') }}</p>
+                            </div>
+                            <button @click="showModal = false; window.location.href='{{ route('/approval-management') }}'" class="bg-[#333] hover:bg-[#222] text-white text-sm font-semibold rounded-full px-6 py-2.5 mt-8 w-full focus:outline-none">Okay</button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
         </div>
 
       <!-- End Content -->
     </main>
 
-   <script src="https://unpkg.com/@popperjs/core@2"></script>
+   <script src="https://unpkg.com/@popperjs/core@2"></>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    <script>
          
@@ -464,31 +645,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tabContents[0].style.display = 'block';
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const companyCells = document.querySelectorAll('#selectableTableBody td.company');
-        companyCells.forEach(cell => {
-            cell.addEventListener('click', function() {
-                const row = cell.parentNode;
-                const selectedCells = row.querySelectorAll('.selected');
-                selectedCells.forEach(selectedCell => {
-                    selectedCell.classList.remove('selected');
-                });
-                cell.classList.add('selected');
-                updateSelectedTotal();
-            });
-        });
-    });
 
-    function updateSelectedTotal() {
-        const selectedCells = document.querySelectorAll('#selectableTableBody td.selected');
-        let total = 0;
-        selectedCells.forEach(selectedCell => {
-            const priceSpan = selectedCell.querySelector('span.text-sm');
-            const price = parseFloat(priceSpan.innerText.slice(1));
-            total += price;
-        });
-        document.getElementById('selectedTotal').innerText = "₱" + total.toFixed(2);
-    }
 
    </script>
 </body>
