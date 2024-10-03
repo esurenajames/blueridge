@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\QuotationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LoginController;
@@ -135,6 +135,7 @@ Route::get('/view-all', [RequestController::class, 'viewAll'])->name('view-all')
 Route::get('/details-2/{id}', [RequestController::class, 'showDetails'])->name('details-2');
 Route::get('/forms', [RequestController::class, 'createRequestForm'])->name('forms');
 Route::post('/quotation/submit', [RequestController::class, 'quotationSubmit'])->name('quotation.submit');
+Route::post('/submit-quotation', [QuotationController::class, 'store'])->name('quotation.store');
 });
 
 Route::middleware('web')->group(function () {

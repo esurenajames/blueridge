@@ -97,7 +97,7 @@
             <hr class="border-t border-gray-300 w-3.5/4 mx-auto my-4">
 
         <!-- Existing content -->
-        <div class="px-4 mt-1 sm:rounded-lg pb-8">
+        <div class="px-4 mt-1 sm:rounded-lg pb-2">
     <!-- Start of Stepper -->            
     <div class="px-4 mt-1 sm:rounded-lg pb-8">
     <!-- Start of Stepper -->
@@ -464,16 +464,11 @@
 @if($request->steps == 2) 
 <div x-data="fileUploader({{ $request->id }})" @submit.prevent="quotationSubmit">
     <div class="flex justify-end mt-4">
-        <button @click="showModal = true" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg mr-2" style="border: 1px solid gray;">
-            Submit Quotation Documents
 
-        <button @click="openModal($event, {{ $request->id }})" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">
-            Create Quotation Form
-        </button>
 
-        <a href="{{ route('quotation', ['request_id' => $request->id]) }}" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg ml-2" style="background-color: #4F46E5;">
-            Submit Form
-        </a>
+        <button @click="showModal = true" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg" style="border: 1px solid gray;">
+            Upload Quotation Documents
+            </button>
     </div>
 
     <!-- Quotation Document Modal -->
@@ -525,6 +520,7 @@
 </div>
 
 <script>
+
     function fileUploader(requestId) {
         return {
             requestData: {
@@ -675,105 +671,347 @@
             </script>
 
 
-<div x-show="isModalOpen" @click.away="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
-    <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full p-6 relative"> <!-- Increased max width -->
-        <!-- Close button -->
-        <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">
-            &times; <!-- X icon -->
+<div x-data="submitForms()">
+
+    <div class="flex justify-end mt-4 space-x-2">
+
+        <button @click="openModal($event, {{ $request->id }})" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">
+            Quotation Form
         </button>
-        <div>
-            <h2 class="pt-2 text-xl font-bold sm:text-xl">Quotation Form</h2>
-            <h2 class="pt-4 text-l font-bold sm:text-l">Company 1</h2>
-            <div class="grid mt-4">
 
-                <!-- Hidden input to store request_id -->
-                <input type="hidden" id="request_id" x-model="currentRequestId">
+    </div>
 
-                <!-- Request Name -->
-                <div class="mb-4">
-                    <label for="request_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
-                    <input type="text" id="request_name" name="request_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request name" required>
-                </div>
+    <div x-show="isModalOpen" @click.away="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-6xl w-full p-6 relative">
+            <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">
+                &times;
+            </button>
 
-                <!-- Request Date -->
-                <div class="mb-4">
-                    <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
-                    <input type="date" id="request_date" name="request_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
-                </div>
+            <h2 class="text-xl font-bold sm:text-xl mb-4">Company <span x-text="currentCompanyIndex + 1"></span></h2>
 
-                <!-- Request Description -->
-                <div class="mb-4">
-                    <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                    <textarea id="request_description" name="request_description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
-                </div>
+            <template x-for="(company, index) in companies" :key="index">
+                <div x-show="currentCompanyIndex === index">
+                    <input type="hidden" id="request_id" x-model="currentRequestId">
 
-                <!-- Quotation Items -->
-                <div class="mb-4 flex flex-col">
-                    <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
-                    <div class="overflow-x-auto mb-2">
-                        <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
-                            <thead>
-                                <tr>
-                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
-                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
-                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
-                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
-                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
-                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                    <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template x-for="(row, index) in rows" :key="index">
+                    <div class="mb-4">
+                        <label for="company_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
+                        <input type="text" id="company_name" x-model="company.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter company name" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
+                        <input type="date" id="request_date" x-model="company.requestDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
+                        <textarea id="description" x-model="company.description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
+                    </div>
+
+                    <div class="mb-4 flex flex-col">
+                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
+                        <div class="overflow-x-auto mb-2">
+                            <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                                <thead>
                                     <tr>
-                                        <td class="border px-4 py-2">
-                                            <input type="text" x-model="row.item" class="border-0 w-full p-2" placeholder="Item" required>
-                                        </td>
-                                        <td class="border px-4 py-2">
-                                            <input type="number" x-model="row.qty" class="border-0 w-full p-2" placeholder="Qty" required>
-                                        </td>
-                                        <td class="border px-4 py-2">
-                                            <input type="text" x-model="row.unit" class="border-0 w-full p-2" placeholder="Unit" required>
-                                        </td>
-                                        <td class="border px-4 py-2">
-                                            <textarea x-model="row.description" rows="2" class="border-0 w-full p-2" placeholder="Description" required></textarea>
-                                        </td>
-                                        <td class="border px-4 py-2">
-                                            <input type="number" x-model="row.unit_price" class="border-0 w-full p-2" placeholder="Unit Price" required>
-                                        </td>
-                                        <td class="border px-4 py-2">
-                                            <input type="number" x-model="row.amount" class="border-0 w-full p-2" placeholder="Amount" required>
-                                        </td>
-                                        <td class="border px-4 py-2">
-                                            <button @click="rows.splice(index, 1)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
-                                        </td>
+                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
+                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
                                     </tr>
-                                </template>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <template x-for="(row, rIndex) in company.rows" :key="rIndex">
+                                        <tr>
+                                            <td class="border px-4 py-2">
+                                                <input type="text" x-model="row.item_type" class="border-0 w-full p-2" placeholder="Item Type" required>
+                                            </td>
+                                            <td class="border px-4 py-2">
+                                                <input type="number" x-model="row.qty" class="border-0 w-20 p-2" @input="calculateAmount(row)" placeholder="Qty" required>
+                                            </td>
+                                            <td class="border px-4 py-2">
+                                                <select x-model="row.unit" class="border-0 w-full p-2" required>
+                                                    <option value="" disabled>Select Unit</option>
+                                                    <!-- Quantity units -->
+                                                    <option value="pcs">pcs (pieces)</option>
+                                                    <option value="box">box</option>
+                                                    <option value="pack">pack</option>
+                                                    <option value="dozen">dozen</option>
+                                                    <option value="pair">pair</option>
+
+                                                    <!-- Weight units -->
+                                                    <option value="g">g (grams)</option>
+                                                    <option value="kg">kg (kilograms)</option>
+                                                    <option value="mg">mg (milligrams)</option>
+                                                    <option value="lb">lb (pounds)</option>
+                                                    <option value="oz">oz (ounces)</option>
+
+                                                    <!-- Volume units -->
+                                                    <option value="ml">ml (milliliters)</option>
+                                                    <option value="liters">liters</option>
+                                                    <option value="gallon">gallon</option>
+                                                    <option value="pint">pint</option>
+                                                    <option value="cup">cup</option>
+
+                                                    <!-- Length/Distance units -->
+                                                    <option value="mm">mm (millimeters)</option>
+                                                    <option value="cm">cm (centimeters)</option>
+                                                    <option value="m">m (meters)</option>
+                                                    <option value="km">km (kilometers)</option>
+                                                    <option value="inch">inch</option>
+                                                    <option value="ft">ft (feet)</option>
+                                                    <option value="yd">yd (yards)</option>
+
+                                                    <!-- Time units -->
+                                                    <option value="sec">sec (seconds)</option>
+                                                    <option value="min">min (minutes)</option>
+                                                    <option value="hour">hour</option>
+                                                    <option value="day">day</option>
+
+                                                    <!-- Miscellaneous units -->
+                                                    <option value="set">set</option>
+                                                    <option value="batch">batch</option>
+                                                    <option value="case">case</option>
+                                                    <option value="roll">roll</option>
+                                                </select>
+                                            </td>
+
+                                            <td class="border px-4 py-2">
+                                                <textarea x-model="row.item_description" rows="2" class="border-0 w-full p-2" placeholder="Item Description" required></textarea>
+                                            </td>
+                                            <td class="border px-4 py-2">
+                                                <input type="number" x-model="row.unit_price" class="border-0 w-28 p-2" @input="calculateAmount(row)" @blur="row.unit_price = formatPrice(row.unit_price)" step="0.01" placeholder="Unit Price" required>
+                                            </td>
+                                            <td class="border px-4 py-2">
+                                                <input type="number" x-model="row.amount" class="border-0 w-28 p-2" @blur="row.amount = formatPrice(row.amount)" step="0.01" placeholder="Amount" readonly>
+                                            </td>
+
+                                            <td class="border px-4 py-2">
+                                                <button @click="removeRow(index, rIndex)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
+                                        <td class="border px-4 py-2 text-right">
+                                            <span x-text="calculateTotal(index)"></span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="flex justify-end">
+                            <button @click="addRow(index)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                        </div>
                     </div>
-                    <div class="flex justify-end">
-                        <button @click="rows.push({})" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
-                    </div>
-                    <tfoot>
-                        <tr id="total-row">
-                            <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                            <td id="total-amount" class="border px-4 py-2 text-right">0</td>
-                        </tr>
-                    </tfoot>
+                </div>
+            </template>
+
+            <div class="flex justify-between mt-4">
+                <div class="flex-grow">
+                    <button @click="previousCompany()" :disabled="currentCompanyIndex === 0" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button @click="nextCompany()" :disabled="currentCompanyIndex === companies.length - 1" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Next</button>
+                    <button @click="showSummary()" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Proceed</button>
                 </div>
             </div>
-            <div class="flex justify-end">
-                <button @click="submitQuotation" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Submit</button>
+            
+            <div x-show="isSummaryOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full p-6 relative">
+            <h2 class="text-xl font-bold mb-4">Summary of Quotation</h2>
+
+            <template x-for="(company, index) in companies" :key="index">
+                <div class="mb-6">
+                    <h3 class="font-semibold text-lg mb-2">Company <span x-text="index + 1"></span>: <span x-text="company.name"></span></h3>
+                    <p><strong>Date:</strong> <span x-text="company.requestDate"></span></p>
+                    <p><strong>Description:</strong> <span x-text="company.description"></span></p>
+                    <table class="min-w-full bg-white border-gray-300 border rounded-lg mt-4">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="row in company.rows" :key="row.item_type">
+                                <tr>
+                                    <td class="border px-4 py-2" x-text="row.item_type"></td>
+                                    <td class="border px-4 py-2" x-text="row.qty"></td>
+                                    <td class="border px-4 py-2" x-text="row.unit"></td>
+                                    <td class="border px-4 py-2" x-text="row.item_description"></td>
+                                    <td class="border px-4 py-2" x-text="row.unit_price"></td>
+                                    <td class="border px-4 py-2" x-text="row.amount"></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <div class="text-right mt-2">
+                        <strong>Total:</strong> <span x-text="calculateTotal(index)"></span>
+                    </div>
+                </div>
+            </template>
+
+            <div class="flex justify-end space-x-4 mt-4">
+                <button @click="isSummaryOpen = false" class="text-gray-500 hover:text-gray-700 font-medium text-sm">Cancel</button>
+                <button @click="submitQuotation()" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm & Submit</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function submitForms() {
+        return {
+            isModalOpen: false,
+            currentRequestId: null,
+            currentCompanyIndex: 0,
+            companies: [
+                { company_id: '1', name: '', requestDate: '', description: '', rows: [{}] },
+                { company_id: '2', name: '', requestDate: '', description: '', rows: [{}] },
+                { company_id: '3', name: '', requestDate: '', description: '', rows: [{}] },
+            ],
+
+            openModal(event, requestId) {
+                console.log('Button clicked', event); 
+                console.log('Request ID:', requestId); 
+
+                this.currentRequestId = requestId;
+                this.isModalOpen = true;
+            },
+
+            addRow(index) {
+                this.companies[index].rows.push({ item_type: '', qty: 0, unit: '', item_description: '', unit_price: 0, amount: 0 });
+            },
+
+            removeRow(companyIndex, rowIndex) {
+                this.companies[companyIndex].rows.splice(rowIndex, 1);
+            },
+
+            calculateAmount(row) {
+                row.amount = (parseFloat(row.qty) || 0) * (parseFloat(row.unit_price) || 0);
+                row.amount = this.formatPrice(row.amount); 
+            },
+
+            calculateTotal(companyIndex) {
+                return this.companies[companyIndex].rows.reduce((total, row) => {
+                    return total + (parseFloat(row.amount) || 0);
+                }, 0).toFixed(2);
+            },
+
+            formatPrice(price) {
+                let formattedPrice = parseFloat(price).toFixed(2); 
+                return formattedPrice;
+            },
+
+            showSummary() {
+                this.isSummaryOpen = true;
+            },
+
+
+            submitQuotation() {
+                for (const company of this.companies) {
+                    if (!company.name) {
+                        alert('Company name is required for all entries.');
+                        return;
+                    }
+                    if (!company.requestDate) {
+                        alert('Request date is required for all entries.');
+                        return;
+                    }
+                    if (!company.description) {
+                        alert('Description is required for all entries.');
+                        return;
+                    }
+                    for (const row of company.rows) {
+                        if (!row.item_type || !row.qty || !row.unit || !row.item_description || !row.unit_price || !row.amount) {
+                            alert('All item fields are required.');
+                            return;
+                        }
+                    }
+                }
+
+                const quotationData = this.companies.map(company => ({
+                    request_id: this.currentRequestId,
+                    company_id: company.company_id,
+                    company_name: company.name,
+                    request_date: company.requestDate,
+                    description: company.description,
+                    items: company.rows.map(row => ({
+                        item_type: row.item_type,
+                        qty: row.qty,
+                        unit: row.unit,
+                        item_description: row.item_description,
+                        unit_price: row.unit_price,
+                        amount: row.amount,
+                    }))
+                }));
+
+                console.log("Sending Quotation Data:", quotationData);
+                console.log("Current Companies Data:", this.companies);
+
+                fetch('/submit-quotation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(quotationData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`Error: ${response.status}, ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message || 'Quotation saved successfully!');
+                    this.resetForm();
+                })
+                .catch(error => {
+                    alert('There was a problem with the submission: ' + error.message);
+                });
+            },
+
+            resetForm() {
+                this.companies.forEach(company => {
+                    company.name = '';
+                    company.requestDate = '';
+                    company.description = '';
+                    company.rows = [{}]; 
+                });
+                this.isModalOpen = false;
+                this.isSummaryOpen = false;
+            },
+
+            nextCompany() {
+                if (this.currentCompanyIndex < this.companies.length - 1) {
+                    this.currentCompanyIndex++;
+                }
+            },
+
+            previousCompany() {
+                if (this.currentCompanyIndex > 0) {
+                    this.currentCompanyIndex--;
+                }
+            }
+        };
+    }
+</script>
 @endif
 
-<script src="//unpkg.com/alpinejs" defer></script>
-
-            
+<script src="//unpkg.com/alpinejs" defer></script>    
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const steps = @json($request->steps); // Get the steps value from Laravel
@@ -894,9 +1132,6 @@
         updateDocumentTitlesAndLinks(steps);
     });
 </script>
-
-
-
 
 
             </div>
