@@ -1431,3 +1431,7 @@ font-size:14px;
 .scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #3a80d2;
 }
+
+[x-cloak] {
+  display: none;
+}

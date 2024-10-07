@@ -37,10 +37,8 @@
     </div>
  
  
-
-
 <!-- Request Type -->
-<div x-data="{ step: 1, rows: [{}], requestType: '', showModal: false, showConfirmationModal: false }">
+<div x-data="{ step: 1, rows: [{}], requestType: '', showModal: false, showConfirmationModal: false }" x-cloak>
 
     <!-- Stepper -->
     <div class="mx-auto max-w-xl mt-7">
@@ -170,7 +168,7 @@
 
         <!-- Step 3: Summary -->
         <div x-show="step === 3 && requestType === 'type1'">
-            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-lg mt-7 ">
+            <div class="bg-white mt-10 sm:rounded-lg pl-6 pr-6 mb-4 mx-auto max-w-screen-lg mt-7 " >
                 <div class="px-8 mt-1 sm:rounded-lg pb-8">
                     <h2 class="pt-7 text-xl font-bold sm:text-xl">PCB Form Summary</h2>
                     <div class="grid grid-cols-2 gap-8 mt-8">
@@ -252,7 +250,7 @@
         </div>
  
         <div x-show="step === 2 && requestType === 'type2'">
-    <form x-data="fileUploader()" x-init="init()" @submit.prevent="submitRequest" method="POST" enctype="multipart/form-data" class="container mx-auto p-4">
+    <form x-data="fileUploader()" x-init="init()" @submit.prevent="submitRequest" method="POST" enctype="multipart/form-data" class="container mx-auto p-4" x-cloak>
         @csrf
         <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
             <div class="px-6 mt-1 sm:max-w-xl sm:rounded-lg pb-8">
@@ -287,11 +285,8 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
                             placeholder="Enter category">
                     </div>
-
-
                     
-               
-                <div x-data="dropdown()" class="relative mb-2 sm:mb-6">
+                    <div x-data="dropdown()" class="relative mb-2 sm:mb-6">
                     <label for="collaborators" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Collaborators</label>
 
                     <!-- Selected Users Inside Input Box -->
@@ -324,6 +319,7 @@
                         </div>
                     </div>
 
+                    
                     <!-- Request Description -->
                     <div class="mb-2 sm:mb-6">
                         <label for="request_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
@@ -361,12 +357,59 @@
                         </div>
                     </template>
                 </div>
-    
-                </form>
+
+               
+                <!-- Send Button with Validation -->
+                <div class="flex justify-end w-full mt-4">
+                    <button 
+                        @click="validateFormAndShowModal" 
+                        :disabled="!isFormValid()" 
+                        :class="{'opacity-50 cursor-not-allowed': !isFormValid()}" 
+                        class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">
+                        Send
+                    </button>
+                </div>
             </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
+            <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
+                <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
+                    <div class="my-8">
+                        <h4 class="text-lg text-[#333] font-semibold">Are you sure you want to send the form?</h4>
+                        <p class="text-sm text-gray-500 mt-4">Once submitted, the information provided will be processed accordingly. Please review the details carefully before proceeding.</p>
+                    </div>
+                    <div class="flex justify-end gap-4 max-sm:flex-col">
+                        <button type="button" @click="showConfirmationModal = false; showModal = true" class="px-6 py-2.5 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Yes, send</button>
+                        <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div x-show="showModal" class="fixed inset-0 overflow-y-auto z-[1000]">
+            <div class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
+                <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
+                    <div class="my-8 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 shrink-0 fill-[#333] inline" viewBox="0 0 512 512">
+                            <path d="M383.841 171.838c-7.881-8.31-21.02-8.676-29.343-.775L221.987 296.732l-63.204-64.893c-8.005-8.213-21.13-8.393-29.35-.387-8.213 7.998-8.386 21.137-.388 29.35l77.492 79.561a20.687 20.687 0 0 0 14.869 6.275 20.744 20.744 0 0 0 14.288-5.694l147.373-139.762c8.316-7.888 8.668-21.027.774-29.344z" data-original="#000000" />
+                            <path d="M256 0C114.84 0 0 114.84 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0zm0 470.487c-118.265 0-214.487-96.214-214.487-214.487 0-118.265 96.221-214.487 214.487-214.487 118.272 0 214.487 96.221 214.487 214.487 0 118.272-96.215 214.487-214.487 214.487z" data-original="#000000" />
+                        </svg>
+                        <h4 class="text-2xl text-[#333] font-semibold mt-6">The form has been submitted successfully!</h4>
+                        <p class="text-sm text-gray-500 mt-4">Thank you for your submission. Your request will now be processed, and you will receive further updates.</p>
+                    </div>
+                    <button type="button" @click="showModal = false; submitRequest()" class="px-6 py-2.5 min-w-[150px] w-full rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Okay</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 
-            <script>
+
+        <script>
 const sharedData = {
     selectedUsers: []
 };
@@ -442,6 +485,8 @@ function fileUploader() {
         files: [],
         hasFiles: false,
         showOtherInput: false,
+        showConfirmationModal: false, // Initialize confirmation modal state
+        showModal: false, // Initialize success modal state
 
         init() {
             this.hasFiles = this.files.length > 0;
@@ -508,6 +553,17 @@ function fileUploader() {
             return iconHtml;
         },
 
+        isFormValid() {
+            return this.requestData.name !== '' && this.requestData.category !== '' && this.requestData.description !== '' && this.requestData.description !== ''  ;
+        },
+
+        validateFormAndShowModal() {
+            if (this.isFormValid()) {
+                this.showConfirmationModal = true;
+            }
+        },
+
+
         submitRequest() {
             const formData = new FormData();
 
@@ -560,7 +616,7 @@ function fileUploader() {
             })
             .then(data => {
                 if (data.success) {
-                    window.location.href = '{{ route('main') }}'; // Redirect on success
+                    window.location.href = '{{ route('main') }}';
                 } else {
                     console.error('Submission failed:', data.message); // Handle submission failure
                 }
@@ -569,7 +625,6 @@ function fileUploader() {
                 console.error('Error:', error); // Handle fetch errors
             });
         },
-
 
         dataURLtoFile(dataurl, filename) {
             const arr = dataurl.split(',');
@@ -584,60 +639,8 @@ function fileUploader() {
         }
     };
 }
-
 </script>
-
-                    <div class="flex justify-end w-full mt-4">
-                        <button @click="showConfirmationModal = true" class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800 mt-2">Send</button>
-                    </div>
-                    <div class="flex justify-between w-full mt-6">
-                        <button @click="step = 1; console.log(step); $refs.progress3.classList.remove('bg-green-500'); $refs.progress2.classList.remove('bg-gray-300'); $refs.progress2.classList.add('bg-green-500')" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Previous</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End of Content -->
-        <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
-            <div class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
-                <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
-                        <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
-                        <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
-                    </svg>
-                    <div class="my-8">
-                        <h4 class="text-lg text-[#333] font-semibold">Are you sure you want to send the form? </h4>
-                        <p class="text-sm text-gray-500 mt-4">Once submitted, the information provided will be processed accordingly. Please review the details carefully before proceeding</p>
-                    </div>
-                    <div class="flex justify-end gap-4 max-sm:flex-col">
-                        <button type="button" @click="showConfirmationModal = false; showModal = true" class="px-6 py-2.5 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Yes, send</button>
-                        <button type="button" @click="showConfirmationModal = false" class="px-6 py-2.5 min-w-[150px] rounded text-[#333] text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">No, cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Start of Modal -->
-        <div x-show="showModal" class="fixed inset-0 overflow-y-auto z-[1000]">
-            <div class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
-                <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
-                        <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
-                        <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
-                    </svg>
-                    <div class="my-8 text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 shrink-0 fill-[#333] inline" viewBox="0 0 512 512">
-                            <path d="M383.841 171.838c-7.881-8.31-21.02-8.676-29.343-.775L221.987 296.732l-63.204-64.893c-8.005-8.213-21.13-8.393-29.35-.387-8.213 7.998-8.386 21.137-.388 29.35l77.492 79.561a20.687 20.687 0 0 0 14.869 6.275 20.744 20.744 0 0 0 14.288-5.694l147.373-139.762c8.316-7.888 8.668-21.027.774-29.344z" data-original="#000000" />
-                            <path d="M256 0C114.84 0 0 114.84 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0zm0 470.487c-118.265 0-214.487-96.214-214.487-214.487 0-118.265 96.221-214.487 214.487-214.487 118.272 0 214.487 96.221 214.487 214.487 0 118.272-96.215 214.487-214.487 214.487z" data-original="#000000" />
-                        </svg>
-                        <h4 class="text-2xl text-[#333] font-semibold mt-6">The form has been submitted successfully!</h4>
-                        <p class="text-sm text-gray-500 mt-4">Thank you for your submission. Your request will now be processed, and you will receive further updates.</p>
-                    </div>
-                    <button type="button" @click="showModal = false" class="px-6 py-2.5 min-w-[150px] w-full rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Okay</button>
-                </div>
-            </div>
-        </div>
-
-
+             
 </div>
 </div>
 </main>

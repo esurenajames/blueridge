@@ -25,19 +25,22 @@ class RequestController extends Controller
 
     // Fetch collaborators
     $collaboratorIds = json_decode($request->collaborators, true);
-    
-    // Ensure $collaboratorIds is an array
     $collaboratorIds = is_array($collaboratorIds) ? $collaboratorIds : [];
-    
     $collaborators = User::whereIn('id', $collaboratorIds)->get();
+
+    // Decode approval_dates JSON
+    $approval_dates = json_decode($request->approval_dates, true) ?: []; // Ensure it's an array
 
     // Pass these variables to the view
     return view('details-2', [
         'request' => $request,
         'requestor' => $requestor,
-        'collaborators' => $collaborators
+        'collaborators' => $collaborators,
+        'approval_dates' => $approval_dates // Now defined
     ]);
 }
+
+
 
 public function viewAll()
 {
@@ -202,6 +205,128 @@ public function quotationSubmit(Request $request)
         return response()->json(['success' => false, 'message' => 'An error occurred while uploading the files'], 500);
     }
 }
+
+public function purchaseRequestSubmit(Request $request)
+{
+    try {
+        Log::info('Incoming purchase request data:', $request->all());
+
+        $request->validate([
+            'id' => 'required|integer|exists:requests,id',
+            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
+        ]);
+
+        $requestId = $request->input('id');
+        $requestModel = RequestModel::find($requestId);
+
+        if (!$requestModel) {
+            return response()->json(['success' => false, 'message' => 'Request not found'], 404);
+        }
+
+        Log::info('Retrieved Request ID:', ['id' => $requestModel->id]);
+
+        $requestFolder = public_path('uploads/' . $requestModel->id);
+        if (!File::exists($requestFolder)) {
+            File::makeDirectory($requestFolder, 0755, true);
+        }
+
+        // Get the existing files (if any)
+        $existingFiles = json_decode($requestModel->files, true) ?: [];
+
+        // Create a set to store existing file paths for quick lookup
+        $existingFilePaths = array_column($existingFiles, 'file_path');
+
+        // Process file uploads
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filePath = '/uploads/' . $requestModel->id . '/' . time() . '_' . $file->getClientOriginalName();
+
+                // Check if the file already exists in existingFiles
+                if (!in_array($filePath, $existingFilePaths)) {
+                    $file->move($requestFolder, basename($filePath));
+
+                    // Append new file info to the existing files array
+                    $existingFiles[] = [
+                        'file_path' => $filePath,
+                        'step' => 3,  // Step 3 for purchase request
+                    ];
+                }
+            }
+        }
+
+        // Update the files column with the new file paths
+        $requestModel->files = json_encode($existingFiles);
+        $requestModel->save();
+
+        return response()->json(['success' => true, 'message' => 'Purchase request files uploaded successfully']);
+    } catch (\Exception $e) {
+        Log::error('Error uploading purchase request files: ' . $e->getMessage());
+        return response()->json(['success' => false, 'message' => 'An error occurred while uploading the files'], 500);
+    }
+}
+
+
+
+public function  purchaseOrderSubmit(Request $request)
+{
+    try {
+        Log::info('Incoming purchase request data:', $request->all());
+
+        $request->validate([
+            'id' => 'required|integer|exists:requests,id',
+            'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
+        ]);
+
+        $requestId = $request->input('id');
+        $requestModel = RequestModel::find($requestId);
+
+        if (!$requestModel) {
+            return response()->json(['success' => false, 'message' => 'Request not found'], 404);
+        }
+
+        Log::info('Retrieved Request ID:', ['id' => $requestModel->id]);
+
+        $requestFolder = public_path('uploads/' . $requestModel->id);
+        if (!File::exists($requestFolder)) {
+            File::makeDirectory($requestFolder, 0755, true);
+        }
+
+        // Get the existing files (if any)
+        $existingFiles = json_decode($requestModel->files, true) ?: [];
+
+        // Create a set to store existing file paths for quick lookup
+        $existingFilePaths = array_column($existingFiles, 'file_path');
+
+        // Process file uploads
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filePath = '/uploads/' . $requestModel->id . '/' . time() . '_' . $file->getClientOriginalName();
+
+                // Check if the file already exists in existingFiles
+                if (!in_array($filePath, $existingFilePaths)) {
+                    $file->move($requestFolder, basename($filePath));
+
+                    // Append new file info to the existing files array
+                    $existingFiles[] = [
+                        'file_path' => $filePath,
+                        'step' => 4,  // Step 3 for purchase request
+                    ];
+                }
+            }
+        }
+
+        // Update the files column with the new file paths
+        $requestModel->files = json_encode($existingFiles);
+        $requestModel->save();
+
+        return response()->json(['success' => true, 'message' => 'Purchase request files uploaded successfully']);
+    } catch (\Exception $e) {
+        Log::error('Error uploading purchase request files: ' . $e->getMessage());
+        return response()->json(['success' => false, 'message' => 'An error occurred while uploading the files'], 500);
+    }
+}
+
+
 
     public function show(Request $request)
     {

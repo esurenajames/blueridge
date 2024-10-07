@@ -8,6 +8,9 @@
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
 
+@php
+    use Carbon\Carbon; // Import Carbon at the beginning of the file
+@endphp
 
 <body class="mb-5 bg-gray-200">
     <!--sidenav -->
@@ -151,7 +154,9 @@
                 @endif
             @else Pending @endif
         </p>
-        <p class="text-xs text-gray-400">Date Placeholder</p>
+        <p class="text-xs text-gray-400">
+        {{ isset($approval_dates[0]) ? Carbon::parse($approval_dates[0])->format('Y-m-d h:i A') : 'n/a' }}
+</p>
     </div>
 </div>
 
@@ -204,7 +209,9 @@
                 @endif
             @else Pending @endif
         </p>
-        <p class="text-xs text-gray-400">Date Placeholder</p>
+                <p class="text-xs text-gray-400">
+            {{ isset($approval_dates[1]) ? Carbon::parse($approval_dates[1])->format('Y-m-d h:i A') : 'n/a' }}
+        </p>
     </div>
 </div>
 
@@ -257,7 +264,9 @@
                 @endif
             @else Pending @endif
         </p>
-        <p class="text-xs text-gray-400">Date Placeholder</p>
+        <p class="text-xs text-gray-400">
+            {{ isset($approval_dates[2]) ? Carbon::parse($approval_dates[2])->format('Y-m-d h:i A') : 'n/a' }}
+        </p>
     </div>
 </div>
 
@@ -310,7 +319,9 @@
                 @endif
             @else Pending @endif
         </p>
-        <p class="text-xs text-gray-400">Date Placeholder</p>
+        <p class="text-xs text-gray-400">
+            {{ isset($approval_dates[3]) ? Carbon::parse($approval_dates[3])->format('Y-m-d h:i A') : 'n/a' }}
+        </p>
     </div>
 </div>
 
@@ -462,89 +473,141 @@
 
 
 @if($request->steps == 2) 
-<div x-data="fileUploader({{ $request->id }})" @submit.prevent="quotationSubmit">
+
+
+<div x-data="submitForms()" x-cloak>
+<div x-data="fileUploader({{ $request->id }})" @submit.prevent="quotationSubmit" x-cloak>
     <div class="flex justify-end mt-4">
-
-
         <button @click="showModal = true" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg" style="border: 1px solid gray;">
-            Upload Quotation Documents
+        Attach Quotation Form Documents
             </button>
+
+        <button @click="openModal($event, {{ $request->id }})" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 ml-2 rounded-lg" style="background-color: #4F46E5;">
+            Quotation Form
+        </button>
+
     </div>
 
     <!-- Quotation Document Modal -->
-    <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showModal = false" style="display: none;">
-        <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3 p-6">
-            <h2 class="text-lg font-semibold mb-4">Document Submission</h2>
+    <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-80 md:w-1/3 p-6">
+        <h2 class="text-lg font-semibold mb-4">Document Submission</h2>
 
-            <form @submit.prevent="quotationSubmit">
-                <div class="mb-4">
-                    <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
-                    <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
-                </div>
+        <!-- Notification for no documents -->
+        <div x-show="!hasFiles && submitAttempted" class="mb-4 text-red-500">
+            <p>Please attach at least one document before submitting.</p>
+        </div>
 
-                <div x-show="hasFiles" class="mt-4 max-w-full overflow-hidden">
-                    <h3 class="text-lg font-medium mb-2">Selected Files</h3>
-                    <div class="max-h-60 overflow-y-auto scrollbar">
-                        <template x-for="(file, index) in files" :key="index">
-                            <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2 max-w-full overflow-hidden">
-                                <div class="flex items-center space-x-2">
-                                    <!-- File Preview (Clickable for Full View) -->
-                                    <a :href="file.url" target="_blank" class="w-20 h-20 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
-                                        <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-20 h-20" alt="Image preview">
-                                        <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-20 h-20 flex items-center justify-center"></span>
-                                    </a>
-                                    <!-- File Name and Size -->
-                                    <div class="flex flex-col w-52">
-                                        <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline truncate" x-text="file.name"></a>
-                                        <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
-                                    </div>
+        <form @submit.prevent="quotationSubmit">
+            <div class="mb-4">
+                <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
+                <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
+            </div>
+
+            <div x-show="hasFiles" class="mt-4 max-w-full overflow-hidden">
+                <h3 class="text-lg font-medium mb-2">Selected Files</h3>
+                <div class="max-h-60 overflow-y-auto scrollbar">
+                    <template x-for="(file, index) in files" :key="index">
+                        <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2 max-w-full overflow-hidden">
+                            <div class="flex items-center space-x-2">
+                                <!-- File Preview (Clickable for Full View) -->
+                                <a :href="file.url" target="_blank" class="w-20 h-20 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
+                                    <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-20 h-20" alt="Image preview">
+                                    <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-20 h-20 flex items-center justify-center"></span>
+                                </a>
+                                <!-- File Name and Size -->
+                                <div class="flex flex-col w-52">
+                                    <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline truncate" x-text="file.name"></a>
+                                    <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
                                 </div>
-                                <!-- Remove Button -->
-                                <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
                             </div>
-                        </template>
-                    </div>
+                            <!-- Remove Button -->
+                            <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </template>
                 </div>
+            </div>
 
-                <div class="flex justify-end mt-4">
-                    <button type="button" @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Submit</button>
-                </div>
-            </form>
+            <div class="flex justify-end mt-4">
+                <button type="button" @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div x-show="showConfirmationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showConfirmationModal = false" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-90 p-6"> <!-- Adjust width as needed -->
+        <h2 class="text-lg font-semibold mb-4">Confirm Submission</h2>
+        <p class="mb-4">Are you sure you want to submit the selected documents? This action cannot be undone.</p>
+        <div class="flex justify-end mt-8">
+            <button type="button" @click="showConfirmationModal = false; showModal = true" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+            <button type="button" @click="submitQuotationForm" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm</button>
         </div>
     </div>
 </div>
 
+<div x-show="showSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showSuccessModal = false" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-100 p-6 flex flex-col items-center"> <!-- Center content -->
+        <!-- Check Mark GIF -->
+        <img src="{{ asset('images/verified.gif') }}" alt="Success Check Mark" class="h-16 w-16 mb-4" />
+
+
+        <h2 class="text-lg font-semibold mb-4">Upload Successful</h2>
+        <p class="mb-4">Your documents have been uploaded successfully.</p>
+        <div class="flex justify-end mt-4">
+            <button type="button" @click="showSuccessModal = false; showModal = false; location.reload();" class="bg-blue-600 hover:bg-blue-700 text-white px-44 py-2 rounded-lg">OK</button>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
+   function fileUploader(requestId) {
+    return {
+        requestData: {
+            id: requestId,
+            name: '',
+            description: '',
+            category: ''
+        },
+        categoryOptions: ['Office Supplies', 'Technology & Electronics', 'Furniture', 'Cleaning & Maintenance', 'Breakroom Supplies'],
+        files: [],
+        hasFiles: false,
+        showModal: false, 
+        showOtherInput: false,
+        showConfirmationModal: false,
+        showSuccessModal: false, // New property for success modal
+        submitAttempted: false, // New property to track submit attempts
 
-    function fileUploader(requestId) {
-        return {
-            requestData: {
-                id: requestId, // Initialize with request ID from Blade
-                name: '',
-                description: '',
-                category: ''
-            },
-            categoryOptions: ['Office Supplies', 'Technology & Electronics', 'Furniture', 'Cleaning & Maintenance', 'Breakroom Supplies'],
-            files: [],
-            hasFiles: false,
-            showModal: false, 
-            showOtherInput: false,
+        init() {
+            this.hasFiles = this.files.length > 0;
+        },
 
-            init() {
-                this.hasFiles = this.files.length > 0;
-            },
+        previewFiles(event) {
+            const files = event.target.files;
+            const allowedTypes = [
+                'image/jpeg',
+                'image/png',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            ];
 
-            previewFiles(event) {
-                const files = event.target.files;
-                if (!files || files.length === 0) return;
+            if (!files || files.length === 0) return;
 
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Check if the file type is allowed
+                if (allowedTypes.includes(file.type)) {
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         this.files.push({
@@ -553,161 +616,159 @@
                             type: file.type,
                             url: e.target.result
                         });
+                        this.hasFiles = true; // Set hasFiles to true if valid file is added
                     };
                     reader.readAsDataURL(file);
+                } else {
+                    console.warn(`Unsupported file type: ${file.name}`);
+                    alert(`Unsupported file type: ${file.name}. Please upload files of type: jpg, jpeg, png, pdf, doc, docx, xls, xlsx.`);
                 }
+            }
+        },
 
-                this.hasFiles = true;
-            },
+        removeFile(index) {
+            this.files.splice(index, 1);
+            if (this.files.length === 0) {
+                this.hasFiles = false;
+            }
+        },
 
-            removeFile(index) {
-                this.files.splice(index, 1);
-                if (this.files.length === 0) {
-                    this.hasFiles = false;
-                }
-            },
+        formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        },
 
-            formatBytes(bytes, decimals = 2) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const dm = decimals < 0 ? 0 : decimals;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-            },
+        getFileIcon(file) {
+            const fileType = file.type.split('/')[1];
+            let iconHtml = '';
 
-            getFileIcon(file) {
-                const fileType = file.type.split('/')[1];
-                let iconHtml = '';
+            switch (fileType) {
+                case 'pdf':
+                    iconHtml = '<i class="far fa-file-pdf"></i>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    iconHtml = '<i class="far fa-file-word"></i>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    iconHtml = '<i class="far fa-file-excel"></i>';
+                    break;
+                default:
+                    iconHtml = '<i class="far fa-file-alt"></i>';
+                    break;
+            }
 
-                switch (fileType) {
-                    case 'pdf':
-                        iconHtml = '<i class="far fa-file-pdf"></i>';
-                        break;
-                    case 'doc':
-                    case 'docx':
-                        iconHtml = '<i class="far fa-file-word"></i>';
-                        break;
-                    case 'xls':
-                    case 'xlsx':
-                        iconHtml = '<i class="far fa-file-excel"></i>';
-                        break;
-                    default:
-                        iconHtml = '<i class="far fa-file-alt"></i>';
-                        break;
-                }
+            return iconHtml;
+        },
 
-                return iconHtml;
-            },
-
-            openModal(event, requestId) {
+        openModal(event, requestId) {
             this.currentRequestId = requestId; // Store the request ID
             this.isModalOpen = true; // Open the modal
         },
-            
 
-            quotationSubmit() {
-                const formData = new FormData();
-
-                // Append files
-                this.files.forEach((file) => {
-                    formData.append('files[]', this.dataURLtoFile(file.url, file.name));
-                });
-
-                // Append request ID
-                formData.append('id', this.requestData.id);
-
-                // Log request ID
-                console.log('Request ID:', this.requestData.id);
-
-                // CSRF token setup
-                const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-                const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
-
-                // Submit form using fetch
-                fetch('{{ route('quotation.submit') }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = '{{ route('main') }}'; // Redirect on success
-                    } else {
-                        console.error('Submission failed:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    // Close the modal after submission
-                    this.showModal = false;
-                });
-            },
-
-            dataURLtoFile(dataurl, filename) {
-                const arr = dataurl.split(',');
-                const mime = arr[0].match(/:(.*?);/)[1];
-                const bstr = atob(arr[1]);
-                let n = bstr.length;
-                const u8arr = new Uint8Array(n);
-                while (n--) {
-                    u8arr[n] = bstr.charCodeAt(n);
-                }
-                return new File([u8arr], filename, { type: mime });
+        quotationSubmit() {
+            this.submitAttempted = true; // Mark the submit attempt
+            if (!this.hasFiles) {
+                return; // Do not proceed if there are no files
             }
+            this.showConfirmationModal = true; // Show the confirmation modal
+        },
 
-                    };
+        // Function to handle the actual submission
+        submitQuotationForm() {
+            const formData = new FormData();
+
+            // Append files
+            this.files.forEach((file) => {
+                formData.append('files[]', this.dataURLtoFile(file.url, file.name));
+            });
+
+            // Append request ID
+            formData.append('id', this.requestData.id);
+
+            // Log request ID
+            console.log('Request ID:', this.requestData.id);
+
+            // CSRF token setup
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+            // Submit form using fetch
+            fetch('{{ route('quotation.submit') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-            </script>
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    this.showModal = false; // Close the document submission modal
+                    this.showConfirmationModal = false; // Close the confirmation modal
+                    this.showSuccessModal = true; // Show the success modal
+                } else {
+                    console.error('Submission failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        },
 
+        dataURLtoFile(dataurl, filename) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+    };
+}
+</script>
 
-<div x-data="submitForms()">
-
-    <div class="flex justify-end mt-4 space-x-2">
-
-        <button @click="openModal($event, {{ $request->id }})" class="bg-blue-500 hover:bg-blue-800 text-white px-4 py-2 rounded-lg" style="background-color: #4F46E5;">
-            Quotation Form
-        </button>
-
-    </div>
-
+    <!-- Modal for Quotation Form -->
     <div x-show="isModalOpen" @click.away="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg max-w-6xl w-full p-6 relative">
-            <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">
-                &times;
-            </button>
-
+            <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">&times;</button>
             <h2 class="text-xl font-bold sm:text-xl mb-4">Company <span x-text="currentCompanyIndex + 1"></span></h2>
-
             <template x-for="(company, index) in companies" :key="index">
                 <div x-show="currentCompanyIndex === index">
                     <input type="hidden" id="request_id" x-model="currentRequestId">
-
+                    
+                    <!-- Company Name Input -->
                     <div class="mb-4">
                         <label for="company_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Name</label>
                         <input type="text" id="company_name" x-model="company.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter company name" required>
                     </div>
 
+                    <!-- Date Input -->
                     <div class="mb-4">
                         <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
                         <input type="date" id="request_date" x-model="company.requestDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
                     </div>
 
+                    <!-- Description Input -->
                     <div class="mb-4">
                         <label for="description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
                         <textarea id="description" x-model="company.description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
                     </div>
 
+                    <!-- Quotation Table -->
                     <div class="mb-4 flex flex-col">
                         <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
                         <div class="overflow-x-auto mb-2">
@@ -735,75 +796,33 @@
                                             <td class="border px-4 py-2">
                                                 <select x-model="row.unit" class="border-0 w-full p-2" required>
                                                     <option value="" disabled>Select Unit</option>
-                                                    <!-- Quantity units -->
                                                     <option value="pcs">pcs (pieces)</option>
                                                     <option value="box">box</option>
                                                     <option value="pack">pack</option>
                                                     <option value="dozen">dozen</option>
                                                     <option value="pair">pair</option>
-
-                                                    <!-- Weight units -->
                                                     <option value="g">g (grams)</option>
                                                     <option value="kg">kg (kilograms)</option>
-                                                    <option value="mg">mg (milligrams)</option>
-                                                    <option value="lb">lb (pounds)</option>
-                                                    <option value="oz">oz (ounces)</option>
-
-                                                    <!-- Volume units -->
                                                     <option value="ml">ml (milliliters)</option>
                                                     <option value="liters">liters</option>
-                                                    <option value="gallon">gallon</option>
-                                                    <option value="pint">pint</option>
-                                                    <option value="cup">cup</option>
-
-                                                    <!-- Length/Distance units -->
                                                     <option value="mm">mm (millimeters)</option>
-                                                    <option value="cm">cm (centimeters)</option>
-                                                    <option value="m">m (meters)</option>
-                                                    <option value="km">km (kilometers)</option>
-                                                    <option value="inch">inch</option>
-                                                    <option value="ft">ft (feet)</option>
-                                                    <option value="yd">yd (yards)</option>
-
-                                                    <!-- Time units -->
-                                                    <option value="sec">sec (seconds)</option>
-                                                    <option value="min">min (minutes)</option>
-                                                    <option value="hour">hour</option>
-                                                    <option value="day">day</option>
-
-                                                    <!-- Miscellaneous units -->
-                                                    <option value="set">set</option>
-                                                    <option value="batch">batch</option>
-                                                    <option value="case">case</option>
-                                                    <option value="roll">roll</option>
                                                 </select>
                                             </td>
-
                                             <td class="border px-4 py-2">
                                                 <textarea x-model="row.item_description" rows="2" class="border-0 w-full p-2" placeholder="Item Description" required></textarea>
                                             </td>
                                             <td class="border px-4 py-2">
-                                                <input type="number" x-model="row.unit_price" class="border-0 w-28 p-2" @input="calculateAmount(row)" @blur="row.unit_price = formatPrice(row.unit_price)" step="0.01" placeholder="Unit Price" required>
+                                                <input type="number" x-model="row.unit_price" class="border-0 w-28 p-2" @input="calculateAmount(row)" step="0.01" placeholder="Unit Price" required>
                                             </td>
                                             <td class="border px-4 py-2">
-                                                <input type="number" x-model="row.amount" class="border-0 w-28 p-2" @blur="row.amount = formatPrice(row.amount)" step="0.01" placeholder="Amount" readonly>
+                                                <input type="number" x-model="row.amount" class="border-0 w-28 p-2" readonly>
                                             </td>
-
                                             <td class="border px-4 py-2">
                                                 <button @click="removeRow(index, rIndex)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
                                             </td>
                                         </tr>
                                     </template>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="5" class="text-right pr-4 text-sm font-medium text-indigo-900 dark:text-black">Total</td>
-                                        <td class="border px-4 py-2 text-right">
-                                            <span x-text="calculateTotal(index)"></span>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                         <div class="flex justify-end">
@@ -822,8 +841,11 @@
                     <button @click="showSummary()" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Proceed</button>
                 </div>
             </div>
-            
-            <div x-show="isSummaryOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        </div>
+    </div>
+
+    <!-- Summary Modal -->
+    <div x-show="isSummaryOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full p-6 relative">
             <h2 class="text-xl font-bold mb-4">Summary of Quotation</h2>
 
@@ -864,150 +886,703 @@
 
             <div class="flex justify-end space-x-4 mt-4">
                 <button @click="isSummaryOpen = false" class="text-gray-500 hover:text-gray-700 font-medium text-sm">Cancel</button>
-                <button @click="submitQuotation()" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm & Submit</button>
+                <button @click="showSuccess();" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm & Submit</button>
             </div>
         </div>
     </div>
-</div>
-<script>
-    function submitForms() {
-        return {
-            isModalOpen: false,
-            currentRequestId: null,
-            currentCompanyIndex: 0,
-            companies: [
-                { company_id: '1', name: '', requestDate: '', description: '', rows: [{}] },
-                { company_id: '2', name: '', requestDate: '', description: '', rows: [{}] },
-                { company_id: '3', name: '', requestDate: '', description: '', rows: [{}] },
-            ],
 
-            openModal(event, requestId) {
-                console.log('Button clicked', event); 
-                console.log('Request ID:', requestId); 
+    <!-- Confirmation Modal -->
+    <div x-show="showConfirmationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showConfirmationModal = false" x-cloak>
+        <div class="bg-white rounded-lg shadow-lg w-90 p-6">
+            <h2 class="text-lg font-semibold mb-4">Confirm Submission</h2>
+            <p class="mb-4">Are you sure you want to submit the selected documents? This action cannot be undone.</p>
+            <div class="flex justify-end mt-8">
+                <button type="button" @click="showConfirmationModal = false; showModal = true" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+                <button type="button" @click="submitQuotationForm" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm</button>
+            </div>
+        </div>
+    </div>
 
-                this.currentRequestId = requestId;
-                this.isModalOpen = true;
-            },
+    <!-- Success Modal -->
+    <div x-show="showSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showSuccessModal = false" x-cloak>
+        <div class="bg-white rounded-lg shadow-lg w-100 p-6 flex flex-col items-center">
+            <img src="{{ asset('images/verified.gif') }}" alt="Success Check Mark" class="h-16 w-16 mb-4" />
+            <h2 class="text-lg font-semibold mb-4">Quotation Form</h2>
+            <p class="mb-4">Your documents have been uploaded successfully.</p>
+            <div class="flex justify-end mt-4">
+                <button type="button" @click="showSuccessModal = false; submitQuotation();" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">OK</button>
+            </div>
+        </div>
+    </div>
 
-            addRow(index) {
-                this.companies[index].rows.push({ item_type: '', qty: 0, unit: '', item_description: '', unit_price: 0, amount: 0 });
-            },
+    <script>
+        function submitForms() {
+            return {
+                showSuccessModal: false,
+                isModalOpen: false,
+                isSummaryOpen: false,
+                showConfirmationModal: false,
+                currentRequestId: null,
+                currentCompanyIndex: 0,
+                companies: [
+                    { company_id: '1', name: '', requestDate: '', description: '', rows: [{}] },
+                    { company_id: '2', name: '', requestDate: '', description: '', rows: [{}] },
+                    { company_id: '3', name: '', requestDate: '', description: '', rows: [{}] },
+                ],
 
-            removeRow(companyIndex, rowIndex) {
-                this.companies[companyIndex].rows.splice(rowIndex, 1);
-            },
+                openModal(event, requestId) {
+                    this.currentRequestId = requestId;
+                    this.isModalOpen = true;
+                },
 
-            calculateAmount(row) {
-                row.amount = (parseFloat(row.qty) || 0) * (parseFloat(row.unit_price) || 0);
-                row.amount = this.formatPrice(row.amount); 
-            },
+                addRow(index) {
+                    this.companies[index].rows.push({ item_type: '', qty: 0, unit: '', item_description: '', unit_price: 0, amount: 0 });
+                },
 
-            calculateTotal(companyIndex) {
-                return this.companies[companyIndex].rows.reduce((total, row) => {
-                    return total + (parseFloat(row.amount) || 0);
-                }, 0).toFixed(2);
-            },
+                removeRow(companyIndex, rowIndex) {
+                    this.companies[companyIndex].rows.splice(rowIndex, 1);
+                },
 
-            formatPrice(price) {
-                let formattedPrice = parseFloat(price).toFixed(2); 
-                return formattedPrice;
-            },
+                calculateAmount(row) {
+                    row.amount = (parseFloat(row.qty) || 0) * (parseFloat(row.unit_price) || 0);
+                    row.amount = this.formatPrice(row.amount);
+                },
 
-            showSummary() {
-                this.isSummaryOpen = true;
-            },
+                calculateTotal(companyIndex) {
+                    return this.companies[companyIndex].rows.reduce((total, row) => {
+                        return total + (parseFloat(row.amount) || 0);
+                    }, 0).toFixed(2);
+                },
 
+                formatPrice(price) {
+                    return parseFloat(price).toFixed(2);
+                },
 
-            submitQuotation() {
-                for (const company of this.companies) {
-                    if (!company.name) {
-                        alert('Company name is required for all entries.');
-                        return;
-                    }
-                    if (!company.requestDate) {
-                        alert('Request date is required for all entries.');
-                        return;
-                    }
-                    if (!company.description) {
-                        alert('Description is required for all entries.');
-                        return;
-                    }
-                    for (const row of company.rows) {
-                        if (!row.item_type || !row.qty || !row.unit || !row.item_description || !row.unit_price || !row.amount) {
-                            alert('All item fields are required.');
+                showSummary() {
+                    this.isSummaryOpen = true;
+                },
+
+                showSuccess() {
+                    this.showSuccessModal = true;
+                },
+
+                submitQuotation() {
+                    for (const company of this.companies) {
+                        if (!company.name) {
+                            alert('Company name is required for all entries.');
                             return;
                         }
+                        if (!company.requestDate) {
+                            alert('Request date is required for all entries.');
+                            return;
+                        }
+                        if (!company.description) {
+                            alert('Description is required for all entries.');
+                            return;
+                        }
+                        for (const row of company.rows) {
+                            if (!row.item_type || !row.qty || !row.unit || !row.item_description || !row.unit_price || !row.amount) {
+                                alert('All item fields are required.');
+                                return;
+                            }
+                        }
+                    }
+
+                    const quotationData = this.companies.map(company => ({
+                        request_id: this.currentRequestId,
+                        company_id: company.company_id,
+                        company_name: company.name,
+                        request_date: company.requestDate,
+                        description: company.description,
+                        items: company.rows.map(row => ({
+                            item_type: row.item_type,
+                            qty: row.qty,
+                            unit: row.unit,
+                            item_description: row.item_description,
+                            unit_price: row.unit_price,
+                            amount: row.amount,
+                            item_status: 0
+                        }))
+                    }));
+
+                    console.log("Sending Quotation Data:", quotationData);
+
+                    fetch('/submit-quotation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify(quotationData)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(`Error: ${response.status}, ${text}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message || 'Quotation saved successfully!');
+                        this.resetForm();
+                    })
+                    .catch(error => {
+                        alert('There was a problem with the submission: ' + error.message);
+                    });
+                },
+
+                resetForm() {
+                    this.companies.forEach(company => {
+                        company.name = '';
+                        company.requestDate = '';
+                        company.description = '';
+                        company.rows = [{}];
+                    });
+                    this.isModalOpen = false;
+                    this.isSummaryOpen = false;
+                },
+
+                nextCompany() {
+                    if (this.currentCompanyIndex < this.companies.length - 1) {
+                        this.currentCompanyIndex++;
+                    }
+                },
+
+                previousCompany() {
+                    if (this.currentCompanyIndex > 0) {
+                        this.currentCompanyIndex--;
                     }
                 }
+            };
+        }
+    </script>
+</div>
 
-                const quotationData = this.companies.map(company => ({
-                    request_id: this.currentRequestId,
-                    company_id: company.company_id,
-                    company_name: company.name,
-                    request_date: company.requestDate,
-                    description: company.description,
-                    items: company.rows.map(row => ({
-                        item_type: row.item_type,
-                        qty: row.qty,
-                        unit: row.unit,
-                        item_description: row.item_description,
-                        unit_price: row.unit_price,
-                        amount: row.amount,
-                    }))
-                }));
+@endif
 
-                console.log("Sending Quotation Data:", quotationData);
-                console.log("Current Companies Data:", this.companies);
+@if($request->steps == 3) 
+<div x-data="fileUploader({{ $request->id }})" @submit.prevent="purchaseRequestSubmit">
+    <div class="flex justify-end mt-4">
+        <button @click="showModal = true" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg" style="border: 1px solid gray;">
+        Attach Purchase Request Documents
+            </button>
+    </div>
 
-                fetch('/submit-quotation', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify(quotationData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(`Error: ${response.status}, ${text}`);
+    <!-- Quotation Document Modal -->
+    <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-80 md:w-1/3 p-6">
+        <h2 class="text-lg font-semibold mb-4">Document Submission</h2>
+
+        <!-- Notification for no documents -->
+        <div x-show="!hasFiles && submitAttempted" class="mb-4 text-red-500">
+            <p>Please attach at least one document before submitting.</p>
+        </div>
+
+        <form @submit.prevent="purchaseRequestSubmit">
+            <div class="mb-4">
+                <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
+                <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
+            </div>
+
+            <div x-show="hasFiles" class="mt-4 max-w-full overflow-hidden">
+                <h3 class="text-lg font-medium mb-2">Selected Files</h3>
+                <div class="max-h-60 overflow-y-auto scrollbar">
+                    <template x-for="(file, index) in files" :key="index">
+                        <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2 max-w-full overflow-hidden">
+                            <div class="flex items-center space-x-2">
+                                <!-- File Preview (Clickable for Full View) -->
+                                <a :href="file.url" target="_blank" class="w-20 h-20 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
+                                    <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-20 h-20" alt="Image preview">
+                                    <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-20 h-20 flex items-center justify-center"></span>
+                                </a>
+                                <!-- File Name and Size -->
+                                <div class="flex flex-col w-52">
+                                    <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline truncate" x-text="file.name"></a>
+                                    <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
+                                </div>
+                            </div>
+                            <!-- Remove Button -->
+                            <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-4">
+                <button type="button" @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div x-show="showConfirmationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showConfirmationModal = false" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-90 p-6"> <!-- Adjust width as needed -->
+        <h2 class="text-lg font-semibold mb-4">Confirm Submission</h2>
+        <p class="mb-4">Are you sure you want to submit the selected documents? This action cannot be undone.</p>
+        <div class="flex justify-end mt-8">
+            <button type="button" @click="showConfirmationModal = false; showModal = true" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+            <button type="button" @click="submitPurchaseRequest" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div x-show="showSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showSuccessModal = false" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-100 p-6 flex flex-col items-center"> <!-- Center content -->
+        <!-- Check Mark GIF -->
+        <img src="{{ asset('images/verified.gif') }}" alt="Success Check Mark" class="h-16 w-16 mb-4" />
+
+
+        <h2 class="text-lg font-semibold mb-4">Upload Successful</h2>
+        <p class="mb-4">Your documents have been uploaded successfully.</p>
+        <div class="flex justify-end mt-4">
+            <button type="button" @click="showSuccessModal = false; showModal = false; location.reload();" class="bg-blue-600 hover:bg-blue-700 text-white px-44 py-2 rounded-lg">OK</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+   function fileUploader(requestId) {
+    return {
+        requestData: {
+            id: requestId,
+            name: '',
+            description: '',
+            category: ''
+        },
+        categoryOptions: ['Office Supplies', 'Technology & Electronics', 'Furniture', 'Cleaning & Maintenance', 'Breakroom Supplies'],
+        files: [],
+        hasFiles: false,
+        showModal: false, 
+        showOtherInput: false,
+        showConfirmationModal: false,
+        showSuccessModal: false, // New property for success modal
+        submitAttempted: false, // New property to track submit attempts
+
+        init() {
+            this.hasFiles = this.files.length > 0;
+        },
+
+        previewFiles(event) {
+            const files = event.target.files;
+            const allowedTypes = [
+                'image/jpeg',
+                'image/png',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            ];
+
+            if (!files || files.length === 0) return;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Check if the file type is allowed
+                if (allowedTypes.includes(file.type)) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.files.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            url: e.target.result
                         });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert(data.message || 'Quotation saved successfully!');
-                    this.resetForm();
-                })
-                .catch(error => {
-                    alert('There was a problem with the submission: ' + error.message);
-                });
-            },
-
-            resetForm() {
-                this.companies.forEach(company => {
-                    company.name = '';
-                    company.requestDate = '';
-                    company.description = '';
-                    company.rows = [{}]; 
-                });
-                this.isModalOpen = false;
-                this.isSummaryOpen = false;
-            },
-
-            nextCompany() {
-                if (this.currentCompanyIndex < this.companies.length - 1) {
-                    this.currentCompanyIndex++;
-                }
-            },
-
-            previousCompany() {
-                if (this.currentCompanyIndex > 0) {
-                    this.currentCompanyIndex--;
+                        this.hasFiles = true; // Set hasFiles to true if valid file is added
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    console.warn(`Unsupported file type: ${file.name}`);
+                    alert(`Unsupported file type: ${file.name}. Please upload files of type: jpg, jpeg, png, pdf, doc, docx, xls, xlsx.`);
                 }
             }
-        };
-    }
+        },
+
+        removeFile(index) {
+            this.files.splice(index, 1);
+            if (this.files.length === 0) {
+                this.hasFiles = false;
+            }
+        },
+
+        formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        },
+
+        getFileIcon(file) {
+            const fileType = file.type.split('/')[1];
+            let iconHtml = '';
+
+            switch (fileType) {
+                case 'pdf':
+                    iconHtml = '<i class="far fa-file-pdf"></i>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    iconHtml = '<i class="far fa-file-word"></i>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    iconHtml = '<i class="far fa-file-excel"></i>';
+                    break;
+                default:
+                    iconHtml = '<i class="far fa-file-alt"></i>';
+                    break;
+            }
+
+            return iconHtml;
+        },
+
+        openModal(event, requestId) {
+            this.currentRequestId = requestId; // Store the request ID
+            this.isModalOpen = true; // Open the modal
+        },
+
+        purchaseRequestSubmit() {
+            this.submitAttempted = true; // Mark the submit attempt
+            if (!this.hasFiles) {
+                return; // Do not proceed if there are no files
+            }
+            this.showConfirmationModal = true; // Show the confirmation modal
+        },
+
+        // Function to handle the actual submission
+        submitPurchaseRequest() {
+            const formData = new FormData();
+
+            // Append files
+            this.files.forEach((file) => {
+                formData.append('files[]', this.dataURLtoFile(file.url, file.name));
+            });
+
+            // Append request ID
+            formData.append('id', this.requestData.id);
+
+            // Log request ID
+            console.log('Request ID:', this.requestData.id);
+
+            // CSRF token setup
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+            // Submit form using fetch
+            fetch('{{ route('purchaseRequest.submit') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    this.showModal = false; // Close the document submission modal
+                    this.showConfirmationModal = false; // Close the confirmation modal
+                    this.showSuccessModal = true; // Show the success modal
+                } else {
+                    console.error('Submission failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        },
+
+        dataURLtoFile(dataurl, filename) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+    };
+}
+</script>
+@endif
+
+
+@if($request->steps == 4) 
+<div x-data="fileUploader({{ $request->id }})" @submit.prevent="purchaseOrderSubmit">
+    <div class="flex justify-end mt-4">
+        <button @click="showModal = true" class="bg-white hover:bg-gray-100 text-gray-600 px-4 py-2 rounded-lg" style="border: 1px solid gray;">
+        Attach Purchase Order Documents
+            </button>
+    </div>
+
+    <!-- Quotation Document Modal -->
+    <div x-show="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-80 md:w-1/3 p-6">
+        <h2 class="text-lg font-semibold mb-4">Document Submission</h2>
+
+        <!-- Notification for no documents -->
+        <div x-show="!hasFiles && submitAttempted" class="mb-4 text-red-500">
+            <p>Please attach at least one document before submitting.</p>
+        </div>
+
+        <form @submit.prevent="purchaseOrderSubmit">
+            <div class="mb-4">
+                <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
+                <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
+            </div>
+
+            <div x-show="hasFiles" class="mt-4 max-w-full overflow-hidden">
+                <h3 class="text-lg font-medium mb-2">Selected Files</h3>
+                <div class="max-h-60 overflow-y-auto scrollbar">
+                    <template x-for="(file, index) in files" :key="index">
+                        <div class="flex items-center justify-between bg-gray-100 rounded-lg p-2.5 mb-2 max-w-full overflow-hidden">
+                            <div class="flex items-center space-x-2">
+                                <!-- File Preview (Clickable for Full View) -->
+                                <a :href="file.url" target="_blank" class="w-20 h-20 block overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
+                                    <img x-show="file.type.includes('image')" :src="file.url" class="object-cover w-20 h-20" alt="Image preview">
+                                    <span x-show="!file.type.includes('image')" x-html="getFileIcon(file)" class="text-blue-500 text-6xl w-20 h-20 flex items-center justify-center"></span>
+                                </a>
+                                <!-- File Name and Size -->
+                                <div class="flex flex-col w-52">
+                                    <a :href="file.url" target="_blank" class="text-sm text-blue-500 hover:underline truncate" x-text="file.name"></a>
+                                    <span class="text-xs text-gray-500">(<span x-text="formatBytes(file.size)"></span>)</span>
+                                </div>
+                            </div>
+                            <!-- Remove Button -->
+                            <button type="button" @click="removeFile(index)" class="text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-3.707-8.293a1 1 0 011.414-1.414L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 11-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-4">
+                <button type="button" @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div x-show="showConfirmationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showConfirmationModal = false" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-90 p-6"> <!-- Adjust width as needed -->
+        <h2 class="text-lg font-semibold mb-4">Confirm Submission</h2>
+        <p class="mb-4">Are you sure you want to submit the selected documents? This action cannot be undone.</p>
+        <div class="flex justify-end mt-8">
+            <button type="button" @click="showConfirmationModal = false; showModal = true" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg mr-2">Cancel</button>
+            <button type="button" @click="submitPurchaseOrder" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div x-show="showSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50" @click.away="showSuccessModal = false" style="display: none;">
+    <div class="bg-white rounded-lg shadow-lg w-100 p-6 flex flex-col items-center"> <!-- Center content -->
+        <!-- Check Mark GIF -->
+        <img src="{{ asset('images/verified.gif') }}" alt="Success Check Mark" class="h-16 w-16 mb-4" />
+
+
+        <h2 class="text-lg font-semibold mb-4">Upload Successful</h2>
+        <p class="mb-4">Your documents have been uploaded successfully.</p>
+        <div class="flex justify-end mt-4">
+            <button type="button" @click="showSuccessModal = false; showModal = false; location.reload();" class="bg-blue-600 hover:bg-blue-700 text-white px-44 py-2 rounded-lg">OK</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+   function fileUploader(requestId) {
+    return {
+        requestData: {
+            id: requestId,
+            name: '',
+            description: '',
+            category: ''
+        },
+        categoryOptions: ['Office Supplies', 'Technology & Electronics', 'Furniture', 'Cleaning & Maintenance', 'Breakroom Supplies'],
+        files: [],
+        hasFiles: false,
+        showModal: false, 
+        showOtherInput: false,
+        showConfirmationModal: false,
+        showSuccessModal: false, // New property for success modal
+        submitAttempted: false, // New property to track submit attempts
+
+        init() {
+            this.hasFiles = this.files.length > 0;
+        },
+
+        previewFiles(event) {
+            const files = event.target.files;
+            const allowedTypes = [
+                'image/jpeg',
+                'image/png',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            ];
+
+            if (!files || files.length === 0) return;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Check if the file type is allowed
+                if (allowedTypes.includes(file.type)) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.files.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            url: e.target.result
+                        });
+                        this.hasFiles = true; // Set hasFiles to true if valid file is added
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    console.warn(`Unsupported file type: ${file.name}`);
+                    alert(`Unsupported file type: ${file.name}. Please upload files of type: jpg, jpeg, png, pdf, doc, docx, xls, xlsx.`);
+                }
+            }
+        },
+
+        removeFile(index) {
+            this.files.splice(index, 1);
+            if (this.files.length === 0) {
+                this.hasFiles = false;
+            }
+        },
+
+        formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        },
+
+        getFileIcon(file) {
+            const fileType = file.type.split('/')[1];
+            let iconHtml = '';
+
+            switch (fileType) {
+                case 'pdf':
+                    iconHtml = '<i class="far fa-file-pdf"></i>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    iconHtml = '<i class="far fa-file-word"></i>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    iconHtml = '<i class="far fa-file-excel"></i>';
+                    break;
+                default:
+                    iconHtml = '<i class="far fa-file-alt"></i>';
+                    break;
+            }
+
+            return iconHtml;
+        },
+
+        openModal(event, requestId) {
+            this.currentRequestId = requestId; // Store the request ID
+            this.isModalOpen = true; // Open the modal
+        },
+
+        purchaseOrderSubmit() {
+            this.submitAttempted = true; // Mark the submit attempt
+            if (!this.hasFiles) {
+                return; // Do not proceed if there are no files
+            }
+            this.showConfirmationModal = true; // Show the confirmation modal
+        },
+
+        // Function to handle the actual submission
+        submitPurchaseOrder() {
+            const formData = new FormData();
+
+            // Append files
+            this.files.forEach((file) => {
+                formData.append('files[]', this.dataURLtoFile(file.url, file.name));
+            });
+
+            // Append request ID
+            formData.append('id', this.requestData.id);
+
+            // Log request ID
+            console.log('Request ID:', this.requestData.id);
+
+            // CSRF token setup
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+            // Submit form using fetch
+            fetch('{{ route('purchaseOrder.submit') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    this.showModal = false; // Close the document submission modal
+                    this.showConfirmationModal = false; // Close the confirmation modal
+                    this.showSuccessModal = true; // Show the success modal
+                } else {
+                    console.error('Submission failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        },
+
+        dataURLtoFile(dataurl, filename) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+    };
+}
 </script>
 @endif
 
