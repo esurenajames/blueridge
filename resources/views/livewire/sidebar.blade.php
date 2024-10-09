@@ -1,5 +1,5 @@
 <div class="fixed left-0 top-0 w-64 h-full p-4 z-50 sidebar-menu transition-transform px-4 py-8 bg-white border-r dark:bg-gray-800 dark:border-gray-600">
-    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Barangay Blueridge B</h2>
+    <h2 class="text-[22px] font-semibold text-gray-800 dark:text-white">Barangay Blueridge B</h2>
 
     <div class="relative mt-6">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -8,7 +8,7 @@
             </svg>
         </span>
 
-        <input type="text" class="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring" placeholder="Search"/>
+        <input type="text" class="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring text-[17px]" placeholder="Search"/>
     </div>
     
     <div class="flex flex-col justify-between flex-1 mt-6">
@@ -23,7 +23,7 @@
                 </svg>
                 
 
-                <span class="mx-4 font-medium">Home</span>
+                <span class="mx-4 font-medium text-[17px]">Home</span>
             </a>
 
             <a class="flex items-center px-4 py-2 mt-2 {{ request()->routeIs('forms') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('forms') }}">
@@ -35,7 +35,7 @@
                     </g>
                 </svg>
             
-                <span class="mx-4 font-medium">Create Forms</span>
+                <span class="mx-4 font-medium text-[17px]">Create Forms</span>
             </a>
 
             <a class="flex items-center px-4 py-2 mt-2 {{ request()->routeIs('view-all') ? 'bg-gray-200 dark:bg-gray-700 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200' }} text-gray-700 dark:text-gray-200 rounded-md" href="{{ route('view-all') }}">
@@ -47,7 +47,7 @@
                     </g>
                 </svg>
             
-                <span class="mx-4 font-medium">View All Request</span>
+                <span class="mx-4 font-medium text-[17px]">View All Request</span>
             </a>
             
 
@@ -63,7 +63,7 @@
                     </g>
                 </svg>
             
-                <span class="mx-4 font-medium">Settings</span>
+                <span class="mx-4 font-medium text-[17px]">Settings</span>
             </a>
 
             <form id="logout-form" method="POST" action="{{ route('logout') }}" wire:submit.prevent="logout">
@@ -72,7 +72,7 @@
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#c0c0c0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>< id="SVGRepo_iconCarrier"> <> <path fill="none" d="M0 0h24v24H0z"></path> <path d="M5 11h8v2H5v3l-5-4 5-4v3zm-1 7h2.708a8 8 0 1 0 0-12H4A9.985 9.985 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.985 9.985 0 0 1-8-4z"></path> </svg>
                     </svg>
-                    <span class="mx-4 font-medium">Logout</span>
+                    <span class="mx-4 font-medium text-[17px]">Logout</span>
                 </a>
             </form>
             

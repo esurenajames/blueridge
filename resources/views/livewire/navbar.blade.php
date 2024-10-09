@@ -93,14 +93,14 @@
             <button type="button" class="dropdown-toggle flex items-center">
                 <div class="flex-shrink-0 w-10 h-10 relative">
                     <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
-                        <img class="w-8 h-8 rounded-full" src="{{ Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $user->fname }}"/>
+                        <img class="w-9 h-9 rounded-full" src="{{ Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) : 'https://covington.va.us/wp-content/uploads/2022/03/profile-placeholder-image-gray-silhouette-no-photo-person-avatar-default-pic-used-web-design-173997790.jpg' }}" alt="{{ $user->fname }}"/>
                         <div class="top-0 left-7 absolute w-3 h-3 bg-lime-400 border-2 border-white rounded-full animate-ping"></div>
                         <div class="top-0 left-7 absolute w-3 h-3 bg-lime-500 border-2 border-white rounded-full"></div>
                     </div>
                 </div>
                 <div class="p-2 md:block text-left">
-                    <h2 class="text-[14px] font-semibold text-gray-800">{{ $user->fname }} {{ $user->lname }}</h2>
-                    <p class="text-[12px] text-gray-500">{{ $user->profession }}</p>
+                    <h2 class="text-[18px] font-semibold text-gray-800">{{ $user->fname }} {{ $user->lname }}</h2>
+                    <p class="text-[14px] text-gray-500">{{ $user->profession }}</p>
                 </div>                
             </button>
             <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">

@@ -46,26 +46,27 @@
             showApproveModal: false, 
             showDeclineModal: false, 
             action: '', 
+            declineReason: '', // Store selected decline reason
+            returnReason: '', // Store selected return reason
             showModal: @if(session()->has('success')) true @else false @endif,
-            selectedCells: {}, // Track selected cells by row
+            selectedCells: {}, 
             total: 0,
+            hasSelectedCells() {
+                return Object.keys(this.selectedCells).length > 0;
+            },
             updateTotal() {
                 this.total = Object.values(this.selectedCells).reduce((sum, cell) => {
-                    return sum + (cell.price * cell.qty); // Multiply price by qty
+                    return sum + (cell.price * cell.qty);
                 }, 0);
             },
             toggleCell(row, quotation) {
-                const price = quotation.unit_price; // Get the unit price from the quotation
-                const qty = quotation.qty; // Get the quantity from the quotation
-
-                // Check if the clicked cell is already selected
+                const price = quotation.unit_price; 
+                const qty = quotation.qty; 
                 const isCurrentlySelected = this.selectedCells[row] && this.selectedCells[row].id === quotation.id;
-
-                // If it's already selected, unselect it
+   
                 if (isCurrentlySelected) {
-                    delete this.selectedCells[row]; // Unselect if already selected
+                    delete this.selectedCells[row]; 
                 } else {
-                    // Select the clicked cell
                     this.selectedCells[row] = {
                         id: quotation.id,
                         price: price,
@@ -76,7 +77,6 @@
                 this.updateTotal();
             }
         }">
-   
             <div class="flex flex-wrap ml-10 mt-10">
                 <div class="w-full md:w-1/2 lg:w-1/4 mb-4 md:mb-0">
                     <h2 class="text-xl font-bold mb-4">Request Forms Details</h2>
@@ -236,9 +236,9 @@
                                        @if(!empty($files))
                                            @foreach($files as $file)
                                                <li>
-                                                   <a href="{{ asset('' . $file) }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
-                                                       {{ basename($file) }}
-                                                   </a>
+                                                    <a href="{{ asset($file) }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
+                                                        {{ basename($file) }}
+                                                    </a>
                                                </li>
                                            @endforeach
                                        @else
@@ -330,9 +330,11 @@
                                     <!-- Send button -->
                                     <div class="flex justify-end mt-6 space-x-4">
                                         <!-- Approve Button -->
-                                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition ease-in-out duration-300" @click="showApproveModal = true">
+                                        <button :class="{'bg-blue-600 hover:bg-blue-700': hasSelectedCells(), 'bg-gray-400 text-gray-700': !hasSelectedCells()}"
+                                            class="text-white px-6 py-2 rounded-lg shadow transition ease-in-out duration-300 disabled:cursor-not-allowed" :disabled="!hasSelectedCells()" @click="showApproveModal = true">
                                             Approve Quotation
                                         </button>
+                                    
                                         <!-- Decline/Return Button -->
                                         <button class="bg-gray-600 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-700 transition ease-in-out duration-300" 
                                         @click.prevent="showDeclineModal = true">
@@ -354,7 +356,14 @@
                     <!-- Modal Content -->
                     <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
                         <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                            <h4 class="text-lg text-[#333] font-semibold">Approve Quotation</h4>
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="text-lg text-[#333] font-semibold">Approve Quotation</h4>
+                                <!-- Close button -->
+                                <svg type="button" @click="showApproveModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
+                                    <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
+                                    <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                                </svg>
+                            </div>
             
                             <!-- Selected Items Display -->
                             <div class="my-4">
@@ -397,31 +406,41 @@
                     <!-- Modal Content -->
                     <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
                         <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                            <h4 class="text-lg text-[#333] font-semibold">Decline Request</h4>
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="text-lg text-[#333] font-semibold">Decline Request</h4>
+                                <svg type="button" @click="showDeclineModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
+                                    <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
+                                    <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                                </svg>
+                            </div>
                             <div class="my-8">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Action</label>
                                     <div class="flex items-center space-x-4 mt-2">
                                         <label>
-                                            <input class="sm:text-sm" type="radio" name="action" value="decline" x-model="action" @click="console.log('Decline radio button clicked:', showDeclineModal, action)" /> Decline
+                                            <input class="sm:text-sm" type="radio" name="action" value="decline" x-model="action" /> Decline
                                         </label>
                                         <label>
-                                            <input class="sm:text-sm" type="radio" name="action" value="return" x-model="action" @click="console.log('Return radio button clicked:', showDeclineModal, action)" /> Return
+                                            <input class="sm:text-sm" type="radio" name="action" value="return" x-model="action" /> Return
                                         </label>
                                     </div>
                                 </div>
                                 <div x-show="action === 'decline'" class="mt-4">
                                     <label class="block text-sm font-medium text-gray-700">Reason for Decline</label>
-                                    <select name="decline_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
+                                    <select name="decline_reason" x-model="declineReason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
                                         <option value="" selected>Select reason</option>
                                         <option value="Budget constraint">Budget constraint</option>
                                         <option value="Not feasible">Not feasible</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                    <div x-show="declineReason === 'Other'" class="mt-2">
+                                        <label class="block text-sm font-medium text-gray-700">Specify Reason</label>
+                                        <input type="text" name="other_decline_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" placeholder="Enter reason for decline">
+                                    </div>
                                 </div>
                                 <div x-show="action === 'return'" class="mt-4">
                                     <label class="block text-sm font-medium text-gray-700">Reason for Return</label>
-                                    <select name="return_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
+                                    <select name="return_reason" x-model="returnReason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
                                         <option value="" selected>Select reason</option>
                                         <option value="Budget exceeds allocation">Budget exceeds allocation</option>
                                         <option value="Insufficient funds for execution">Insufficient funds for execution</option>
@@ -432,6 +451,10 @@
                                         <option value="Incorrect details">Incorrect details</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                    <div x-show="returnReason === 'Other'" class="mt-2">
+                                        <label class="block text-sm font-medium text-gray-700">Specify Reason</label>
+                                        <input type="text" name="other_return_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" placeholder="Enter reason for return">
+                                    </div>
                                 </div>                       
                                 <div class="mt-4">
                                     <label class="block text-sm font-medium text-gray-700">Remarks</label>
@@ -451,7 +474,14 @@
             <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
                 <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
                     <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                        <h4 class="text-lg text-[#333] font-semibold">Confirm Action</h4>
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-lg text-[#333] font-semibold">Confirm Action</h4>
+                            <!-- Close button -->
+                            <svg type="button" @click="showConfirmationModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
+                                <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
+                                <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                            </svg>
+                        </div>
                         <p class="mt-4">Are you sure you want to <span x-text="action === 'approve' ? 'approve' : action === 'decline' ? 'decline' : 'return'" class="font-bold"></span> this request?</p>
                         <div class="mt-6 flex justify-end">
                             <button type="button" @click="action === 'approve' ? $refs.approveForm.submit() : $refs.declineForm.submit()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Yes</button>

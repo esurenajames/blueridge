@@ -9,7 +9,8 @@
         "intervention/image": "*",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
-        "livewire/livewire": "*"
+        "livewire/livewire": "*",
+        "phpoffice/phpword": "^1.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

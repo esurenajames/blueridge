@@ -44,8 +44,16 @@
             showApproveModal: false, 
             showDeclineModal: false, 
             action: '', 
-            showModal: @if(session()->has('success')) true @else false @endif 
+            selectedDeclineReason: '', 
+            selectedReturnReason: '', 
+            showModal: @if(session()->has('success')) true @else false @endif,
+            
+            isSubmitDisabled() {
+                // Check if action is selected and if a reason is provided
+                return !this.action || (this.action === 'decline' && !this.selectedDeclineReason) || (this.action === 'return' && !this.selectedReturnReason && !(this.selectedReturnReason === 'Other' && this.$refs.otherReturnReason.value));
+            }
         }">
+    
          <div class="flex flex-wrap ml-10 mt-10">
             <div class="w-full md:w-1/2 lg:w-1/4 mb-4 md:mb-0">
                 <h2 class="text-xl font-bold mb-4">Request Forms Details</h2>
@@ -89,18 +97,7 @@
                     <p class="w-1/4 font-semibold">Dates:</p> 
                     <span class="w-3/4 ml-2">{{ $requestData->created_at->format('F d, Y') }}</span>
                 </div>
-                <div class="flex items-center mb-4 mt-4">
-                    <span class="w-1/4"></span>
-                    <span class="w-2/4">
-                        <button class="bg-blue-600 text-white w-9/12 py-2 rounded hover:bg-blue-700" @click="showApproveModal = true">Approve Request</button>
-                    </span>
-                </div>
-                <div class="flex items-center mb-4 mt-4">
-                    <span class="w-1/4"></span>
-                    <span class="w-2/4">
-                        <button class="bg-gray-600 text-white w-9/12 py-2 rounded hover:bg-gray-700" @click="showDeclineModal = true">Decline / Return</button>
-                    </span>
-                </div>
+        
             </div>
             <div class="w-full md:w-1/2 lg:w-1/4 pl-0 md:pl-5">
                 <h2 class="text-xl font-bold mb-4">Approval History</h2>
@@ -211,6 +208,8 @@
                         <div>
                             <h2 class="text-sm font-bold text-gray-900 mt-4">Quotation Form Details:</h2>
                             <div class="mt-4">
+                                <!-- Add this inside your request form details -->                                                   
+
                                 <h3 class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
                                 <ul class="mt-2">
                                     @if(!empty($files))
@@ -226,8 +225,45 @@
                                     @endif
                                 </ul>
                             </div>
+
+                            <div class="mt-4">
+                                <ul class="mt-2">
+                                    <!-- Check if there are any items with status = 1 -->
+                                    @if($itemsListed->isNotEmpty())
+                                        <p class="font-bold text-green-600">Item(s) listed in the request:</p>
+                                        @foreach($itemsListed as $item)
+                                            <li class="mt-1">
+                                                <span class="font-semibold text-gray-800">{{ $item->item_description }}</span>
+                                                <span class="text-gray-600">- {{ $item->qty }} {{ $item->unit }}</span>
+                                                <span class="text-gray-800 ">Total: {{ number_format($item->amount, 2) }}</span>
+                                            </li>
+                                        @endforeach
+                                        <!-- Display the total price -->
+                                        <li class="mt-4 font-semibold">
+                                            Total Price of Listed Items: ₱{{ number_format($totalPrice, 2) }}
+                                        </li>
+                                    @else
+                                        <p class="font-bold text-red-600">No item(s) listed.</p>
+                                    @endif
+                                </ul>
+                            </div>   
+
+                            <div class="flex justify-end mt-6 space-x-4">
+                                <!-- Check if status is neither Declined (status = 3) nor Completed (status = 4) -->
+                                @if($requestData->status != 3 && $requestData->status != 4)
+                                    <!-- Approve Button -->
+                                    <button class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition ease-in-out duration-300" 
+                                        @click="showApproveModal = true">
+                                        Approve Request
+                                    </button>
+                                    <!-- Decline/Return Button -->
+                                    <button class="bg-gray-600 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-700 transition ease-in-out duration-300" 
+                                        @click.prevent="showDeclineModal = true">
+                                        Decline / Return
+                                    </button>
+                                @endif
+                            </div>                                                 
                         </div>
-                        
                     </div>
                 </div>            
              </div>
@@ -241,7 +277,14 @@
                 <!-- Modal Content -->
                 <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
                     <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                        <h4 class="text-lg text-[#333] font-semibold">Approve Request</h4>
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-lg text-[#333] font-semibold">Approve Request</h4>
+                            <!-- Close button -->
+                            <svg type="button" @click="showApproveModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
+                                <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
+                                <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                            </svg>
+                        </div>
                         <div class="my-8">
                             <label class="block text-sm font-medium text-gray-700">Remarks</label>
                             <textarea name="remarks" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" rows="4" placeholder="Enter your remarks here"></textarea>
@@ -262,7 +305,14 @@
                 <!-- Modal Content -->
                 <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
                     <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                        <h4 class="text-lg text-[#333] font-semibold">Decline Request</h4>
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-lg text-[#333] font-semibold">Decline Request</h4>
+                            <!-- Close button -->
+                            <svg type="button" @click="showDeclineModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
+                                <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
+                                <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                            </svg>
+                        </div>
                         <div class="my-8">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Action</label>
@@ -277,28 +327,35 @@
                             </div>
                             <div x-show="action === 'decline'" class="mt-4">
                                 <label class="block text-sm font-medium text-gray-700">Reason for Decline</label>
-                                <select name="decline_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
+                                <select name="decline_reason" x-model="selectedDeclineReason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
                                     <option value="" selected>Select reason</option>
                                     <option value="Budget constraint">Budget constraint</option>
                                     <option value="Not feasible">Not feasible</option>
                                     <option value="Other">Other</option>
                                 </select>
+                                <label class="block text-sm font-medium text-gray-700 mt-2" x-show="selectedDeclineReason === 'Other'">Please Specify Other Reason</label>
+                                <input type="text" x-ref="otherDeclineReason" x-show="selectedDeclineReason === 'Other'" class="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white" placeholder="Please specify..." @input="isSubmitDisabled()" />
                             </div>
-                            <div x-show="action === 'return'" class="mt-4">
+                            <div class="mt-4" x-show="action === 'return'">
                                 <label class="block text-sm font-medium text-gray-700">Reason for Return</label>
-                                <select name="return_reason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
+                                <select name="return_reason" x-model="selectedReturnReason" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white">
                                     <option value="" selected>Select reason</option>
                                     <option value="Incomplete information">Incomplete information</option>
                                     <option value="Incorrect details">Incorrect details</option>
                                     <option value="Other">Other</option>
                                 </select>
-                            </div>                            
+                                <label class="block text-sm font-medium text-gray-700 mt-2" x-show="selectedReturnReason === 'Other'">Please Specify Other Reason</label>
+                                <input type="text" x-ref="otherReturnReason" x-show="selectedReturnReason === 'Other'" class="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-white" placeholder="Other Reason" @input="isSubmitDisabled()" />
+                            </div>
                             <div class="mt-4">
                                 <label class="block text-sm font-medium text-gray-700">Remarks</label>
                                 <textarea name="remarks" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" rows="4" placeholder="Enter your remarks here"></textarea>
                             </div>
                             <div class="mt-6 flex justify-end">
-                                <button type="button" @click="showConfirmationModal = true; showDeclineModal = true" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">Submit</button>
+                                <button type="button" @click="showConfirmationModal = true; showDeclineModal = true" 
+                                        :disabled="isSubmitDisabled()" 
+                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2" 
+                                        :class="{'opacity-50 cursor-not-allowed': isSubmitDisabled()}">Submit</button>
                                 <button type="button" @click="showDeclineModal = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
                             </div>
                         </div>
@@ -311,7 +368,14 @@
         <div x-show="showConfirmationModal" class="fixed inset-0 overflow-y-auto z-[1000]">
             <div class="flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:bg-[rgba(0,0,0,0.5)]">
                 <div class="w-full max-w-lg bg-white shadow-lg rounded-md p-6 relative">
-                    <h4 class="text-lg text-[#333] font-semibold">Confirm Action</h4>
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-lg text-[#333] font-semibold">Confirm Action</h4>
+                        <!-- Close button -->
+                        <svg type="button" @click="showConfirmationModal = false" xmlns="http://www.w3.org/2000/svg" class="w-3.5 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
+                            <path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
+                            <path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+                        </svg>
+                    </div>
                     <p class="mt-4">Are you sure you want to <span x-text="action === 'approve' ? 'approve' : action === 'decline' ? 'decline' : 'return'" class="font-bold"></span> this request?</p>
                     <div class="mt-6 flex justify-end">
                         <button type="button" @click="action === 'approve' ? $refs.approveForm.submit() : $refs.declineForm.submit()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Yes</button>

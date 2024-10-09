@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\Quotation;
 
 class RequestModel extends Model
 {
@@ -12,7 +13,13 @@ class RequestModel extends Model
     {
         return $this->belongsTo(User::class, 'requestor_id');
     }
-    
+
+    // Relationship to the Quotation model
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class, 'request_id', 'id');
+    }
+
     // Specify the table name 'requests'
     protected $table = 'requests';
 

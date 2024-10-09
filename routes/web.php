@@ -36,6 +36,7 @@ Route::get('/quotation-approval', function () {
 })->name('quotation-approval');
 
 Route::get('/quotation-approval', [RequestApprovalController::class, 'showQuotation'])->name('quotation-approval');
+Route::get('/generate-purchase-order/{id}', [RequestApprovalController::class, 'insertItemsIntoPurchaseOrder'])->name('generate-purchase-order');
 
 Route::get('/view-all', function () {
     return view('view-all');

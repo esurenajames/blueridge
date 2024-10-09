@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\RequestModel;
 
 class Quotation extends Model
 {
@@ -22,4 +23,10 @@ class Quotation extends Model
         'unit_price',
         'amount',
     ];
+
+    // Relationship back to the RequestModel
+    public function request()
+    {
+        return $this->belongsTo(RequestModel::class, 'request_id');
+    }
 }
