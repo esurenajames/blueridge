@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class ExpenseTableController extends Controller
 {
@@ -90,4 +92,56 @@ class ExpenseTableController extends Controller
         // Redirect back to the index or wherever you need
         return redirect()->route('expense.index')->with('success', 'Expense added successfully.');
     }
+
+    public function getExpenseDetails($id)
+    {
+        // Fetch the expense with the given id
+        $expense = Expense::find($id);
+    
+        if ($expense) {
+            Log::info('Expense found:', ['id' => $expense->id, 'proposed_budget' => $expense->proposed_budget]);
+    
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'id' => $expense->id,
+                    'proposed_budget' => $expense->proposed_budget,
+                ]
+            ], 200, ['Content-Type' => 'application/json']); // Add Content-Type explicitly
+        } else {
+            Log::warning('Expense not found for ID:', ['id' => $id]);
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'Expense not found'
+            ], 404, ['Content-Type' => 'application/json']);
+        }
+    }
+    
+    public function updateProposedBudget(Request $request, $id)
+    {
+        // Validate the input
+        $request->validate([
+            'proposed_budget' => 'required|numeric|min:0',
+        ]);
+
+        // Find the expense and update the proposed budget
+        $expense = Expense::find($id);
+
+        if ($expense) {
+            $expense->proposed_budget = $request->input('proposed_budget');
+            $expense->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Proposed budget updated successfully',
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Expense not found',
+            ], 404);
+        }
+    }
+    
 }

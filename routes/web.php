@@ -108,6 +108,8 @@ Route::get('/expense-table', [ExpenseTableController::class, 'index'])->name('ex
 Route::get('/expenses', [ExpenseTableController::class, 'index'])->name('expense.index');
 Route::put('/requests/{id}', [RequestTableController::class, 'update'])->name('requests.update');
 Route::post('/expenses', [ExpenseTableController::class, 'store'])->name('expense.store');
+Route::post('/api/expenses/{id}/update', [ExpenseTableController::class, 'updateProposedBudget']);
+Route::get('/api/expenses/{id}', [ExpenseTableController::class, 'getExpenseDetails']);
 
 Route::get('/approval-management', function () {
     return view('/approval-management');
