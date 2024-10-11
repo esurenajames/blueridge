@@ -6,6 +6,7 @@ use App\Models\RequestModel;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Expense;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Item;
@@ -89,6 +90,8 @@ class RequestApprovalController extends Controller
     
         // Fetch the request record by ID along with quotations
         $requestData = RequestModel::with('quotations')->findOrFail($id);
+
+        $category = $requestData->category ? $requestData->category->object_of_expenditure : 'No Category';
     
         // If the request is in Step 2, redirect to Quotation Approval with ID
         if ($requestData->steps == 2) {
@@ -157,7 +160,8 @@ class RequestApprovalController extends Controller
             'approvalStatus', 
             'approvers', 
             'itemsListed', 
-            'totalPrice' // Pass the total price to the view
+            'totalPrice',
+            'category'
         ));
     }
     
@@ -171,6 +175,8 @@ class RequestApprovalController extends Controller
         
         // Fetch quotations related to the request
         $quotations = Quotation::where('request_id', $id)->get();
+
+        $category = $requestData->category ? $requestData->category->object_of_expenditure : 'No Category';
 
         // Count the number of rows (quotations)
         $rowCount = $quotations->count();
@@ -220,7 +226,7 @@ class RequestApprovalController extends Controller
         $companyNames = $quotations->pluck('company_name')->unique()->toArray();
 
         // Pass the data to the view
-        return view('quotation-approval', compact('requestData', 'collaborators', 'steps', 'status', 'files', 'approvalDates', 'approvalIds', 'approvalStatus', 'approvers', 'quotations', 'companyNames','rowCount'));
+        return view('quotation-approval', compact('requestData', 'collaborators', 'steps', 'status', 'files', 'approvalDates', 'approvalIds', 'approvalStatus', 'approvers', 'quotations', 'companyNames','rowCount','category'));
     }
 
     public function approveRequest(Request $request, $id)
@@ -230,64 +236,71 @@ class RequestApprovalController extends Controller
     
         // Check if the request is at step 2
         if ($requestData->steps == 2) {
-            // Increment the step to 3 (Quotation approved)
-            $requestData->steps += 1;
-            // Keep the status as Pending (1)
-            $requestData->status = 1; // Set status to Pending
-    
-            // Generate a Word document with approved items (only for step 2)
-            $this->insertItemsIntoPurchaseOrder($id);
-    
+            $requestData->steps += 1; // Increment the step to 3 (Quotation approved)
+            $requestData->status = 1;  // Set status to Pending
+            $this->insertItemsIntoPurchaseOrder($id);  // Generate the Word document
         } elseif ($requestData->steps == 4) {
-            // If it's already at step 4, mark the request as Completed (status = 4)
-            $requestData->status = 4; // Set status to Completed
+            $requestData->status = 4; // Completed
         } else {
-            // If it's at step 1 or 2, just increment the step and set to Approved (status = 2)
             if ($requestData->steps < 4) {
                 $requestData->steps += 1;
             }
-            $requestData->status = 1; // Set status to Approved
+            $requestData->status = 1; // Approved
         }
     
         // Process selected items
         $selectedIds = explode(',', $request->input('selected_ids'));
+        $totalAmount = 0;
         foreach ($selectedIds as $itemId) {
             // Update the item status in the quotation table
-            DB::table('quotations')
-                ->where('id', $itemId)
-                ->update(['item_status' => 1]); // Set item status to 'Approved'
+            $item = DB::table('quotations')->where('id', $itemId)->first();
+            DB::table('quotations')->where('id', $itemId)->update(['item_status' => 1]); // Approved
+            $totalAmount += $item->amount;  // Sum the amount of the approved items
+        }
+    
+        // Deduct from the correct month in the expense table
+        $currentMonth = strtolower(Carbon::now()->format('M'));  // Get current month abbreviation in lowercase
+        $expense = Expense::find($requestData->category_id);  // Fetch corresponding expense by category
+    
+        // Update the corresponding month column
+        if ($expense) {
+            // Check if the current month expense is null or undefined
+            if (is_null($expense->$currentMonth)) {
+                $expense->$currentMonth = 0;  // Initialize to zero if null
+            }
+            $expense->$currentMonth += $totalAmount;  // Add total amount to the current month's column
+            $expense->current_expenses += $totalAmount; // Update current expenses
+            $expense->balance -= $totalAmount;  // Update balance
+            $expense->save();  // Save the updated expense record
         }
     
         // Get the current approval date and approver's ID
         $currentDate = Carbon::now()->toDateTimeString();
         $approverId = auth()->user()->id;
     
-        // Append the new approval date and approver ID to the arrays
+        // Append approval details
         $approvalDates = json_decode($requestData->approval_dates, true) ?? [];
         $approvalIds = json_decode($requestData->approval_ids, true) ?? [];
         $approvalStatus = json_decode($requestData->approval_status, true) ?? [];
     
         $approvalDates[] = $currentDate;
         $approvalIds[] = $approverId;
-        $approvalStatus[] = 1; 
+        $approvalStatus[] = 1;
     
-        // Save remarks
+        // Save remarks and approval details
         $requestData->remarks = $request->input('remarks');
-    
-        // Save back as JSON
         $requestData->approval_dates = json_encode($approvalDates);
         $requestData->approval_ids = json_encode($approvalIds);
         $requestData->approval_status = json_encode($approvalStatus);
-    
-        // Save the updated request
         $requestData->save();
     
         // Flash success message
-        session()->flash('success', 'Request has been approved successfully!');
+        session()->flash('success', 'Request has been approved and expenses updated successfully!');
     
         return redirect()->back()->with('success', 'Request approved successfully.');
     }
-
+    
+    
     public function insertItemsIntoPurchaseOrder($requestId)
     {
         // Path to the existing Word document

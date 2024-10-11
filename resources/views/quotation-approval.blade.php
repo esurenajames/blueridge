@@ -225,7 +225,8 @@
                                        Unknown Request Type
                                    @endif
                                </span>
-                           </p>                        
+                           </p>
+                           <p class="font-semibold">Category: <span class="font-medium">{{ $category }}</span></p>                        
                            <!-- Dynamically populate the time sent -->
                            <p class="font-semibold">Time sent: <span class="font-medium">{{ $requestData->created_at->format('h:i A') }}</span></p>
                            <div>

@@ -20,6 +20,11 @@ class RequestModel extends Model
         return $this->hasMany(Quotation::class, 'request_id', 'id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Expense::class, 'category_id');
+    }
+
     // Specify the table name 'requests'
     protected $table = 'requests';
 
