@@ -35,7 +35,9 @@
                     </li>
                 </ol>
 
-            <div class="mt-6 ml-5 mr-5" x-data="{ activeTab: '{{ $activeTab }}' }">
+                <div class="bg-white mt-8 mb-4 sm:rounded-lg ml-5 mr-5 pt-2 pr-3 pb-4 shadow-md">
+
+                <div class="mt-6 ml-5 mr-5" x-data="{ activeTab: '{{ $activeTab }}' }">
                 <div class="max-w-screen-full border-b border-gray-200 dark:border-neutral-300">
                     <ul class="flex font-sans relative justify-start">
                         <li :class="activeTab === 'Pending Request' ? 'text-blue-600 font-bold border-b-2 border-blue-500' : 'text-gray-600 font-bold'" 
@@ -65,7 +67,7 @@
                     <div class="flex items-center justify-between mt-4">
                         <div class="flex items-center">
                             <input type="text" class="block mr-2 px-4 py-2 rounded-md border bg-white text-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Search">
-                            <select class="block mr-2 px-4 py-2 border border-white rounded-md text-gray-600 bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <select class="block mr-2 px-4 py-2 border border-gray-300 rounded-md text-gray-600 bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                 <option value="" disabled class="text-md">Select Type of Request</option>
                                 <option value="type" class="text-md">View All</option>
                                 <option value="type" class="text-md">Punong Barangay's Certification</option>

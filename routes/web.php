@@ -70,10 +70,6 @@ Route::get('/summary', function () {
     return view('summary');
 })->name('summary');
 
-Route::get('/request', function () {
-    return view('request');
-})->name('request');
-
 Route::get('/request-table', function () {
     return view('request-table');
 })->name('request-table');

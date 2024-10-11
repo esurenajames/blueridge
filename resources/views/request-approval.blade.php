@@ -36,6 +36,7 @@
             </ol>
         </div>
         
+        <div class="bg-white mt-8 mb-4 sm:rounded-lg ml-10 mr-10 pt-2 pr-3 pb-4 shadow-md">
         <div class="mb-4 mt-10" 
         x-data="{ 
             showConfirmationModal: false, 
@@ -404,6 +405,7 @@
             </div>
         </div>        
      </div>
+        </div>
 
       <!-- End Content -->
     </main>
