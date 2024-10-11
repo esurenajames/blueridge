@@ -264,19 +264,37 @@
                     </div>
 
                   <!-- Category Dropdown -->
-                    <div class="mb-2 sm:mb-6">
-                        <label for="category" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Category</label>
-                        <select x-model="requestData.category" 
-                            @change="requestData.category === 'Other' ? showOtherInput = true : showOtherInput = false"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
-                            required>
-                            <option value="">Select Category</option>
-                            <template x-for="category in categoryOptions" :key="category">
-                                <option :value="category" x-text="category"></option>
-                            </template>
+                  <div class="mb-2 sm:mb-6">
+                        <label for="category_id" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Category</label>
+                        <select x-model="requestData.category_id" 
+                                @change="requestData.category_id === 'Other' ? showOtherInput = true : showOtherInput = false"
+                                name="expense_id" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
+                                required>
+                            
+
+                            <option value="" disabled selected>Select a category</option>
+
+          
+                           
+    
+                            @forelse($expenditures as $expenditure)
+                                <option value="{{ $expenditure->id }}">{{ $expenditure->object_of_expenditure }}</option>
+                            @empty
+                                <option value="" disabled>No expenditures found.</option>
+                            @endforelse 
+
                             <option value="Other">Other</option>
+
                         </select>
+
+                        <!-- Optionally include an input for the "Other" category -->
+                        <div x-show="showOtherInput" class="mt-2">
+                            <input type="text" x-model="requestData.otherCategory" placeholder="Please specify" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full" />
+                        </div>
                     </div>
+
 
                     <!-- Other Category Input -->
                     <div x-show="showOtherInput" class="mb-2 sm:mb-6" x-transition>
@@ -479,9 +497,11 @@ function fileUploader() {
         requestData: {
             name: '',
             description: '',
-            category: '' // Leave it empty for now
+            category_id: '',
+            otherCategory: '', // Only if the "Other" option is selected
+            expenseOptions: [], // Changed to expenseOptions for clarity
+            
         },
-        categoryOptions: ['Office Supplies', 'Technology & Electronics', 'Furniture', 'Cleaning & Maintenance', 'Breakroom Supplies'],
         files: [],
         hasFiles: false,
         showOtherInput: false,
@@ -554,7 +574,7 @@ function fileUploader() {
         },
 
         isFormValid() {
-            return this.requestData.name !== '' && this.requestData.category !== '' && this.requestData.description !== '' && this.requestData.description !== ''  ;
+            return this.requestData.name !== '' && this.requestData.category_id !== '' && this.requestData.description !== '' && this.requestData.description !== ''  ;
         },
 
         validateFormAndShowModal() {
@@ -565,19 +585,17 @@ function fileUploader() {
 
 
         submitRequest() {
+            console.log('Selected Category ID:', this.requestData.category_id); // Debug log
+
             const formData = new FormData();
 
-            // Validate and append category: use otherCategory if 'Other' is selected
-            if (this.requestData.category === 'Other' && this.requestData.otherCategory.trim() !== '') {
-                formData.append('category', this.requestData.otherCategory); // Use the custom category
-            } else {
-                formData.append('category', this.requestData.category); // Use the selected category
-            }
+            // Use the selected category ID
+            formData.append('category_id', this.requestData.category_id);
 
             // Append other form data
             formData.append('request_name', this.requestData.name);
             formData.append('request_description', this.requestData.description);
-
+            
             // Handle collaborators
             if (Array.isArray(sharedData.selectedUsers) && sharedData.selectedUsers.length > 0) {
                 sharedData.selectedUsers.forEach(userId => {
@@ -588,7 +606,7 @@ function fileUploader() {
             }
 
             // Append files
-            this.files.forEach((file, index) => {
+            this.files.forEach((file) => {
                 formData.append('files[]', this.dataURLtoFile(file.url, file.name));
             });
 

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth; // Correct import
 use App\Models\RequestModel;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Expense;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File; 
 
@@ -91,7 +92,7 @@ public function viewAll()
         $request->validate([
             'request_name' => 'required|string|max:255',
             'request_description' => 'required|string',
-            'category' => 'required|string|max:255', // Validate category
+            'category_id' => 'required|string|max:255', 
             'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
             'collaborators' => 'array',
             'collaborators.*' => 'integer|exists:users,id', // Ensure each user ID is valid
@@ -102,7 +103,7 @@ public function viewAll()
         $newRequest = new RequestModel();
         $newRequest->request_name = $request->request_name;
         $newRequest->request_description = $request->request_description;
-        $newRequest->category = $request->category; // Assign the category value
+        $newRequest->category_id = $request->category_id;
         $newRequest->request_type = '2'; 
         $newRequest->steps = '1'; 
         $newRequest->status = '1'; 
@@ -353,11 +354,14 @@ public function  purchaseOrderSubmit(Request $request)
 
     public function createRequestForm()
     {
-        // Fetch users with role_id = 1
+        $expenditures = Expense::all(); 
         $users = User::where('role_id', 1)->get();
 
-        // Pass users to the form view
-        return view('forms', ['users' => $users]);
+        return view('forms', [
+            'expenditures' => $expenditures,
+            'users' => $users,
+        ]);
     }
+    
 
 }

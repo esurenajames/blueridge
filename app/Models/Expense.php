@@ -29,6 +29,6 @@ class Expense extends Model
         'oct',
         'nov',
         'dec',
-        'section_id',  // Added section_id to the fillable array
+        'section_id',
     ];
 }
