@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\QuotationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\ExpenseTableController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RequestTableController;
 use App\Http\Controllers\RequestApprovalController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RequestDetailsController;
 use App\Http\Livewire\TabsLivewire;
 
@@ -117,6 +120,8 @@ Route::get('/sample', function () {
     return view('sample');
 })->name('sample');
 
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
 Route::get('/main', function () {
     return view('main');
 })->name('main');
@@ -124,6 +129,8 @@ Route::get('/main', function () {
 Route::get('/main-secretary', function () {
     return view('main-secretary');
 })->name('main-secretary');
+
+Route::get('/main-secretary', [DashboardController::class, 'index'])->name('main-secretary');
 
 Route::get('/main-kapitan', function () {
     return view('main-kapitan');

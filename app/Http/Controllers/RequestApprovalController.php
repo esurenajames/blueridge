@@ -7,6 +7,7 @@ use App\Models\Quotation;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Expense;
+use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Item;
@@ -254,8 +255,14 @@ class RequestApprovalController extends Controller
         foreach ($selectedIds as $itemId) {
             // Update the item status in the quotation table
             $item = DB::table('quotations')->where('id', $itemId)->first();
-            DB::table('quotations')->where('id', $itemId)->update(['item_status' => 1]); // Approved
-            $totalAmount += $item->amount;  // Sum the amount of the approved items
+    
+            // Check if the item exists before trying to access its properties
+            if ($item) {
+                DB::table('quotations')->where('id', $itemId)->update(['item_status' => 1]); // Approved
+                $totalAmount += $item->amount;  // Sum the amount of the approved items
+            } else {
+                continue;
+            }
         }
     
         // Deduct from the correct month in the expense table
@@ -294,13 +301,60 @@ class RequestApprovalController extends Controller
         $requestData->approval_status = json_encode($approvalStatus);
         $requestData->save();
     
+        // Create notifications for requestor and collaborators
+        $this->createNotifications($requestData, 'approve');
+    
         // Flash success message
         session()->flash('success', 'Request has been approved and expenses updated successfully!');
     
         return redirect()->back()->with('success', 'Request approved successfully.');
     }
     
+    private function createNotifications($requestData, $notificationType)
+    {
+        // Get requestor ID and collaborators
+        $userIds = [$requestData->requestor_id]; // Start with the requestor ID
+        if ($requestData->collaborators) {
+            $collaborators = json_decode($requestData->collaborators, true);
+            $userIds = array_merge($userIds, $collaborators); // Merge with collaborators
+        }
     
+        // Initialize notification title and message based on the type
+        $title = '';
+        $message = '';
+    
+        switch ($notificationType) {
+            case 'approve':
+                $title = 'Request Approved';
+                $message = 'Your request "' . $requestData->request_name . '" has been approved.';
+                break;
+    
+            case 'decline':
+                $title = 'Request Declined';
+                $message = 'Your request "' . $requestData->request_name . '" has been declined. Reason: ' . $requestData->reason;
+                break;
+    
+            case 'return':
+                $title = 'Request Returned';
+                $message = 'Your request "' . $requestData->request_name . '" has been returned. Reason: ' . $requestData->reason;
+                break;
+    
+            default:
+                return; // If the notification type is unknown, do not create a notification
+        }
+    
+        // Create notifications for each user
+        foreach ($userIds as $userId) {
+            Notification::create([
+                'user_id' => $userId,
+                'title' => $title,
+                'message' => $message,
+                'is_read' => false,
+            ]);
+        }
+    }
+    
+
     public function insertItemsIntoPurchaseOrder($requestId)
     {
         // Path to the existing Word document
@@ -355,19 +409,19 @@ class RequestApprovalController extends Controller
     {
         // Find the request by ID
         $requestData = RequestModel::findOrFail($id);
-
+    
         // Get the current date and approver's ID
         $currentDate = Carbon::now()->toDateTimeString();
         $approverId = auth()->user()->id;
-
+    
         // Append the new approval date and approver ID to the arrays
         $approvalDates = json_decode($requestData->approval_dates, true) ?? [];
         $approvalIds = json_decode($requestData->approval_ids, true) ?? [];
         $approvalStatus = json_decode($requestData->approval_status, true) ?? [];
-
+    
         $approvalDates[] = $currentDate;
         $approvalIds[] = $approverId;
-
+    
         // Check if the action is 'decline' or 'return'
         if ($request->input('action') === 'decline') {
             // Set status to 'Declined' (3)
@@ -376,10 +430,13 @@ class RequestApprovalController extends Controller
             
             // Save the decline reason
             $requestData->reason = $request->input('decline_reason');
-
+    
+            // Create a notification for the decline action
+            $this->createNotifications($requestData, 'decline');
+    
             session()->flash('success', 'Request has been declined successfully!');
             session()->flash('success_message', '');
-
+    
         } elseif ($request->input('action') === 'return') {
             // Set status to 'Returned' (5)
             $requestData->status = 5;
@@ -391,23 +448,25 @@ class RequestApprovalController extends Controller
                 $returnReason = $request->input('other_return_reason'); // Get custom reason
             }
             $requestData->reason = $returnReason;
-
+    
+            // Create a notification for the return action
+            $this->createNotifications($requestData, 'return');
+    
             session()->flash('success', 'Request has been returned successfully!');
             session()->flash('success_message', '');
         }
-
+    
         // Save the remarks for the action (decline or return)
         $requestData->remarks = $request->input('remarks');
-
+    
         // Save back as JSON
         $requestData->approval_dates = json_encode($approvalDates);
         $requestData->approval_ids = json_encode($approvalIds);
         $requestData->approval_status = json_encode($approvalStatus);
-
+    
         // Save the updated request
         $requestData->save();
-
+    
         return redirect()->back()->with('success', 'Request was updated successfully.');
-    }
-
+    }    
 }

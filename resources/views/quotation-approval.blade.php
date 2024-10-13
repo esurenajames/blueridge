@@ -332,13 +332,19 @@
                                     <div class="flex justify-end mt-6 space-x-4">
                                         <!-- Approve Button -->
                                         <button :class="{'bg-blue-600 hover:bg-blue-700': hasSelectedCells(), 'bg-gray-400 text-gray-700': !hasSelectedCells()}"
-                                            class="text-white px-6 py-2 rounded-lg shadow transition ease-in-out duration-300 disabled:cursor-not-allowed" :disabled="!hasSelectedCells()" @click="showApproveModal = true">
+                                            class="text-white px-6 py-2 rounded-lg shadow transition ease-in-out duration-300 disabled:cursor-not-allowed flex items-center " :disabled="!hasSelectedCells()" @click="showApproveModal = true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
                                             Approve Quotation
                                         </button>
                                     
                                         <!-- Decline/Return Button -->
-                                        <button class="bg-gray-600 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-700 transition ease-in-out duration-300" 
-                                        @click.prevent="showDeclineModal = true">
+                                        <button class="bg-gray-600 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-700 transition ease-in-out duration-300 flex items-center" 
+                                            @click.prevent="showDeclineModal = true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
                                             Decline / Return
                                         </button>
                                     </div>

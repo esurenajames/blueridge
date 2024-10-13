@@ -68,9 +68,27 @@
             }
         }">
          <div class="overflow-x-auto">
-            <div class="flex justify-end mb-4">
-                <button @click="showRowModal = true" class="px-6 py-3 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-gray-800 hover:bg-gray-700">Add Row</button>
+            <div class="flex justify-end space-x-4 mb-4 w-full">
+                <!-- Export to PDF Button -->
+                <button class="flex items-center px-5 py-3 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-gray-800 hover:bg-gray-700">
+                    <!-- PDF Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9V2h12v7M6 18v-3h12v3m-3 3H9m-4-8h14v5H5v-5z" />
+                    </svg>
+                    Export to PDF
+                </button>
+            
+                <!-- Add Row Button -->
+                <button @click="showRowModal = true" class="flex items-center px-6 py-3 min-w-[150px] rounded text-white text-sm font-semibold border-none outline-none bg-gray-800 hover:bg-gray-700">
+                    <!-- Add Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Row
+                </button>
             </div>
+            
+            
             <div class="overflow-x-auto rounded-md">
                 <table class="min-w-full bg-white font-[sans-serif] rounded-md">
                     <thead class="bg-gray-800 whitespace-nowrap">
@@ -105,7 +123,7 @@
                                 </td>
                             </tr>
                             @foreach($expenses as $expense)
-                                <tr x-show="openSections.includes({{ $sectionId }})" class="bg-white even:bg-blue-50">
+                                <tr x-show="openSections.includes({{ $sectionId }})" class="bg-white">
                                     <td class="py-3 px-4 border-r">{{ $expense->object_of_expenditure }}</td>
                                     <td class="py-3 px-4">{{ $expense->proposed_budget }}</td>
                                     <td class="py-3 px-4">{{ $expense->first_half }}</td> <!-- First half summary -->
