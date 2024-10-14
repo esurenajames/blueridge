@@ -10,21 +10,22 @@ class Navbar extends Component
 {
     public $user;
     public $notifications = [];
-    public $unreadCount = 0; // Define the unreadCount property
+    public $unreadCount = 0;
+    public $dropdownVisible = false; // Add this line
 
     public function mount()
     {
         $this->user = Auth::user();
-        $this->getNotifications(); // Fetch notifications during mount
-        $this->unreadCount = $this->countUnreadNotifications(); // Set unread count
+        $this->getNotifications();
+        $this->unreadCount = $this->countUnreadNotifications();
     }
 
     public function render()
     {
         return view('livewire.navbar', [
             'user' => $this->user,
-            'notifications' => $this->notifications, // Pass notifications to the view
-            'unreadCount' => $this->unreadCount, // Pass unread count to the view
+            'notifications' => $this->notifications,
+            'unreadCount' => $this->unreadCount,
         ]);
     }
 
@@ -32,7 +33,8 @@ class Navbar extends Component
     {
         $userId = auth()->id();
         $this->notifications = Notification::where('user_id', $userId)
-                                    ->get(); // Get all notifications (including read)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
     }
 
     public function countUnreadNotifications()
@@ -44,28 +46,18 @@ class Navbar extends Component
 
     public function markNotificationsAsRead()
     {
-        $userId = auth()->user()->id;
-
-        // Mark all notifications for the authenticated user as read
+        $userId = auth()->id();
         Notification::where('user_id', $userId)
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        // Refresh notifications and unread count
-        $this->getNotifications(); 
+        $this->getNotifications();
         $this->unreadCount = $this->countUnreadNotifications();
     }
 
-    public function updated($propertyName)
+    public function toggleDropdownAndMarkAsRead()
     {
-        // This method is called when any property is updated.
-        if ($propertyName === 'notifications') {
-            $this->markNotificationsAsRead(); // Mark as read if notifications are updated
-        }
-    }
-
-    public function viewAll()
-    {
-        $this->markNotificationsAsRead(); // Mark notifications as read when viewing all
+        $this->markNotificationsAsRead(); // Mark notifications as read
+        $this->dropdownVisible = !$this->dropdownVisible; // Toggle the dropdown visibility
     }
 }
