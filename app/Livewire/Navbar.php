@@ -11,7 +11,7 @@ class Navbar extends Component
     public $user;
     public $notifications = [];
     public $unreadCount = 0;
-    public $dropdownVisible = false; // Add this line
+    public $dropdownVisible = false; 
 
     public function mount()
     {

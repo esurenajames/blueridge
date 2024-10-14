@@ -29,7 +29,13 @@ class RequestApprovalController extends Controller
         
         // Fetch counts for each status
         $pendingCount = RequestModel::where('status', 1)
-        ->where('steps', '!=', 4) // Exclude requests with steps = 4
+        ->where(function ($query) {
+            $query->where('steps', '<', 4)  // Include steps 1, 2, and 3
+                  ->orWhere(function ($subQuery) {
+                      $subQuery->where('steps', 4)  // Include step 4 but only if status is not 4 (Completed)
+                               ->where('status', '!=', 4);
+                  });
+        })
         ->count();
     
         $inProgressCount = RequestModel::where(function ($query) {
@@ -39,8 +45,10 @@ class RequestApprovalController extends Controller
 
         $historyCount = RequestModel::where(function ($query) {
             $query->where('status', 3)  // Declined
-                  ->orWhere('status', 4) // Completed
-                  ->orWhere('steps', 4); // Add requests with steps = 4
+                  ->orWhere(function ($subQuery) {
+                      $subQuery->where('status', 4)  // Completed
+                               ->where('steps', 4);   // Ensure steps = 4
+                  });
         })->count();
 
         $returnCount = RequestModel::where(function ($query) {
@@ -55,12 +63,17 @@ class RequestApprovalController extends Controller
     
         // Fetch request details with pagination based on the active tab
         $pendingRequests = RequestModel::with('requestor')
-            ->where('status', 1)
-            ->where('steps', '!=', 4) // Exclude requests with steps = 4
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage, ['*'], 'pendingPage')
-            ->appends($request->except('pendingPage'));
-
+        ->where('status', 1)
+        ->where(function ($query) {
+            $query->where('steps', '<', 4)  // Include steps 1, 2, and 3
+                  ->orWhere(function ($subQuery) {
+                      $subQuery->where('steps', 4)  // Include step 4 but only if status is not 4 (Completed)
+                               ->where('status', '!=', 4);
+                  });
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate($perPage, ['*'], 'pendingPage')
+        ->appends($request->except('pendingPage'));
 
         $returnRequests = RequestModel::with('requestor')
             ->where(function ($query) {
@@ -73,8 +86,10 @@ class RequestApprovalController extends Controller
         $historyRequests = RequestModel::with('requestor')
         ->where(function ($query) {
             $query->where('status', 3)  // Declined
-                ->orWhere('status', 4) // Completed
-                ->orWhere('steps', 4); // Add requests with steps = 4
+                    ->orWhere(function ($subQuery) {
+                        $subQuery->where('status', 4)  // Completed
+                                ->where('steps', 4);   // Ensure steps = 4
+                    });
         })
         ->orderBy('created_at', 'desc')
         ->paginate($perPage, ['*'], 'historyPage')
@@ -234,28 +249,28 @@ class RequestApprovalController extends Controller
     {
         // Find the request by ID
         $requestData = RequestModel::findOrFail($id);
-    
-        // Check if the request is at step 2
-        if ($requestData->steps == 2) {
-            $requestData->steps += 1; // Increment the step to 3 (Quotation approved)
+
+        // Check if the request is at step 3/4
+        if ($requestData->steps == 3) {
+            $requestData->steps = 4; // Set to 4/4 (Final Step)
             $requestData->status = 1;  // Set status to Pending
-            $this->insertItemsIntoPurchaseOrder($id);  // Generate the Word document
         } elseif ($requestData->steps == 4) {
-            $requestData->status = 4; // Completed
+            $requestData->status = 4; // Set status to Completed
         } else {
+            // Increment the step if it's less than 4
             if ($requestData->steps < 4) {
                 $requestData->steps += 1;
             }
-            $requestData->status = 1; // Approved
+            $requestData->status = 1; // Set status to Pending
         }
-    
+
         // Process selected items
         $selectedIds = explode(',', $request->input('selected_ids'));
         $totalAmount = 0;
         foreach ($selectedIds as $itemId) {
             // Update the item status in the quotation table
             $item = DB::table('quotations')->where('id', $itemId)->first();
-    
+
             // Check if the item exists before trying to access its properties
             if ($item) {
                 DB::table('quotations')->where('id', $itemId)->update(['item_status' => 1]); // Approved
@@ -264,11 +279,11 @@ class RequestApprovalController extends Controller
                 continue;
             }
         }
-    
+
         // Deduct from the correct month in the expense table
         $currentMonth = strtolower(Carbon::now()->format('M'));  // Get current month abbreviation in lowercase
         $expense = Expense::find($requestData->category_id);  // Fetch corresponding expense by category
-    
+
         // Update the corresponding month column
         if ($expense) {
             // Check if the current month expense is null or undefined
@@ -280,49 +295,53 @@ class RequestApprovalController extends Controller
             $expense->balance -= $totalAmount;  // Update balance
             $expense->save();  // Save the updated expense record
         }
-    
+
         // Get the current approval date and approver's ID
         $currentDate = Carbon::now()->toDateTimeString();
         $approverId = auth()->user()->id;
-    
+
         // Append approval details
         $approvalDates = json_decode($requestData->approval_dates, true) ?? [];
         $approvalIds = json_decode($requestData->approval_ids, true) ?? [];
         $approvalStatus = json_decode($requestData->approval_status, true) ?? [];
-    
+
         $approvalDates[] = $currentDate;
         $approvalIds[] = $approverId;
         $approvalStatus[] = 1;
-    
+
         // Save remarks and approval details
         $requestData->remarks = $request->input('remarks');
         $requestData->approval_dates = json_encode($approvalDates);
         $requestData->approval_ids = json_encode($approvalIds);
         $requestData->approval_status = json_encode($approvalStatus);
         $requestData->save();
-    
+
         // Create notifications for requestor and collaborators
         $this->createNotifications($requestData, 'approve');
-    
+
         // Flash success message
         session()->flash('success', 'Request has been approved and expenses updated successfully!');
-    
+
         return redirect()->back()->with('success', 'Request approved successfully.');
     }
     
     private function createNotifications($requestData, $notificationType)
     {
-        // Get requestor ID and collaborators
-        $userIds = [$requestData->requestor_id]; // Start with the requestor ID
-        if ($requestData->collaborators) {
+        // Get requestor ID and initialize the user IDs array with the requestor
+        $userIds = [$requestData->requestor_id];
+        
+        // Check if collaborators are not null or an empty string
+        if (!empty($requestData->collaborators)) {
             $collaborators = json_decode($requestData->collaborators, true);
-            $userIds = array_merge($userIds, $collaborators); // Merge with collaborators
+            if (is_array($collaborators)) {
+                $userIds = array_merge($userIds, $collaborators); // Merge with collaborators if it's an array
+            }
         }
-    
+        
         // Initialize notification title and message based on the type
         $title = '';
         $message = '';
-    
+        
         switch ($notificationType) {
             case 'approve':
                 $title = 'Request Approved';
@@ -342,7 +361,7 @@ class RequestApprovalController extends Controller
             default:
                 return; // If the notification type is unknown, do not create a notification
         }
-    
+        
         // Create notifications for each user
         foreach ($userIds as $userId) {
             Notification::create([
@@ -354,7 +373,7 @@ class RequestApprovalController extends Controller
         }
     }
     
-
+    
     public function insertItemsIntoPurchaseOrder($requestId)
     {
         // Path to the existing Word document

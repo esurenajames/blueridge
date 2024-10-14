@@ -16,6 +16,7 @@ use App\Http\Controllers\RequestDetailsController;
 use App\Http\Livewire\TabsLivewire;
 
 
+
 Route::middleware(['auth', \App\Http\Middleware\CheckRoles::class . ':1'])->group(function () {
 
 Route::get('/settings', function () {
@@ -109,6 +110,8 @@ Route::put('/requests/{id}', [RequestTableController::class, 'update'])->name('r
 Route::post('/expenses', [ExpenseTableController::class, 'store'])->name('expense.store');
 Route::post('/api/expenses/{id}/update', [ExpenseTableController::class, 'updateProposedBudget']);
 Route::get('/api/expenses/{id}', [ExpenseTableController::class, 'getExpenseDetails']);
+
+Route::get('/expenses/export-pdf', [ExpenseTableController::class, 'exportToPDF'])->name('expenses.export');
 
 Route::get('/approval-management', function () {
     return view('/approval-management');

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Expense;
+use Barryvdh\DomPDF\Facade as PDF; // Add DomPDF facade
 
 class Expenses extends Component
 {
@@ -53,6 +54,18 @@ class Expenses extends Component
     {
         $expense->delete();
         $this->expenses = Expense::all();
+    }
+
+    // New method for exporting PDF
+    public function exportToPDF()
+    {
+        $expenses = Expense::all(); // Fetch all expenses
+
+        // Generate PDF
+        $pdf = PDF::loadView('pdf.expenses', ['expenses' => $expenses]);
+
+        // Download the generated PDF file
+        return $pdf->download('expenses_report.pdf');
     }
 
     public function render()
