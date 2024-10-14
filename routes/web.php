@@ -147,7 +147,7 @@ Route::post('/quotation/submit', [RequestController::class, 'quotationSubmit'])-
 Route::post('/purchase-request/submit', [RequestController::class, 'purchaseRequestSubmit'])->name('purchaseRequest.submit');
 Route::post('/purchase-order/submit', [RequestController::class, 'purchaseOrderSubmit'])->name('purchaseOrder.submit');
 Route::post('/submit-quotation', [QuotationController::class, 'store'])->name('quotation.store');
-Route::get('/quotations/{id}/pdf', [QuotationController::class, 'generatePDF']);
+Route::get('/quotations/{id}/pdf', [QuotationController::class, 'generatePDF'])->name('quotations.pdf');
 
 });
 

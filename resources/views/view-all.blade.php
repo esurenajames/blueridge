@@ -217,7 +217,9 @@
                     <p class="text-sm mb-2">{{ $request->request_description }}</p>
 
                     <p class="text-sm font-bold text-gray-900 mb-1">Category</p>
-                    <p class="text-xs mb-1">{{ $request->category }}</p>
+                    <p class="text-xs mb-1">
+                        {{ $request->category ? $request->category : 'No category specified' }}
+                    </p>                    
 
                     <p class="font-bold text-gray-900 text-sm mb-1">Time Sent</p>
                     <p class="text-xs">{{ $request->created_at->format('m/d/Y h:i A') }} ({{ $request->created_at->format('l') }})</p>
