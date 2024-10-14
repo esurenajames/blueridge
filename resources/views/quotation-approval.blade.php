@@ -390,11 +390,16 @@
                             <input type="hidden" name="selected_ids" :value="Object.values(selectedCells).map(cell => cell.id).join(',')">
             
                             <!-- Remarks Field -->
-                            <div class="my-8">
+                            <div class="my-4">
                                 <label class="block text-sm font-medium text-gray-700">Remarks</label>
                                 <textarea name="remarks" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" rows="4" placeholder="Enter your remarks here"></textarea>
                             </div>
             
+                            <!-- View Budget Link -->
+                            <div>
+                                <a href="{{ route('expense.index') }}" target="_blank" class="text-blue-500 hover:underline cursor-pointer">View Budget</a>
+                            </div>
+
                             <!-- Action Buttons -->
                             <div class="mt-6 flex justify-end">
                                 <button type="button" @click="showConfirmationModal = true; action = 'approve'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Approve</button>
@@ -404,7 +409,6 @@
                     </div>
                 </div>
             </form>
-            
 
             <!-- Decline/Return Modal -->
             <form method="POST" action="{{ route('decline.request', $requestData->id) }}" x-ref="declineForm">
