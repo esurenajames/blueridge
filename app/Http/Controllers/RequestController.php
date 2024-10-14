@@ -93,6 +93,7 @@ public function viewAll()
             'request_name' => 'required|string|max:255',
             'request_description' => 'required|string',
             'category_id' => 'required|string|max:255', 
+            'category' => 'required|string|max:255', 
             'files.*' => 'file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
             'collaborators' => 'array',
             'collaborators.*' => 'integer|exists:users,id', // Ensure each user ID is valid
@@ -104,6 +105,7 @@ public function viewAll()
         $newRequest->request_name = $request->request_name;
         $newRequest->request_description = $request->request_description;
         $newRequest->category_id = $request->category_id;
+        $newRequest->category = $request->category;
         $newRequest->request_type = '2'; 
         $newRequest->steps = '1'; 
         $newRequest->status = '1'; 

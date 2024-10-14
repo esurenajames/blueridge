@@ -249,7 +249,7 @@
             </div>
         </div>
  
-        <div x-show="step === 2 && requestType === 'type2'">
+<div x-show="step === 2 && requestType === 'type2'">
     <form x-data="fileUploader()" x-init="init()" @submit.prevent="submitRequest" method="POST" enctype="multipart/form-data" class="container mx-auto p-4" x-cloak>
         @csrf
         <div class="bg-white mt-10 sm:max-w-xl sm:rounded-lg pl-3 pr-3 mb-4 mx-auto max-w-prose">
@@ -266,46 +266,33 @@
                   <!-- Category Dropdown -->
                   <div class="mb-2 sm:mb-6">
                         <label for="category_id" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Category</label>
-                        <select x-model="requestData.category_id" 
-                                @change="requestData.category_id === 'Other' ? showOtherInput = true : showOtherInput = false"
-                                name="expense_id" 
+                        <select x-model="requestData.category_id" @change="updateCategory($event.target.value)" 
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
                                 required>
-                            
-
-                            <option value="" disabled selected>Select a category</option>
-
-          
-                           
-    
+                            <option value="" disabled>Select a category</option>
                             @forelse($expenditures as $expenditure)
-                                <option value="{{ $expenditure->id }}">{{ $expenditure->object_of_expenditure }}</option>
+                                <option value="{{ json_encode(['id' => $expenditure->id, 'name' => $expenditure->object_of_expenditure]) }}">
+                                    {{ $expenditure->object_of_expenditure }}
+                                </option>
                             @empty
                                 <option value="" disabled>No expenditures found.</option>
                             @endforelse 
-
                             <option value="Other">Other</option>
-
                         </select>
-
-                        <!-- Optionally include an input for the "Other" category -->
-                        <div x-show="showOtherInput" class="mt-2">
-                            <input type="text" x-model="requestData.otherCategory" placeholder="Please specify" 
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full" />
-                        </div>
-                    </div>
+                        
+                
 
 
                     <!-- Other Category Input -->
                     <div x-show="showOtherInput" class="mb-2 sm:mb-6" x-transition>
-                        <label for="otherCategory" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Specify Other Category</label>
+                        <label for="otherCategory" class="block mb-2 mt-2 text-sm font-medium text-indigo-900 dark:text-black">Specify Other Category</label>
                         <input type="text" x-model="requestData.otherCategory" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
                             placeholder="Enter category">
                     </div>
                     
                     <div x-data="dropdown()" class="relative mb-2 sm:mb-6">
-                    <label for="collaborators" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Collaborators</label>
+                    <label for="collaborators" class="block  mt-6 text-sm font-medium text-indigo-900 dark:text-black">Collaborators</label>
 
                     <!-- Selected Users Inside Input Box -->
                     <div class="flex flex-wrap gap-2 mb-2">
@@ -418,7 +405,7 @@
                         <h4 class="text-2xl text-[#333] font-semibold mt-6">The form has been submitted successfully!</h4>
                         <p class="text-sm text-gray-500 mt-4">Thank you for your submission. Your request will now be processed, and you will receive further updates.</p>
                     </div>
-                    <button type="button" @click="showModal = false; submitRequest()" class="px-6 py-2.5 min-w-[150px] w-full rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Okay</button>
+                    <button type="button" @click="showModal = false; window.location.href='{{ route('main') }}';" class="px-6 py-2.5 min-w-[150px] w-full rounded text-white text-sm font-semibold border-none outline-none bg-[#333] hover:bg-[#222]">Okay</button>
                 </div>
             </div>
         </div>
@@ -427,7 +414,7 @@
 
 
 
-        <script>
+<script>
 const sharedData = {
     selectedUsers: []
 };
@@ -498,9 +485,9 @@ function fileUploader() {
             name: '',
             description: '',
             category_id: '',
+            category: '', // To hold the object_of_expenditure
             otherCategory: '', // Only if the "Other" option is selected
             expenseOptions: [], // Changed to expenseOptions for clarity
-            
         },
         files: [],
         hasFiles: false,
@@ -518,6 +505,13 @@ function fileUploader() {
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+
+                // Check file size (e.g., limit to 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size should not exceed 5MB.');
+                    continue;
+                }
+
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     this.files.push({
@@ -532,6 +526,7 @@ function fileUploader() {
 
             this.hasFiles = true;
         },
+
 
         removeFile(index) {
             this.files.splice(index, 1);
@@ -574,7 +569,7 @@ function fileUploader() {
         },
 
         isFormValid() {
-            return this.requestData.name !== '' && this.requestData.category_id !== '' && this.requestData.description !== '' && this.requestData.description !== ''  ;
+            return this.requestData.name !== '' && this.requestData.category_id !== '' && this.requestData.description !== '';
         },
 
         validateFormAndShowModal() {
@@ -583,14 +578,14 @@ function fileUploader() {
             }
         },
 
-
         submitRequest() {
             console.log('Selected Category ID:', this.requestData.category_id); // Debug log
 
             const formData = new FormData();
 
-            // Use the selected category ID
+            // Use the selected category ID and name
             formData.append('category_id', this.requestData.category_id);
+            formData.append('category', this.requestData.category); // Add category name
 
             // Append other form data
             formData.append('request_name', this.requestData.name);
@@ -634,7 +629,7 @@ function fileUploader() {
             })
             .then(data => {
                 if (data.success) {
-                    window.location.href = '{{ route('main') }}';
+             
                 } else {
                     console.error('Submission failed:', data.message); // Handle submission failure
                 }
@@ -654,10 +649,34 @@ function fileUploader() {
                 u8arr[n] = bstr.charCodeAt(n);
             }
             return new File([u8arr], filename, { type: mime });
+        },
+
+        updateCategory(selectedValue) {
+            console.log('Selected Value:', selectedValue); // Log the selected value
+
+            // Check if the selected value is "Other"
+            if (selectedValue === 'Other') {
+                this.showOtherInput = true; // Show the "Other" input
+                this.requestData.category_id = 'Other'; // Set category_id to 'Other'
+                this.requestData.category = ''; // Clear category name
+            } else {
+                try {
+                    const parsedValue = JSON.parse(selectedValue); // Parse the selected category value
+                    this.requestData.category_id = parsedValue.id; // Set the category_id
+                    this.requestData.category = parsedValue.name; // Set the category name
+                    this.showOtherInput = false; // Hide the "Other" input
+                } catch (e) {
+                    console.error('Error parsing selectedValue:', e);
+                }
+            }
+            
+            // Log the selected category_id for debugging
+            console.log('Selected Category ID:', this.requestData.category_id);
         }
     };
 }
 </script>
+
              
 </div>
 </div>

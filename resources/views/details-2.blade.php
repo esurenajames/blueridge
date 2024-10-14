@@ -470,8 +470,6 @@
     {{ $request->remarks ? $request->remarks : 'No Remarks' }}
 </p>
 
-
-
 @if($request->steps == 2) 
 
 
@@ -743,7 +741,7 @@
 
     <!-- Modal for Quotation Form -->
     <div x-show="isModalOpen" @click.away="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div class="bg-white rounded-lg shadow-lg max-w-6xl w-full p-6 relative">
+        <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full p-6 relative">
             <button @click="isModalOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none">&times;</button>
             <h2 class="text-xl font-bold sm:text-xl mb-4">Company <span x-text="currentCompanyIndex + 1"></span></h2>
             <template x-for="(company, index) in companies" :key="index">
@@ -756,79 +754,72 @@
                         <input type="text" id="company_name" x-model="company.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter company name" required>
                     </div>
 
-                    <!-- Date Input -->
                     <div class="mb-4">
-                        <label for="request_date" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Date</label>
-                        <input type="date" id="request_date" x-model="company.requestDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" required>
+                        <label for="company_address" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Company Address</label>
+                        <input type="text" id="company_address" x-model="company.address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter company Address" required>
                     </div>
-
-                    <!-- Description Input -->
-                    <div class="mb-4">
-                        <label for="description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Description</label>
-                        <textarea id="description" x-model="company.description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" placeholder="Enter request description" required></textarea>
-                    </div>
-
+                    
                     <!-- Quotation Table -->
                     <div class="mb-4 flex flex-col">
-                        <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
-                        <div class="overflow-x-auto mb-2">
-                            <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
-                                <thead>
-                                    <tr>
-                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
-                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
-                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
-                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
-                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
-                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
-                                        <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template x-for="(row, rIndex) in company.rows" :key="rIndex">
-                                        <tr>
-                                            <td class="border px-4 py-2">
-                                                <input type="text" x-model="row.item_type" class="border-0 w-full p-2" placeholder="Item Type" required>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <input type="number" x-model="row.qty" class="border-0 w-20 p-2" @input="calculateAmount(row)" placeholder="Qty" required>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <select x-model="row.unit" class="border-0 w-full p-2" required>
-                                                    <option value="" disabled>Select Unit</option>
-                                                    <option value="pcs">pcs (pieces)</option>
-                                                    <option value="box">box</option>
-                                                    <option value="pack">pack</option>
-                                                    <option value="dozen">dozen</option>
-                                                    <option value="pair">pair</option>
-                                                    <option value="g">g (grams)</option>
-                                                    <option value="kg">kg (kilograms)</option>
-                                                    <option value="ml">ml (milliliters)</option>
-                                                    <option value="liters">liters</option>
-                                                    <option value="mm">mm (millimeters)</option>
-                                                </select>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <textarea x-model="row.item_description" rows="2" class="border-0 w-full p-2" placeholder="Item Description" required></textarea>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <input type="number" x-model="row.unit_price" class="border-0 w-28 p-2" @input="calculateAmount(row)" step="0.01" placeholder="Unit Price" required>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <input type="number" x-model="row.amount" class="border-0 w-28 p-2" readonly>
-                                            </td>
-                                            <td class="border px-4 py-2">
-                                                <button @click="removeRow(index, rIndex)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="flex justify-end">
-                            <button @click="addRow(index)" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
-                        </div>
-                    </div>
+                <label for="quotation_description" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Quotation</label>
+                <div class="overflow-x-auto mb-2">
+                    <table id="quotation-table" class="min-w-full bg-white border-gray-300 border rounded-lg">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Item</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Qty</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Description</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Unit Price</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Amount</th>
+                                <th class="px-4 py-2 text-sm font-medium text-gray-700">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(row, rIndex) in globalRows" :key="rIndex">
+                                <tr>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" x-model="row.item_type" class="border-0 w-28 p-2" placeholder="Item Type" required>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="number" x-model="row.qty" class="border-0 w-20 p-2" @input="calculateAmount(row)" placeholder="Qty" required>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <select x-model="row.unit" class="border-0 w-full p-2" required>
+                                            <option value="" disabled>Select Unit</option>
+                                            <option value="pcs">pcs (pieces)</option>
+                                            <option value="box">box</option>
+                                            <option value="pack">pack</option>
+                                            <option value="dozen">dozen</option>
+                                            <option value="pair">pair</option>
+                                            <option value="g">g (grams)</option>
+                                            <option value="kg">kg (kilograms)</option>
+                                            <option value="ml">ml (milliliters)</option>
+                                            <option value="liters">liters</option>
+                                            <option value="mm">mm (millimeters)</option>
+                                        </select>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <textarea x-model="row.item_description" rows="2" class="border-0 w-full p-2" placeholder="Item Description" required></textarea>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="number" x-model="row.unit_price[currentCompanyIndex]" class="border-0 w-28 p-2" @input="calculateAmount(row, currentCompanyIndex)" step="0.01" placeholder="Unit Price" required>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="number" x-model="row.amount[currentCompanyIndex]" class="border-0 w-20 p-2" readonly>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <button @click="removeRow(rIndex)" class="text-red-600 hover:text-red-800 font-medium text-sm">Remove</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-end">
+                    <button @click="addRow()" class="text-indigo-700 hover:text-indigo-900 font-medium text-sm">Add More</button>
+                </div>
+            </div>
                 </div>
             </template>
 
@@ -851,9 +842,11 @@
 
             <template x-for="(company, index) in companies" :key="index">
                 <div class="mb-6">
-                    <h3 class="font-semibold text-lg mb-2">Company <span x-text="index + 1"></span>: <span x-text="company.name"></span></h3>
-                    <p><strong>Date:</strong> <span x-text="company.requestDate"></span></p>
-                    <p><strong>Description:</strong> <span x-text="company.description"></span></p>
+                    <h3 class="font-semibold text-lg mb-2">
+                        Company <span x-text="index + 1"></span>: <span x-text="company.name"></span>
+                    </h3>
+                    <p><strong>Company Address:</strong> <span x-text="company.address"></span></p>
+
                     <table class="min-w-full bg-white border-gray-300 border rounded-lg mt-4">
                         <thead>
                             <tr>
@@ -866,24 +859,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <template x-for="row in company.rows" :key="row.item_type">
+                            <template x-for="(row, rIndex) in globalRows" :key="rIndex">
                                 <tr>
                                     <td class="border px-4 py-2" x-text="row.item_type"></td>
                                     <td class="border px-4 py-2" x-text="row.qty"></td>
                                     <td class="border px-4 py-2" x-text="row.unit"></td>
                                     <td class="border px-4 py-2" x-text="row.item_description"></td>
-                                    <td class="border px-4 py-2" x-text="row.unit_price"></td>
-                                    <td class="border px-4 py-2" x-text="row.amount"></td>
+                                    <td class="border px-4 py-2" x-text="row.unit_price[index] || 0"></td>
+                                    <td class="border px-4 py-2" x-text="row.amount[index] || 0"></td>
                                 </tr>
                             </template>
                         </tbody>
                     </table>
+
                     <div class="text-right mt-2">
                         <strong>Total:</strong> <span x-text="calculateTotal(index)"></span>
                     </div>
                 </div>
             </template>
-
             <div class="flex justify-end space-x-4 mt-4">
                 <button @click="isSummaryOpen = false" class="text-gray-500 hover:text-gray-700 font-medium text-sm">Cancel</button>
                 <button @click="showSuccess();" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm & Submit</button>
@@ -915,148 +908,177 @@
         </div>
     </div>
 
-    <script>
-        function submitForms() {
-            return {
-                showSuccessModal: false,
-                isModalOpen: false,
-                isSummaryOpen: false,
-                showConfirmationModal: false,
-                currentRequestId: null,
-                currentCompanyIndex: 0,
-                companies: [
-                    { company_id: '1', name: '', requestDate: '', description: '', rows: [{}] },
-                    { company_id: '2', name: '', requestDate: '', description: '', rows: [{}] },
-                    { company_id: '3', name: '', requestDate: '', description: '', rows: [{}] },
-                ],
+<script>
+function submitForms() {
+    return {
+        showSuccessModal: false,
+        isModalOpen: false,
+        isSummaryOpen: false,
+        showConfirmationModal: false,
+        currentRequestId: null,
+        currentCompanyIndex: 0,
+        globalRows: [{ item_type: '', qty: 0, unit: '', item_description: '', unit_price: [], amount: [] }],
+        companies: [
+            { company_id: '1', name: '', address: '', rows: [] },
+            { company_id: '2', name: '', address: '', rows: [] },
+            { company_id: '3', name: '', address: '', rows: [] },
+        ],
 
-                openModal(event, requestId) {
-                    this.currentRequestId = requestId;
-                    this.isModalOpen = true;
-                },
+        // Populate company-specific rows based on global rows
+        populateCompanyRows() {
+            this.companies.forEach((company, index) => {
+                company.rows = this.globalRows.map(row => ({
+                    item_type: row.item_type,
+                    qty: row.qty,
+                    unit: row.unit,
+                    item_description: row.item_description,
+                    unit_price: row.unit_price[index] || 0,
+                    amount: row.amount[index] || 0,
+                    item_status: 0  // Assuming status is initialized
+                }));
+            });
 
-                addRow(index) {
-                    this.companies[index].rows.push({ item_type: '', qty: 0, unit: '', item_description: '', unit_price: 0, amount: 0 });
-                },
+            console.log("Populated Company Rows:", this.companies);  // Debugging step
+        },
 
-                removeRow(companyIndex, rowIndex) {
-                    this.companies[companyIndex].rows.splice(rowIndex, 1);
-                },
 
-                calculateAmount(row) {
-                    row.amount = (parseFloat(row.qty) || 0) * (parseFloat(row.unit_price) || 0);
-                    row.amount = this.formatPrice(row.amount);
-                },
+        openModal(event, requestId) {
+            this.currentRequestId = requestId;
+            this.isModalOpen = true;
+            this.populateCompanyRows(); // Populate company rows when modal opens
+        },
 
-                calculateTotal(companyIndex) {
-                    return this.companies[companyIndex].rows.reduce((total, row) => {
-                        return total + (parseFloat(row.amount) || 0);
-                    }, 0).toFixed(2);
-                },
-
-                formatPrice(price) {
-                    return parseFloat(price).toFixed(2);
-                },
-
-                showSummary() {
-                    this.isSummaryOpen = true;
-                },
-
-                showSuccess() {
-                    this.showSuccessModal = true;
-                },
-
-                submitQuotation() {
-                    for (const company of this.companies) {
-                        if (!company.name) {
-                            alert('Company name is required for all entries.');
-                            return;
-                        }
-                        if (!company.requestDate) {
-                            alert('Request date is required for all entries.');
-                            return;
-                        }
-                        if (!company.description) {
-                            alert('Description is required for all entries.');
-                            return;
-                        }
-                        for (const row of company.rows) {
-                            if (!row.item_type || !row.qty || !row.unit || !row.item_description || !row.unit_price || !row.amount) {
-                                alert('All item fields are required.');
-                                return;
-                            }
-                        }
-                    }
-
-                    const quotationData = this.companies.map(company => ({
-                        request_id: this.currentRequestId,
-                        company_id: company.company_id,
-                        company_name: company.name,
-                        request_date: company.requestDate,
-                        description: company.description,
-                        items: company.rows.map(row => ({
-                            item_type: row.item_type,
-                            qty: row.qty,
-                            unit: row.unit,
-                            item_description: row.item_description,
-                            unit_price: row.unit_price,
-                            amount: row.amount,
-                            item_status: 0
-                        }))
-                    }));
-
-                    console.log("Sending Quotation Data:", quotationData);
-
-                    fetch('/submit-quotation', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify(quotationData)
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.text().then(text => {
-                                throw new Error(`Error: ${response.status}, ${text}`);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        alert(data.message || 'Quotation saved successfully!');
-                        this.resetForm();
-                    })
-                    .catch(error => {
-                        alert('There was a problem with the submission: ' + error.message);
-                    });
-                },
-
-                resetForm() {
-                    this.companies.forEach(company => {
-                        company.name = '';
-                        company.requestDate = '';
-                        company.description = '';
-                        company.rows = [{}];
-                    });
-                    this.isModalOpen = false;
-                    this.isSummaryOpen = false;
-                },
-
-                nextCompany() {
-                    if (this.currentCompanyIndex < this.companies.length - 1) {
-                        this.currentCompanyIndex++;
-                    }
-                },
-
-                previousCompany() {
-                    if (this.currentCompanyIndex > 0) {
-                        this.currentCompanyIndex--;
-                    }
-                }
+        addRow() {
+            const newRow = {
+                item_type: '',
+                qty: 0,
+                unit: '',
+                item_description: '',
+                unit_price: new Array(this.companies.length).fill(0), // Initialize with the right length
+                amount: new Array(this.companies.length).fill(0)
             };
+            this.globalRows.push(newRow);
+            this.populateCompanyRows();
+        },
+
+
+        calculateAmount(row, cIndex) {
+            const qty = parseFloat(row.qty) || 0;
+            const unitPrice = parseFloat(row.unit_price[cIndex]) || 0;
+            row.amount[cIndex] = qty * unitPrice; // Update the amount for the specific company
+        },
+
+
+        calculateTotal(index) {
+            return this.globalRows.reduce((total, row) => {
+                return total + (parseFloat(row.amount[index]) || 0);
+            }, 0).toFixed(2);
+        },
+
+        formatPrice(price) {
+            return parseFloat(price).toFixed(2);
+        },
+
+        removeRow(index) {
+            this.globalRows.splice(index, 1);  // Remove row from global rows
+            this.populateCompanyRows();  // Reflect changes in all companies
+        },
+
+
+        showSummary() {
+            this.isSummaryOpen = true;
+        },
+
+        showSuccess() {
+            this.showSuccessModal = true;
+        },
+
+        submitQuotation() {
+            console.log("Company Data Before Submission:", this.companies);
+
+            const quotationData = this.companies.map(company => {
+                // Filter rows that are valid
+                const items = company.rows.filter(row => 
+                    row.item_type && row.qty && row.unit && row.item_description
+                );
+
+                return {
+                    request_id: this.currentRequestId,
+                    company_id: company.company_id,
+                    company_name: company.name,
+                    company_address: company.address,
+                    items: items.map(row => ({
+                        item_type: row.item_type,
+                        qty: row.qty,
+                        unit: row.unit,
+                        item_description: row.item_description,
+                        unit_price: row.unit_price || 0,
+                        amount: row.amount || 0,
+                        item_status: 0
+                    }))
+                };
+            }).filter(company => company.items.length > 0);  // Ensure no empty item lists
+
+            // Stop if no valid data to submit
+            if (quotationData.length === 0) {
+                alert('No valid items to submit!');
+                return;
+            }
+
+            console.log("Sending Quotation Data:", quotationData);
+
+            fetch('/submit-quotation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(quotationData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Error: ${response.status}, ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message || 'Quotation saved successfully!');
+                this.resetForm();
+            })
+            .catch(error => {
+                alert('There was a problem with the submission: ' + error.message);
+            });
+        },
+
+        resetForm() {
+            this.companies.forEach(company => {
+                company.name = '';
+                company.address = '';
+                company.rows = [];
+            });
+            this.isModalOpen = false;
+            this.isSummaryOpen = false;
+        },
+
+        nextCompany() {
+            if (this.currentCompanyIndex < this.companies.length - 1) {
+                this.currentCompanyIndex++;
+                this.populateCompanyRows();  // Ensure rows are synchronized
+            }
+        },
+
+        previousCompany() {
+            if (this.currentCompanyIndex > 0) {
+                this.currentCompanyIndex--;
+                this.populateCompanyRows();  // Ensure rows are synchronized
+            }
         }
-    </script>
+    };
+}
+</script>
+
 </div>
 
 @endif
