@@ -234,17 +234,7 @@
                                <div class="mt-4">
                                    <h3 class="text-sm font-semibold text-gray-700">Submitted Documents:</h3>
                                    <ul class="mt-2">
-                                     @if(!empty($filePaths) && is_array($filePaths))
-                                            @foreach($filePaths as $filePath)
-                                                <li>
-                                                    <a href="{{ asset($filePath) }}" target="_blank" class="block text-sm font-medium text-blue-500 hover:text-blue-700 underline">
-                                                        {{ basename($filePath) }}
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        @else
-                                           <li>No files submitted.</li>
-                                       @endif
+                    
                                    </ul>
                                </div>
                            </div>

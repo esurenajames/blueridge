@@ -103,19 +103,12 @@ class RequestApprovalController extends Controller
     {
         // Get the ID from the query string
         $id = $request->query('id');
-
+    
         // Fetch the request record by ID along with quotations
         $requestData = RequestModel::with('quotations')->findOrFail($id);
 
-        // Decode the JSON file names (assuming $requestData->files contains the JSON string)
-        $files = json_decode($requestData->files, true); // Decode JSON to associative array
-
-        // Prepare a flat array of file paths
-        $filePaths = array_column($files, 'file_path');
-
-        // Access the category safely
         $category = $requestData->category;
-
+    
         // If the request is in Step 2, redirect to Quotation Approval with ID
         if ($requestData->steps == 2) {
             return redirect()->route('quotation-approval', ['id' => $id]);
@@ -379,7 +372,6 @@ class RequestApprovalController extends Controller
             ]);
         }
     }
-    
     
     public function insertItemsIntoPurchaseOrder($requestId)
     {

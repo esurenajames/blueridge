@@ -3,9 +3,32 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
-<script src="//unpkg.com/alpinejs" defer></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
+<script>
+    function saveProposedBudget(expenseId, proposedBudget, onSuccess) {
+        // Send updated proposed budget to the server
+        fetch(`/api/expenses/${expenseId}/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                proposed_budget: proposedBudget
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                onSuccess(); // Call the success callback to handle the success state
+            } else {
+                alert(result.message);
+            }
+        })
+        .catch(error => console.error('Error saving proposed budget:', error));
+    }
+</script>
 
 @vite('resources/css/main.css', 'resources/js/app.js')
 <title>Admin Panel</title>
@@ -248,48 +271,30 @@
         </div>
     
         <!-- Success Modal -->
-        <div x-show="showSuccessModal" class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]"     
-            x-init="if ({{ session('success') }}) { showSuccessModal = true; }">
-            <div class="fixed inset-0 flex items-center justify-center">
-                <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-                    <div class="text-center mt-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 fill-current text-[#333] inline-block mb-4" viewBox="0 0 512 512">
-                            <path d="M383.841 171.838c-7.881-8.31-21.02-8.676-29.343-.775L221.987 296.732l-63.204-64.893c-8.005-8.213-21.13-8.393-29.35-.387-8.213 7.998-8.386 21.137-.388 29.35l77.492 79.561a20.687 20.687 0 0 0 14.869 6.275 20.744 20.744 0 0 0 14.288-5.694l147.373-139.762c8.316-7.888 8.668-21.027.774-29.344z"/>
-                            <path d="M256 0C114.84 0 0 114.84 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0zm0 470.487c-118.265 0-214.487-96.214-214.487-214.487 0-118.265 96.221-214.487 214.487-214.487 118.272 0 214.487 96.221 214.487 214.487 0 118.272-96.215 214.487-214.487 214.487z"/>
-                        </svg>
-                        <h4 class="text-2xl text-[#333] font-semibold mt-6">Success!</h4>
-                        <p class="text-sm text-gray-500 mt-4">Your proposed budget has been successfully updated.</p>
-                    </div>
-                    <button @click="showSuccessModal = false; location.reload();" class="bg-[#333] hover:bg-[#222] text-white text-sm font-semibold rounded-full px-6 py-2.5 mt-8 w-full focus:outline-none">Okay</button>
+        <div 
+    x-show="showSuccessModal" 
+    class="fixed inset-0 px-4 flex flex-wrap justify-center items-center w-full h-full z-[100] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]"     
+    x-init="if ('{{ session('success') }}') { showSuccessModal = true; }"  {{-- Check if the session has a success message --}}
+    style="display: none;"
+>
+        <div class="fixed inset-0 flex items-center justify-center">
+            <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+                <div class="text-center mt-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 fill-current text-[#333] inline-block mb-4" viewBox="0 0 512 512">
+                        <path d="M383.841 171.838c-7.881-8.31-21.02-8.676-29.343-.775L221.987 296.732l-63.204-64.893c-8.005-8.213-21.13-8.393-29.35-.387-8.213 7.998-8.386 21.137-.388 29.35l77.492 79.561a20.687 20.687 0 0 0 14.869 6.275 20.744 20.744 0 0 0 14.288-5.694l147.373-139.762c8.316-7.888 8.668-21.027.774-29.344z"/>
+                        <path d="M256 0C114.84 0 0 114.84 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0zm0 470.487c-118.265 0-214.487-96.214-214.487-214.487 0-118.265 96.221-214.487 214.487-214.487 118.272 0 214.487 96.221 214.487 214.487 0 118.272-96.215 214.487-214.487 214.487z"/>
+                    </svg>
+                    <h4 class="text-2xl text-[#333] font-semibold mt-6">Success!</h4>
+                    <p class="text-sm text-gray-500 mt-4">Your proposed budget has been successfully updated.</p>
                 </div>
+                <button 
+                    @click="showSuccessModal = false; location.reload();" 
+                    class="bg-[#333] hover:bg-[#222] text-white text-sm font-semibold rounded-full px-6 py-2.5 mt-8 w-full focus:outline-none">
+                    Okay
+                </button>
             </div>
         </div>
-        
-        <script>
-            function saveProposedBudget(expenseId, proposedBudget, onSuccess) {
-                // Send updated proposed budget to the server
-                fetch(`/api/expenses/${expenseId}/update`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        proposed_budget: proposedBudget
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        onSuccess(); // Call the success callback to handle the success state
-                    } else {
-                        alert(result.message);
-                    }
-                })
-                .catch(error => console.error('Error saving proposed budget:', error));
-            }
-        <script>
-    
+        </div>
 
         <div x-show="showRowModal" class="fixed inset-0 overflow-y-auto z-[1000]" x-data="{ type: '', object_of_expenditure: '' }">
             <div class="fixed inset-0 flex justify-center items-center z-[1000] bg-[rgba(0,0,0,0.5)]">
