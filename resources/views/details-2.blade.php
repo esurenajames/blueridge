@@ -497,8 +497,12 @@
         </div>
 
         <form @submit.prevent="quotationSubmit">
+        <div class="flex items-center mb-2">
+                        <label for="files" class="block text-sm font-medium text-indigo-900 dark:text-black mr-2">Upload Files</label>
+                        <span class="text-gray-500 text-sm">(File size should not exceed 25MB.)
+                        </span>
+                    </div>
             <div class="mb-4">
-                <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
                 <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
             </div>
 
@@ -598,6 +602,9 @@
                 'application/vnd.ms-excel',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             ];
+            const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB in bytes
+
+            let totalSize = this.files.reduce((sum, file) => sum + file.size, 0); // Current total size
 
             if (!files || files.length === 0) return;
 
@@ -605,22 +612,47 @@
                 const file = files[i];
 
                 // Check if the file type is allowed
-                if (allowedTypes.includes(file.type)) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.files.push({
-                            name: file.name,
-                            size: file.size,
-                            type: file.type,
-                            url: e.target.result
-                        });
-                        this.hasFiles = true; // Set hasFiles to true if valid file is added
-                    };
-                    reader.readAsDataURL(file);
-                } else {
+                if (!allowedTypes.includes(file.type)) {
                     console.warn(`Unsupported file type: ${file.name}`);
                     alert(`Unsupported file type: ${file.name}. Please upload files of type: jpg, jpeg, png, pdf, doc, docx, xls, xlsx.`);
+                    continue;
                 }
+
+                // Check if the individual file exceeds the 25MB limit
+                if (file.size > MAX_FILE_SIZE) {
+                    console.warn(`File too large: ${file.name}`);
+                    alert(`The file "${file.name}" exceeds the 25MB limit. Please upload a smaller file.`);
+                    continue;
+                }
+
+                // Check if adding this file would exceed the total 25MB limit
+                if (totalSize + file.size > MAX_FILE_SIZE) {
+                    console.warn(`Cumulative size exceeds 25MB with the addition of: ${file.name}`);
+                    alert(`Adding "${file.name}" will exceed the total 25MB limit. Please remove some files or choose smaller ones.`);
+                    continue;
+                }
+
+                // If valid, read the file and add it to the list
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.files.push({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        url: e.target.result
+                    });
+                    this.hasFiles = true; // Set hasFiles to true if a valid file is added
+                };
+                reader.readAsDataURL(file);
+
+                // Update the total size after adding the file
+                totalSize += file.size;
+            }
+
+            // Final check: Warn if total size of all files exceeds 25MB
+            if (totalSize > MAX_FILE_SIZE) {
+                console.warn(`Total size of all uploaded files exceeds 25MB.`);
+                alert(`The total size of all uploaded files exceeds the 25MB limit. Please remove some files.`);
             }
         },
 
@@ -1021,7 +1053,7 @@ function submitForms() {
 
             // Stop if no valid data to submit
             if (quotationData.length === 0) {
-                alert('No valid items to submit!');
+                
                 return;
             }
 
@@ -1203,6 +1235,9 @@ function submitForms() {
                 'application/vnd.ms-excel',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             ];
+            const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB in bytes
+
+            let totalSize = this.files.reduce((sum, file) => sum + file.size, 0); // Current total size
 
             if (!files || files.length === 0) return;
 
@@ -1210,22 +1245,47 @@ function submitForms() {
                 const file = files[i];
 
                 // Check if the file type is allowed
-                if (allowedTypes.includes(file.type)) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.files.push({
-                            name: file.name,
-                            size: file.size,
-                            type: file.type,
-                            url: e.target.result
-                        });
-                        this.hasFiles = true; // Set hasFiles to true if valid file is added
-                    };
-                    reader.readAsDataURL(file);
-                } else {
+                if (!allowedTypes.includes(file.type)) {
                     console.warn(`Unsupported file type: ${file.name}`);
                     alert(`Unsupported file type: ${file.name}. Please upload files of type: jpg, jpeg, png, pdf, doc, docx, xls, xlsx.`);
+                    continue;
                 }
+
+                // Check if the individual file exceeds the 25MB limit
+                if (file.size > MAX_FILE_SIZE) {
+                    console.warn(`File too large: ${file.name}`);
+                    alert(`The file "${file.name}" exceeds the 25MB limit. Please upload a smaller file.`);
+                    continue;
+                }
+
+                // Check if adding this file would exceed the total 25MB limit
+                if (totalSize + file.size > MAX_FILE_SIZE) {
+                    console.warn(`Cumulative size exceeds 25MB with the addition of: ${file.name}`);
+                    alert(`Adding "${file.name}" will exceed the total 25MB limit. Please remove some files or choose smaller ones.`);
+                    continue;
+                }
+
+                // If valid, read the file and add it to the list
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.files.push({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        url: e.target.result
+                    });
+                    this.hasFiles = true; // Set hasFiles to true if a valid file is added
+                };
+                reader.readAsDataURL(file);
+
+                // Update the total size after adding the file
+                totalSize += file.size;
+            }
+
+            // Final check: Warn if total size of all files exceeds 25MB
+            if (totalSize > MAX_FILE_SIZE) {
+                console.warn(`Total size of all uploaded files exceeds 25MB.`);
+                alert(`The total size of all uploaded files exceeds the 25MB limit. Please remove some files.`);
             }
         },
 
@@ -1466,6 +1526,9 @@ function submitForms() {
                 'application/vnd.ms-excel',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             ];
+            const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB in bytes
+
+            let totalSize = this.files.reduce((sum, file) => sum + file.size, 0); // Current total size
 
             if (!files || files.length === 0) return;
 
@@ -1473,22 +1536,47 @@ function submitForms() {
                 const file = files[i];
 
                 // Check if the file type is allowed
-                if (allowedTypes.includes(file.type)) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.files.push({
-                            name: file.name,
-                            size: file.size,
-                            type: file.type,
-                            url: e.target.result
-                        });
-                        this.hasFiles = true; // Set hasFiles to true if valid file is added
-                    };
-                    reader.readAsDataURL(file);
-                } else {
+                if (!allowedTypes.includes(file.type)) {
                     console.warn(`Unsupported file type: ${file.name}`);
                     alert(`Unsupported file type: ${file.name}. Please upload files of type: jpg, jpeg, png, pdf, doc, docx, xls, xlsx.`);
+                    continue;
                 }
+
+                // Check if the individual file exceeds the 25MB limit
+                if (file.size > MAX_FILE_SIZE) {
+                    console.warn(`File too large: ${file.name}`);
+                    alert(`The file "${file.name}" exceeds the 25MB limit. Please upload a smaller file.`);
+                    continue;
+                }
+
+                // Check if adding this file would exceed the total 25MB limit
+                if (totalSize + file.size > MAX_FILE_SIZE) {
+                    console.warn(`Cumulative size exceeds 25MB with the addition of: ${file.name}`);
+                    alert(`Adding "${file.name}" will exceed the total 25MB limit. Please remove some files or choose smaller ones.`);
+                    continue;
+                }
+
+                // If valid, read the file and add it to the list
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.files.push({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        url: e.target.result
+                    });
+                    this.hasFiles = true; // Set hasFiles to true if a valid file is added
+                };
+                reader.readAsDataURL(file);
+
+                // Update the total size after adding the file
+                totalSize += file.size;
+            }
+
+            // Final check: Warn if total size of all files exceeds 25MB
+            if (totalSize > MAX_FILE_SIZE) {
+                console.warn(`Total size of all uploaded files exceeds 25MB.`);
+                alert(`The total size of all uploaded files exceeds the 25MB limit. Please remove some files.`);
             }
         },
 
@@ -1608,7 +1696,6 @@ function submitForms() {
 </script>
 @endif
 
-<script src="//unpkg.com/alpinejs" defer></script>    
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const steps = @json($request->steps); // Get the steps value from Laravel

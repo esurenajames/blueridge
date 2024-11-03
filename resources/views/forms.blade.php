@@ -4,8 +4,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -264,35 +262,33 @@
                     </div>
 
                   <!-- Category Dropdown -->
-                  <div class="mb-2 sm:mb-6">
+                  <div class="sm:mb-6">
                         <label for="category_id" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Category</label>
-                        <select x-model="requestData.category_id" @change="updateCategory($event.target.value)" 
+                            <select x-model="requestData.category_id" 
+                                @change="updateCategory($event)" 
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
                                 required>
                             <option value="" disabled>Select a category</option>
                             @forelse($expenditures as $expenditure)
-                                <option value="{{ json_encode(['id' => $expenditure->id, 'name' => $expenditure->object_of_expenditure]) }}">
+                                <option value="{{ $expenditure->id }}" data-name="{{ $expenditure->object_of_expenditure }}">
                                     {{ $expenditure->object_of_expenditure }}
                                 </option>
                             @empty
                                 <option value="" disabled>No expenditures found.</option>
-                            @endforelse 
+                            @endforelse
                             <option value="Other">Other</option>
                         </select>
-                        
-                
-
-
-                    <!-- Other Category Input -->
-                    <div x-show="showOtherInput" class="mb-2 sm:mb-6" x-transition>
-                        <label for="otherCategory" class="block mb-2 mt-2 text-sm font-medium text-indigo-900 dark:text-black">Specify Other Category</label>
-                        <input type="text" x-model="requestData.otherCategory" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
-                            placeholder="Enter category">
+                        <!-- Other Category Input -->
+                        <div x-show="showOtherInput" class="mt-4" x-transition>
+                            <label for="otherCategory" class="block mb-2 mt-2 text-sm font-medium text-indigo-900 dark:text-black">Specify Other Category</label>
+                            <input type="text" x-model="requestData.otherCategory" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" 
+                                placeholder="Enter category">
+                        </div>
                     </div>
-                    
+                                    
                     <div x-data="dropdown()" class="relative mb-2 sm:mb-6">
-                    <label for="collaborators" class="block  mt-6 text-sm font-medium text-indigo-900 dark:text-black">Collaborators</label>
+                    <label for="collaborators" class="block text-sm font-medium text-indigo-900 dark:text-black">Collaborators</label>
 
                     <!-- Selected Users Inside Input Box -->
                     <div class="flex flex-wrap gap-2 mb-2">
@@ -332,8 +328,11 @@
                     </div>
                     
                     <!-- File Upload Section -->
-                    <div class="mb-6 max-w-full overflow-hidden">
-                    <label for="files" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-black">Upload Files</label>
+                    <div class="flex items-center mb-2">
+                        <label for="files" class="block text-sm font-medium text-indigo-900 dark:text-black mr-2">Upload Files</label>
+                        <span class="text-gray-500 text-sm">(File size should not exceed 25MB.)
+                        </span>
+                    </div>
                     <input type="file" id="files" name="files[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" @change="previewFiles">
                 </div>
                 
@@ -501,17 +500,46 @@ function fileUploader() {
 
         previewFiles(event) {
             const files = event.target.files;
+            const allowedTypes = [
+                'image/jpeg',
+                'image/png',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            ];
+            const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB in bytes
+
+            let totalSize = this.files.reduce((sum, file) => sum + file.size, 0); // Current total size
+
             if (!files || files.length === 0) return;
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
 
-                // Check file size (e.g., limit to 5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('File size should not exceed 5MB.');
+                // Check if the file type is allowed
+                if (!allowedTypes.includes(file.type)) {
+                    console.warn(`Unsupported file type: ${file.name}`);
+                    alert(`Unsupported file type: ${file.name}. Please upload files of type: jpg, jpeg, png, pdf, doc, docx, xls, xlsx.`);
                     continue;
                 }
 
+                // Check if the individual file exceeds the 25MB limit
+                if (file.size > MAX_FILE_SIZE) {
+                    console.warn(`File too large: ${file.name}`);
+                    alert(`The file "${file.name}" exceeds the 25MB limit. Please upload a smaller file.`);
+                    continue;
+                }
+
+                // Check if adding this file would exceed the total 25MB limit
+                if (totalSize + file.size > MAX_FILE_SIZE) {
+                    console.warn(`Cumulative size exceeds 25MB with the addition of: ${file.name}`);
+                    alert(`Adding "${file.name}" will exceed the total 25MB limit. Please remove some files or choose smaller ones.`);
+                    continue;
+                }
+
+                // If valid, read the file and add it to the list
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     this.files.push({
@@ -520,13 +548,20 @@ function fileUploader() {
                         type: file.type,
                         url: e.target.result
                     });
+                    this.hasFiles = true; // Set hasFiles to true if a valid file is added
                 };
                 reader.readAsDataURL(file);
+
+                // Update the total size after adding the file
+                totalSize += file.size;
             }
 
-            this.hasFiles = true;
+            // Final check: Warn if total size of all files exceeds 25MB
+            if (totalSize > MAX_FILE_SIZE) {
+                console.warn(`Total size of all uploaded files exceeds 25MB.`);
+                alert(`The total size of all uploaded files exceeds the 25MB limit. Please remove some files.`);
+            }
         },
-
 
         removeFile(index) {
             this.files.splice(index, 1);
@@ -651,27 +686,24 @@ function fileUploader() {
             return new File([u8arr], filename, { type: mime });
         },
 
-        updateCategory(selectedValue) {
+        updateCategory(event) {
+            const selectedValue = event.target.value; // Get the selected value directly from the event
             console.log('Selected Value:', selectedValue); // Log the selected value
 
-            // Check if the selected value is "Other"
             if (selectedValue === 'Other') {
                 this.showOtherInput = true; // Show the "Other" input
                 this.requestData.category_id = 'Other'; // Set category_id to 'Other'
                 this.requestData.category = ''; // Clear category name
             } else {
-                try {
-                    const parsedValue = JSON.parse(selectedValue); // Parse the selected category value
-                    this.requestData.category_id = parsedValue.id; // Set the category_id
-                    this.requestData.category = parsedValue.name; // Set the category name
-                    this.showOtherInput = false; // Hide the "Other" input
-                } catch (e) {
-                    console.error('Error parsing selectedValue:', e);
-                }
+                const selectedOption = event.target.options[event.target.selectedIndex]; // Get the selected option
+                this.requestData.category_id = selectedValue; // Set the category_id
+                this.requestData.category = selectedOption.getAttribute('data-name'); // Get the name from data attribute
+                this.showOtherInput = false; // Hide the "Other" input
             }
-            
+
             // Log the selected category_id for debugging
             console.log('Selected Category ID:', this.requestData.category_id);
+            console.log('Selected Category Name:', this.requestData.category); // Log selected category name for debugging
         }
     };
 }

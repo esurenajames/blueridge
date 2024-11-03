@@ -15,4 +15,7 @@ class NotificationController extends Controller
 
         return view('notifications', compact('notifications'));
     }
+
+
+   
 }

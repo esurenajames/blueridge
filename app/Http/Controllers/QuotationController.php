@@ -75,7 +75,8 @@ class QuotationController extends Controller
         {
             // Fetch all quotations for the given request_id = 149
             $quotations = Quotation::where('request_id', $id)->get();
-    
+            Log::info('Image Path:', ['path' => 'C:\\Users\\artlo\\OneDrive\\Desktop\\Finals Blueridge\\blueridge\\public\\images\\blueridge.png']);
+
             if ($quotations->isEmpty()) {
                 return back()->with('error', 'No data found for this request.');
             }
@@ -86,5 +87,6 @@ class QuotationController extends Controller
             // Download the generated PDF
             return $pdf->download('quotation_' . $id . '.pdf');
         }
+        
 
 }

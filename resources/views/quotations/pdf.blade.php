@@ -1,10 +1,12 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quotation PDF</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         @page {
             size: A4 landscape; /* Set page size to landscape */
@@ -17,7 +19,6 @@
 
         .table-container {
             overflow-x: auto; /* Allow horizontal scrolling if necessary */
-            
         }
 
         table {
@@ -59,13 +60,16 @@
             padding: 0 10px; /* Add padding for spacing */
             border: 1px solid white; /* Set border color to white */
         }
-
     </style>
 </head>
 <body class="font-sans">
+    <p class="text-center font-bold text-lg" style="text-align:center; font-size:11;">Republic of The Philippines</p>
+    <p class="text-center text-lg" style="text-align:center; font-weight:bold; margin-top:-14; font-size:11;">Metro Manila</p>
+    <p class="text-center text-lg" style="text-align:center;  margin-top:-14; font-size:11;">City of Quezon City - District III</p>
+    <p class="text-center text-lg" style="text-align:center; font-weight:bold; margin-top:-14; font-size:11;">Barangay Blueridge B</p>
     <p class="text-center font-bold text-lg" style="text-align:center; font-weight:bold; margin-bottom:24; margin-top:40; font-size:11;">ABSTRACT OF CANVASS</p>
     <p style="margin-bottom:0; font-size:11;">
-        BARANGAY BLURIDGE B,<br>
+        BARANGAY BLUERIDGE B,<br>
         QUEZON CITY, DISTRICT III
     </p>
 
@@ -113,7 +117,7 @@
                                 <strong>{{ $awardedQuotation->company_name }}</strong><br>
                                 {{ $awardedQuotation->company_address }}
                             @else
-                                
+                                 
                             @endif
                         </td>
                     </tr>
